@@ -12,6 +12,7 @@ const client = new QueryClient({ defaultOptions: { queries: { retry: false } } }
 export const module: ExtendAdminUIModule = {
   mount(container, hostContext) {
     const root = createRoot(container)
+    console.info('mount')
     root.render(
       <StrictMode>
         <QueryClientProvider client={client}>

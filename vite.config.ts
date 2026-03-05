@@ -8,7 +8,7 @@ const PORT = Number(PORT_STRING)
 process.env.VITE_PORT = PORT_STRING
 
 const BASE_PATH = process.env.BASE_PATH || '/'
-// const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -22,19 +22,18 @@ export default defineConfig(({ mode }) => {
       federation({
         name: 'remote',
         filename: 'remoteEntry.js',
+        publicPath: mode === 'production' ? `${BASE_URL}/` : undefined,
         manifest: true,
         exposes: {
-          '.': './src/module.tsx'
+          '.': './src/mf-entry.ts'
         },
-        ...(mode === 'development' && {
-          shared: {
-            '@tanstack/react-query': { singleton: true }
-          }
-        })
+        shared: {
+          '@tanstack/react-query': {}
+        }
       })
     ],
     server: {
-      port: PORT,
+      port: mode === 'development' ? PORT : undefined,
       proxy: {
         '/proxy': {
           target: env.VITE_AGS_URL,
