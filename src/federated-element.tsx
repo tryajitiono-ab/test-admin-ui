@@ -57,7 +57,7 @@ function GameConfigs() {
     sdk
   } = useGlobalContext()
   const queryClient = useQueryClient()
-  const configKey = 'gameconfigs'
+  const configKey = import.meta.env.VITE_CONFIG_KEY || 'gameconfigs'
   const navigate = useNavigate()
   const params = useParams()
 
@@ -131,7 +131,7 @@ function GameConfigs() {
 
   return (
     <>
-      <Typography.Title level={2}>Game configs</Typography.Title>
+      <Typography.Title level={2}>Game Configs {import.meta.env.VITE_INSTANCE_LABEL || '1st'}</Typography.Title>
 
       {showTable ? (
         <Table

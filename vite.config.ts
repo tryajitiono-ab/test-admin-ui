@@ -9,6 +9,7 @@ process.env.VITE_PORT = PORT_STRING
 
 const BASE_PATH = process.env.BASE_PATH || '/'
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`
+const OUT_DIR = process.env.OUT_DIR || 'dist'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -16,6 +17,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: BASE_PATH,
+    build: {
+      outDir: OUT_DIR
+    },
     plugins: [
       react(),
       tailwindcss(),
