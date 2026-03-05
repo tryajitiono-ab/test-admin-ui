@@ -1,3 +1,5 @@
+import type { SdkConstructorParam } from '@accelbyte/sdk'
+
 // TODO: move this to external package.
 export interface ExtendAdminUIModule {
   // Mount function, when called, returns unmount function. This can be used
@@ -6,5 +8,5 @@ export interface ExtendAdminUIModule {
 }
 
 export interface HostContext {
-  namespace: string
+  sdkConfig: SdkConstructorParam['coreConfig']
 }

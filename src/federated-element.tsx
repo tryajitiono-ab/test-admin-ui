@@ -1,4 +1,3 @@
-import type { SdkSetConfigParam } from '@accelbyte/sdk'
 import type { ConfigInfo } from '@accelbyte/sdk-config'
 import {
   Key_CommonConfigurationAdmin,
@@ -15,10 +14,11 @@ import { Button, Divider, Form, Input, Modal, Space, Table, Typography } from 'a
 import { isAxiosError } from 'axios'
 import { useEffect, useState, type PropsWithChildren } from 'react'
 import { Link, Outlet, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router'
-import { sdk } from './constants'
 import { useGlobalContext } from './context'
 
 export function FederatedElement() {
+  const { sdk } = useGlobalContext()
+
   useUsersAdminApi_GetUsersMe_v3(sdk, {})
   const [, setSearchParams] = useSearchParams()
 
@@ -52,10 +52,8 @@ type TopLevelGameConfigValues = Array<{ key: string }>
 type GameConfigValues = Array<{ key: string; value: string }>
 
 function GameConfigs() {
-  const {
-    hostContext: { namespace },
-    sdk
-  } = useGlobalContext()
+  const { sdk } = useGlobalContext()
+  const namespace = sdk.assembly().coreConfig.namespace
   const queryClient = useQueryClient()
   const configKey = import.meta.env.VITE_CONFIG_KEY || 'gameconfigs'
   const navigate = useNavigate()
@@ -71,7 +69,6 @@ function GameConfigs() {
   const addConfigMutation = useCommonConfigurationAdminApi_CreateConfigMutation(sdk)
   const patchConfigMutation = useCommonConfigurationAdminApi_PatchConfig_ByConfigKeyMutation(sdk)
   const deleteChildConfigMutation = useCommonConfigurationAdminApi_DeleteConfig_ByConfigKeyMutation(sdk)
-  const mutationArgs: SdkSetConfigParam = { coreConfig: { namespace } }
 
   const showTable = configFetcher.data !== undefined || (isAxiosError(configFetcher.error) && configFetcher.error.status === 404)
 
@@ -98,9 +95,9 @@ function GameConfigs() {
     newConfigs.splice(index, 1)
 
     patchConfigMutation.mutate(
-      { ...mutationArgs, configKey, data: { isPublic: true, value: JSON.stringify(newConfigs) } },
+      { configKey, data: { isPublic: true, value: JSON.stringify(newConfigs) } },
       optimistic(JSON.stringify(newConfigs), () => {
-        deleteChildConfigMutation.mutate({ ...mutationArgs, configKey: childConfigKey })
+        deleteChildConfigMutation.mutate({ configKey: childConfigKey })
 
         if (params.configKey === childConfigKey) {
           navigate('/')
@@ -146,14 +143,14 @@ function GameConfigs() {
 
                 if (!configFetcher.data) {
                   addConfigMutation.mutate(
-                    { ...mutationArgs, data: { key: configKey, isPublic: true, value: JSON.stringify([values]) } },
+                    { data: { key: configKey, isPublic: true, value: JSON.stringify([values]) } },
                     optimistic(JSON.stringify([values]), () => navigate(`/${values.key}`))
                   )
                   return
                 }
 
                 patchConfigMutation.mutate(
-                  { ...mutationArgs, configKey, data: { isPublic: true, value: newValue } },
+                  { configKey, data: { isPublic: true, value: newValue } },
                   optimistic(newValue, () => navigate(`/${values.key}`))
                 )
               }}
@@ -181,10 +178,8 @@ function GameConfigs() {
 }
 
 function GameConfigDetail() {
-  const {
-    hostContext: { namespace },
-    sdk
-  } = useGlobalContext()
+  const { sdk } = useGlobalContext()
+  const namespace = sdk.assembly().coreConfig.namespace
   const queryClient = useQueryClient()
   const { configKey = '' } = useParams()
 
@@ -198,7 +193,6 @@ function GameConfigDetail() {
   const configFetcher = useCommonConfigurationAdminApi_GetConfig_ByConfigKey(sdk, configKeyInput)
   const addConfigMutation = useCommonConfigurationAdminApi_CreateConfigMutation(sdk)
   const patchConfigMutation = useCommonConfigurationAdminApi_PatchConfig_ByConfigKeyMutation(sdk)
-  const mutationArgs: SdkSetConfigParam = { coreConfig: { namespace } }
 
   const [editingValues, setEditingValues] = useState<Record<number, { key?: string; value?: string }>>({})
 
@@ -230,7 +224,7 @@ function GameConfigDetail() {
     }
 
     patchConfigMutation.mutate(
-      { ...mutationArgs, configKey, data: { isPublic: true, value: JSON.stringify(newConfigs) } },
+      { configKey, data: { isPublic: true, value: JSON.stringify(newConfigs) } },
       optimistic(JSON.stringify(newConfigs))
     )
   }
@@ -240,7 +234,7 @@ function GameConfigDetail() {
     newConfigs.splice(index, 1)
 
     patchConfigMutation.mutate(
-      { ...mutationArgs, configKey: configKey!, data: { isPublic: true, value: JSON.stringify(newConfigs) } },
+      { configKey: configKey!, data: { isPublic: true, value: JSON.stringify(newConfigs) } },
       optimistic(JSON.stringify(newConfigs))
     )
   }
@@ -304,13 +298,13 @@ function GameConfigDetail() {
 
                 if (!configFetcher.data) {
                   addConfigMutation.mutate(
-                    { ...mutationArgs, data: { key: configKey, isPublic: true, value: JSON.stringify([values]) } },
+                    { data: { key: configKey, isPublic: true, value: JSON.stringify([values]) } },
                     optimistic(JSON.stringify([values]))
                   )
                   return
                 }
 
-                patchConfigMutation.mutate({ ...mutationArgs, configKey, data: { isPublic: true, value: newValue } }, optimistic(newValue))
+                patchConfigMutation.mutate({ configKey, data: { isPublic: true, value: newValue } }, optimistic(newValue))
               }}
               initialValues={{ key: '', value: '' }}>
               <div className="flex gap-x-2">
