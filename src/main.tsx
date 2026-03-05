@@ -1,10 +1,4 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
+import { module } from './module.tsx'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+module.mount(document.getElementById('root')!, { namespace: import.meta.env.AGS_NAMESPACE })
