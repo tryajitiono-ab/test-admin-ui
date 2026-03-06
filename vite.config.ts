@@ -32,6 +32,8 @@ export default defineConfig(({ mode }) => {
           '.': './src/mf-entry.ts'
         },
         shared: {
+          react: {},
+          'react-dom': {},
           '@tanstack/react-query': {}
         }
       })
