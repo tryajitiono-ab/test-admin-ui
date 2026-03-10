@@ -60,6 +60,14 @@ jobs:
           VITE_INSTANCE_LABEL: 3rd
         run: npx vite build
 
+      - name: Build tournament-system variant
+        env:
+          OUT_DIR: dist/tournament-system
+          BASE_PATH: /${{ github.event.repository.name }}/tournament-system/
+          BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/tournament-system
+          VITE_APP_NAME: tournament-system
+        run: npx vite build
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
