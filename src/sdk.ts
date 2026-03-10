@@ -1,7 +1,7 @@
 import { AccelByte, createAuthInterceptor, type Interceptor, type SdkConstructorParam } from '@accelbyte/sdk'
 import { IamUserAuthorizationClient } from '@accelbyte/sdk-iam'
 
-export function createSdk(coreConfig: SdkConstructorParam['coreConfig']) {
+export function createSdk(coreConfig: SdkConstructorParam['coreConfig'], loginCoreConfig: SdkConstructorParam['coreConfig'] = coreConfig) {
   const interceptors: Interceptor[] = []
   if (import.meta.env.DEV) {
     interceptors.push(
@@ -12,19 +12,23 @@ export function createSdk(coreConfig: SdkConstructorParam['coreConfig']) {
 
           const { code, state } = Object.fromEntries(new URL(window.location.href).searchParams)
           if (!code && !state) {
-            const result = await new IamUserAuthorizationClient(sdk).refreshToken()
+            const result = await new IamUserAuthorizationClient(loginSdk).refreshToken()
             if (result) {
               hasRefreshedToken = true
             }
           }
 
           if (!hasRefreshedToken) {
-            window.location.replace(new IamUserAuthorizationClient(sdk).createLoginURL())
+            window.location.replace(new IamUserAuthorizationClient(loginSdk).createLoginURL())
           }
         }
       })
     )
   }
+
+  const loginSdk = AccelByte.SDK({
+    coreConfig: loginCoreConfig
+  })
 
   const sdk = AccelByte.SDK({
     coreConfig,
