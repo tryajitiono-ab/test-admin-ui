@@ -6,36 +6,17 @@ import {
   useCommonConfigurationAdminApi_GetConfig_ByConfigKey,
   useCommonConfigurationAdminApi_PatchConfig_ByConfigKeyMutation
 } from '@accelbyte/sdk-config/react-query'
-import { IamUserAuthorizationClient } from '@accelbyte/sdk-iam'
-import { useUsersAdminApi_GetUsersMe_v3 } from '@accelbyte/sdk-iam/react-query'
+import { useExchangeAuthorizationCode } from './hooks/useExchangeAuthorizationCode'
 import { useQueryClient } from '@tanstack/react-query'
 import type { TableColumnsType } from 'antd'
 import { Button, Divider, Form, Input, Modal, Space, Table, Typography } from 'antd'
 import { isAxiosError } from 'axios'
-import { useEffect, useState, type PropsWithChildren } from 'react'
-import { Link, Outlet, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router'
+import { useState, type PropsWithChildren } from 'react'
+import { Link, Outlet, Route, Routes, useNavigate, useParams } from 'react-router'
 import { useGlobalContext } from './context'
 
 export function FederatedElement() {
-  const { sdk } = useGlobalContext()
-
-  useUsersAdminApi_GetUsersMe_v3(sdk, {})
-  const [, setSearchParams] = useSearchParams()
-
-  useEffect(() => {
-    const { code, state } = Object.fromEntries(new URL(window.location.href).searchParams)
-    if (!code || !state) return
-
-    new IamUserAuthorizationClient(sdk).exchangeAuthorizationCode({ code, state })
-
-    setSearchParams(prev => {
-      const newSearchParams = new URLSearchParams(prev)
-      newSearchParams.delete('code')
-      newSearchParams.delete('state')
-
-      return newSearchParams
-    })
-  }, [])
+  useExchangeAuthorizationCode()
 
   return (
     <main className="p-4">

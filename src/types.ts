@@ -9,4 +9,5 @@ export interface ExtendAdminUIModule {
 
 export interface HostContext {
   sdkConfig: SdkConstructorParam['coreConfig']
+  loginSdkConfig?: SdkConstructorParam['coreConfig']
 }
