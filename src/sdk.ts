@@ -6,7 +6,7 @@ export function createSdk(coreConfig: SdkConstructorParam['coreConfig'], loginCo
   if (import.meta.env.DEV) {
     interceptors.push(
       createAuthInterceptor({
-        clientId: import.meta.env.VITE_AGS_CLIENT_ID,
+        clientId: loginCoreConfig.clientId,
         async onSessionExpired() {
           let hasRefreshedToken = false
 
