@@ -1,18 +1,18 @@
-import { useExchangeAuthorizationCode } from './hooks/useExchangeAuthorizationCode'
 import { Alert, Button, Card, Spin, Tag, Typography } from 'antd'
 import { useMemo, type ReactNode } from 'react'
 import { Route, Routes, useNavigate, useParams } from 'react-router'
 import { useGlobalContext } from './context'
+import { useExchangeAuthorizationCode } from './hooks/useExchangeAuthorizationCode'
+import {
+  useTournamentServiceApi_GetMatches_ByTournamentId,
+  useTournamentServiceApi_GetParticipants_ByTournamentId,
+  useTournamentServiceApi_GetTournament_ByTournamentId,
+  useTournamentServiceApi_GetTournaments
+} from './tournamentapi/all-query-imports'
 import type { TournamentMatch } from './tournamentapi/generated-definitions/TournamentMatch'
 import type { TournamentParticipant } from './tournamentapi/generated-definitions/TournamentParticipant'
 import type { TournamentTournament } from './tournamentapi/generated-definitions/TournamentTournament'
 import type { TournamentTournamentParticipant } from './tournamentapi/generated-definitions/TournamentTournamentParticipant'
-import {
-  useTournamentServiceAdminApi_GetMatches_ByTournamentId,
-  useTournamentServiceAdminApi_GetParticipants_ByTournamentId,
-  useTournamentServiceAdminApi_GetTournament_ByTournamentId,
-  useTournamentServiceAdminApi_GetTournaments
-} from './tournamentapi/generated-admin/queries/TournamentServiceAdmin.query'
 
 const STATUS_MAP: Record<string, { text: string; color: string }> = {
   TOURNAMENT_STATUS_DRAFT: { text: 'Draft', color: 'blue' },
@@ -67,7 +67,7 @@ export function FederatedTournamentElement() {
 function TournamentList() {
   const { sdk } = useGlobalContext()
   const navigate = useNavigate()
-  const { data, isLoading, error, refetch } = useTournamentServiceAdminApi_GetTournaments(sdk, {})
+  const { data, isLoading, error, refetch } = useTournamentServiceApi_GetTournaments(sdk, {})
 
   const tournaments = data?.tournaments ?? []
 
@@ -158,23 +158,20 @@ function TournamentDetail() {
   const { tournamentId = '' } = useParams()
   const navigate = useNavigate()
 
-  const { data: tournamentData, isLoading, error, refetch } = useTournamentServiceAdminApi_GetTournament_ByTournamentId(
+  const {
+    data: tournamentData,
+    isLoading,
+    error,
+    refetch
+  } = useTournamentServiceApi_GetTournament_ByTournamentId(sdk, { tournamentId }, { enabled: !!tournamentId })
+
+  const { data: participantsData } = useTournamentServiceApi_GetParticipants_ByTournamentId(
     sdk,
     { tournamentId },
     { enabled: !!tournamentId }
   )
 
-  const { data: participantsData } = useTournamentServiceAdminApi_GetParticipants_ByTournamentId(
-    sdk,
-    { tournamentId },
-    { enabled: !!tournamentId }
-  )
-
-  const { data: matchesData } = useTournamentServiceAdminApi_GetMatches_ByTournamentId(
-    sdk,
-    { tournamentId },
-    { enabled: !!tournamentId }
-  )
+  const { data: matchesData } = useTournamentServiceApi_GetMatches_ByTournamentId(sdk, { tournamentId }, { enabled: !!tournamentId })
 
   if (isLoading) return <Spin description="Loading tournament..." />
 
@@ -209,9 +206,7 @@ function TournamentDetail() {
         <Typography.Title level={2} className="text-white! m-0! mb-2!">
           {tournament.name || 'Untitled Tournament'}
         </Typography.Title>
-        <Typography.Paragraph className="text-white/90! my-2!">
-          {tournament.description || 'No description provided'}
-        </Typography.Paragraph>
+        <Typography.Paragraph className="text-white/90! my-2!">{tournament.description || 'No description provided'}</Typography.Paragraph>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-6">
           <InfoCard label="Status">
             <StatusBadge status={tournament.status} />
@@ -222,9 +217,7 @@ function TournamentDetail() {
             </strong>
           </InfoCard>
           <InfoCard label="Created">
-            <strong className="text-xl">
-              {tournament.createdAt ? new Date(tournament.createdAt).toLocaleDateString() : '—'}
-            </strong>
+            <strong className="text-xl">{tournament.createdAt ? new Date(tournament.createdAt).toLocaleDateString() : '—'}</strong>
           </InfoCard>
         </div>
       </div>
@@ -245,7 +238,11 @@ function TournamentDetail() {
           Tournament Bracket
         </Typography.Title>
       </div>
-      <BracketSection matches={matches as TournamentMatch[]} participants={participants as TournamentParticipant[]} isLoading={!matchesData} />
+      <BracketSection
+        matches={matches as TournamentMatch[]}
+        participants={participants as TournamentParticipant[]}
+        isLoading={!matchesData}
+      />
     </>
   )
 }
@@ -289,7 +286,9 @@ function ParticipantGrid({ participants, isLoading }: { participants: Tournament
         const initial = name.charAt(0).toUpperCase()
 
         return (
-          <div key={userId || i} className="py-3 px-4 border border-[#f0f0f0] rounded-md flex items-center gap-3 transition-[transform,box-shadow] duration-200 ease-out cursor-default">
+          <div
+            key={userId || i}
+            className="py-3 px-4 border border-[#f0f0f0] rounded-md flex items-center gap-3 transition-[transform,box-shadow] duration-200 ease-out cursor-default">
             <div className="size-10 shrink-0 bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] text-white flex items-center justify-center rounded-full font-semibold text-lg">
               {initial}
             </div>
@@ -360,11 +359,7 @@ function BracketContent({ matches, participants }: { matches: TournamentMatch[];
             </div>
             <div className="flex flex-col gap-4 justify-around flex-1">
               {roundMatches.map(match => (
-                <BracketMatch
-                  key={match.matchId || `${match.round}-${match.position}`}
-                  match={match}
-                  participantMap={participantMap}
-                />
+                <BracketMatch key={match.matchId || `${match.round}-${match.position}`} match={match} participantMap={participantMap} />
               ))}
             </div>
           </div>
@@ -378,13 +373,9 @@ function BracketMatch({ match, participantMap }: { match: TournamentMatch; parti
   const p1Id = getMatchParticipantId(match.participant1)
   const p2Id = getMatchParticipantId(match.participant2)
 
-  const p1Name = p1Id
-    ? getParticipantName(participantMap.get(p1Id) ?? { userId: p1Id })
-    : getMatchParticipantName(match.participant1)
+  const p1Name = p1Id ? getParticipantName(participantMap.get(p1Id) ?? { userId: p1Id }) : getMatchParticipantName(match.participant1)
 
-  const p2Name = p2Id
-    ? getParticipantName(participantMap.get(p2Id) ?? { userId: p2Id })
-    : getMatchParticipantName(match.participant2)
+  const p2Name = p2Id ? getParticipantName(participantMap.get(p2Id) ?? { userId: p2Id }) : getMatchParticipantName(match.participant2)
 
   const isCompleted = match.status === 'MATCH_STATUS_COMPLETED'
   const isInProgress = match.status === 'MATCH_STATUS_IN_PROGRESS'
