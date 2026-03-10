@@ -1,9 +1,14 @@
-import { Alert, Button, Card, Spin, Tag, Typography } from 'antd'
-import { useMemo, type ReactNode } from 'react'
+import { Alert, Button, Card, DatePicker, Form, InputNumber, Modal, Spin, Tag, Typography } from 'antd'
+import TextArea from 'antd/es/input/TextArea'
+import Input from 'antd/es/input/Input'
+import { useQueryClient } from '@tanstack/react-query'
+import { useState, useMemo, type ReactNode } from 'react'
 import { Route, Routes, useNavigate, useParams } from 'react-router'
 import { useGlobalContext } from './context'
 import { useExchangeAuthorizationCode } from './hooks/useExchangeAuthorizationCode'
 import {
+  Key_TournamentService,
+  useTournamentServiceAdminApi_CreateTournamentMutation,
   useTournamentServiceApi_GetMatches_ByTournamentId,
   useTournamentServiceApi_GetParticipants_ByTournamentId,
   useTournamentServiceApi_GetTournament_ByTournamentId,
@@ -67,6 +72,7 @@ export function FederatedTournamentElement() {
 function TournamentList() {
   const { sdk } = useGlobalContext()
   const navigate = useNavigate()
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
   const { data, isLoading, error, refetch } = useTournamentServiceApi_GetTournaments(sdk, {})
 
   const tournaments = data?.tournaments ?? []
@@ -90,17 +96,19 @@ function TournamentList() {
   if (tournaments.length === 0) {
     return (
       <>
-        <TournamentListHeader onRefresh={refetch} />
+        <TournamentListHeader onRefresh={refetch} onCreate={() => setIsCreateOpen(true)} />
         <div className="text-center py-16 px-8 border-2 border-dashed border-[#d9d9d9] rounded-lg">
           <Typography.Text type="secondary">No tournaments</Typography.Text>
         </div>
+        <CreateTournamentModal open={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
       </>
     )
   }
 
   return (
     <>
-      <TournamentListHeader onRefresh={refetch} />
+      <TournamentListHeader onRefresh={refetch} onCreate={() => setIsCreateOpen(true)} />
+      <CreateTournamentModal open={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
       <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 mt-8">
         {tournaments.map(t => (
           <Card
@@ -125,7 +133,7 @@ function TournamentList() {
   )
 }
 
-function TournamentListHeader({ onRefresh }: { onRefresh: () => void }) {
+function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; onCreate: () => void }) {
   return (
     <div className="flex justify-between items-center mb-4">
       <div>
@@ -134,8 +142,99 @@ function TournamentListHeader({ onRefresh }: { onRefresh: () => void }) {
         </Typography.Title>
         <Typography.Text type="secondary">Browse and manage tournament competitions</Typography.Text>
       </div>
-      <Button onClick={onRefresh}>Refresh</Button>
+      <div className="flex gap-2">
+        <Button onClick={onRefresh}>Refresh</Button>
+        <Button type="primary" onClick={onCreate}>
+          Create Tournament
+        </Button>
+      </div>
     </div>
+  )
+}
+
+type CreateTournamentFormValues = {
+  name: string
+  description?: string
+  maxParticipants: number
+  dateRange: [{ $d: Date }, { $d: Date }]
+}
+
+function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { sdk } = useGlobalContext()
+  const queryClient = useQueryClient()
+  const [form] = Form.useForm<CreateTournamentFormValues>()
+
+  const createMutation = useTournamentServiceAdminApi_CreateTournamentMutation(sdk, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [Key_TournamentService.Tournaments] })
+      form.resetFields()
+      onClose()
+    }
+  })
+
+  const handleSubmit = (values: CreateTournamentFormValues) => {
+    createMutation.mutate({
+      data: {
+        name: values.name,
+        description: values.description,
+        maxParticipants: values.maxParticipants,
+        startTime: values.dateRange[0].$d.toISOString(),
+        endTime: values.dateRange[1].$d.toISOString()
+      }
+    })
+  }
+
+  const handleCancel = () => {
+    form.resetFields()
+    onClose()
+  }
+
+  return (
+    <Modal
+      title="Create Tournament"
+      open={open}
+      onCancel={handleCancel}
+      destroyOnHidden
+      footer={null}>
+      <Form form={form} layout="vertical" onFinish={handleSubmit} className="mt-4">
+        <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Tournament name is required' }]}>
+          <Input placeholder="e.g. Summer Championship" />
+        </Form.Item>
+
+        <Form.Item label="Description" name="description">
+          <TextArea rows={3} placeholder="Optional description" />
+        </Form.Item>
+
+        <Form.Item
+          label="Max Participants"
+          name="maxParticipants"
+          rules={[{ required: true, message: 'Max participants is required' }]}>
+          <InputNumber min={2} className="w-full" placeholder="e.g. 16" />
+        </Form.Item>
+
+        <Form.Item
+          label="Start & End Date"
+          name="dateRange"
+          rules={[{ required: true, message: 'Start and end date are required' }]}>
+          <DatePicker.RangePicker showTime className="w-full" />
+        </Form.Item>
+
+        {createMutation.isError && (
+          <Form.Item>
+            <Alert type="error" message="Failed to create tournament. Please try again." />
+          </Form.Item>
+        )}
+
+        <Form.Item className="mb-0 flex justify-end">
+          <div className="flex gap-2 justify-end">
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type="primary" htmlType="submit" loading={createMutation.isPending}>
+              Create
+            </Button>
+          </div>
+        </Form.Item>
+      </Form>
+    </Modal>
   )
 }
 
