@@ -18,7 +18,7 @@ export const module: ExtendAdminUIModule = {
     root.render(
       <StrictMode>
         <QueryClientProvider client={client}>
-          <BrowserRouter>
+          <BrowserRouter basename={hostContext.basePath}>
             <ContextProvider
               contextValue={{
                 sdk: createSdk(hostContext.sdkConfig, loginSdkConfig),

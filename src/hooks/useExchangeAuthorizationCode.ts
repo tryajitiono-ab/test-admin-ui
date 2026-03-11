@@ -7,7 +7,7 @@ import { useGlobalContext } from '../context'
 /**
  * Authenticates the current user and, on first mount, exchanges any OAuth
  * authorization code present in the URL query string before stripping the
- * `code` and `state` parameters from the URL.
+ * `code` and `state` parameters from the URL. This should only happen in dev env.
  */
 export function useExchangeAuthorizationCode() {
   const { loginSdk } = useGlobalContext()
@@ -16,7 +16,7 @@ export function useExchangeAuthorizationCode() {
 
   useEffect(() => {
     const { code, state } = Object.fromEntries(new URL(window.location.href).searchParams)
-    if (!code || !state) return
+    if (!code || !state || import.meta.env.PROD) return
 
     new IamUserAuthorizationClient(loginSdk).exchangeAuthorizationCode({ code, state })
 

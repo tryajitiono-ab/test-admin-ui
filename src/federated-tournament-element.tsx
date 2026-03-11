@@ -1,8 +1,8 @@
-import { Alert, Button, Card, DatePicker, Form, InputNumber, Modal, Spin, Tag, Typography } from 'antd'
-import TextArea from 'antd/es/input/TextArea'
-import Input from 'antd/es/input/Input'
 import { useQueryClient } from '@tanstack/react-query'
-import { useState, useMemo, type ReactNode } from 'react'
+import { Alert, Button, Card, DatePicker, Form, InputNumber, Modal, Spin, Tag, Typography } from 'antd'
+import Input from 'antd/es/input/Input'
+import TextArea from 'antd/es/input/TextArea'
+import { useMemo, useState, type ReactNode } from 'react'
 import { Route, Routes, useNavigate, useParams } from 'react-router'
 import { useGlobalContext } from './context'
 import { useExchangeAuthorizationCode } from './hooks/useExchangeAuthorizationCode'
@@ -62,7 +62,7 @@ export function FederatedTournamentElement() {
   return (
     <div className="adminui:p-4">
       <Routes>
-        <Route path="*" element={<TournamentList />} />
+        <Route path="/" index element={<TournamentList />} />
         <Route path=":tournamentId" element={<TournamentDetail />} />
       </Routes>
     </div>
@@ -190,12 +190,7 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
   }
 
   return (
-    <Modal
-      title="Create Tournament"
-      open={open}
-      onCancel={handleCancel}
-      destroyOnHidden
-      footer={null}>
+    <Modal title="Create Tournament" open={open} onCancel={handleCancel} destroyOnHidden footer={null}>
       <Form form={form} layout="vertical" onFinish={handleSubmit} className="adminui:mt-4">
         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Tournament name is required' }]}>
           <Input placeholder="e.g. Summer Championship" />
@@ -205,17 +200,11 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
           <TextArea rows={3} placeholder="Optional description" />
         </Form.Item>
 
-        <Form.Item
-          label="Max Participants"
-          name="maxParticipants"
-          rules={[{ required: true, message: 'Max participants is required' }]}>
+        <Form.Item label="Max Participants" name="maxParticipants" rules={[{ required: true, message: 'Max participants is required' }]}>
           <InputNumber min={2} className="adminui:w-full" placeholder="e.g. 16" />
         </Form.Item>
 
-        <Form.Item
-          label="Start & End Date"
-          name="dateRange"
-          rules={[{ required: true, message: 'Start and end date are required' }]}>
+        <Form.Item label="Start & End Date" name="dateRange" rules={[{ required: true, message: 'Start and end date are required' }]}>
           <DatePicker.RangePicker showTime className="adminui:w-full" />
         </Form.Item>
 
@@ -305,7 +294,9 @@ function TournamentDetail() {
         <Typography.Title level={2} className="adminui:text-white! adminui:m-0! adminui:mb-2!">
           {tournament.name || 'Untitled Tournament'}
         </Typography.Title>
-        <Typography.Paragraph className="adminui:text-white/90! adminui:my-2!">{tournament.description || 'No description provided'}</Typography.Paragraph>
+        <Typography.Paragraph className="adminui:text-white/90! adminui:my-2!">
+          {tournament.description || 'No description provided'}
+        </Typography.Paragraph>
         <div className="adminui:grid adminui:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] adminui:gap-4 adminui:mt-6">
           <InfoCard label="Status">
             <StatusBadge status={tournament.status} />
@@ -365,7 +356,9 @@ function WinnerBanner({ winnerUserId, participants }: { winnerUserId: string; pa
       <Typography.Title level={3} className="adminui:text-[#f57f17]! adminui:m-0! adminui:mb-2!">
         Tournament Winner
       </Typography.Title>
-      <div className="adminui:text-4xl adminui:font-extrabold adminui:text-[#e65100] adminui:[text-shadow:1px_1px_2px_rgba(0,0,0,0.1)]">{winnerName}</div>
+      <div className="adminui:text-4xl adminui:font-extrabold adminui:text-[#e65100] adminui:[text-shadow:1px_1px_2px_rgba(0,0,0,0.1)]">
+        {winnerName}
+      </div>
     </div>
   )
 }

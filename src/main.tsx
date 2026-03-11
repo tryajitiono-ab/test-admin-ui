@@ -14,6 +14,7 @@ if (extendAppName) {
 }
 
 module.mount(document.getElementById('root')!, {
+  basePath: import.meta.env.VITE_BASE_PATH || '/',
   sdkConfig: {
     baseURL,
     clientId: import.meta.env.VITE_AGS_CLIENT_ID,
