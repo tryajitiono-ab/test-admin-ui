@@ -19,7 +19,7 @@ export function FederatedElement() {
   useExchangeAuthorizationCode()
 
   return (
-    <main className="p-4">
+    <main className="adminui:p-4">
       <Routes>
         <Route path="*" element={<GameConfigs />}>
           <Route path=":configKey" element={<GameConfigDetail />} />
@@ -136,8 +136,8 @@ function GameConfigs() {
                 )
               }}
               initialValues={{ key: '' }}>
-              <div className="flex gap-x-2">
-                <Form.Item name="key" className="mb-0">
+              <div className="adminui:flex adminui:gap-x-2">
+                <Form.Item name="key" className="adminui:mb-0">
                   <Input placeholder="Config name" />
                 </Form.Item>
                 <Button htmlType="submit" type="primary">
@@ -260,7 +260,7 @@ function GameConfigDetail() {
     <>
       <Divider />
 
-      <div className="flex justify-between">
+      <div className="adminui:flex adminui:justify-between">
         <Typography.Title level={3}>Game config: {configKey}</Typography.Title>
 
         <Button onClick={() => navigate('/')}>Close</Button>
@@ -288,11 +288,11 @@ function GameConfigDetail() {
                 patchConfigMutation.mutate({ configKey, data: { isPublic: true, value: newValue } }, optimistic(newValue))
               }}
               initialValues={{ key: '', value: '' }}>
-              <div className="flex gap-x-2">
-                <Form.Item name="key" className="mb-0">
+              <div className="adminui:flex adminui:gap-x-2">
+                <Form.Item name="key" className="adminui:mb-0">
                   <Input placeholder="Config name" />
                 </Form.Item>
-                <Form.Item name="value" className="mb-0">
+                <Form.Item name="value" className="adminui:mb-0">
                   <Input placeholder="Config value" />
                 </Form.Item>
                 <Button htmlType="submit" type="primary">

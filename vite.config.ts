@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.')
 
   return {
-    base: BASE_PATH,
+    base: mode === 'production' ? `${BASE_URL}/` : BASE_PATH,
     build: {
       outDir: OUT_DIR
     },

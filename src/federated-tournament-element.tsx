@@ -60,7 +60,7 @@ export function FederatedTournamentElement() {
   useExchangeAuthorizationCode()
 
   return (
-    <main className="p-4">
+    <main className="adminui:p-4">
       <Routes>
         <Route path="*" element={<TournamentList />} />
         <Route path=":tournamentId" element={<TournamentDetail />} />
@@ -97,7 +97,7 @@ function TournamentList() {
     return (
       <>
         <TournamentListHeader onRefresh={refetch} onCreate={() => setIsCreateOpen(true)} />
-        <div className="text-center py-16 px-8 border-2 border-dashed border-[#d9d9d9] rounded-lg">
+        <div className="adminui:text-center adminui:py-16 adminui:px-8 adminui:border-2 adminui:border-dashed adminui:border-[#d9d9d9] adminui:rounded-lg">
           <Typography.Text type="secondary">No tournaments</Typography.Text>
         </div>
         <CreateTournamentModal open={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
@@ -109,15 +109,15 @@ function TournamentList() {
     <>
       <TournamentListHeader onRefresh={refetch} onCreate={() => setIsCreateOpen(true)} />
       <CreateTournamentModal open={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 mt-8">
+      <div className="adminui:grid adminui:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] adminui:gap-6 adminui:mt-8">
         {tournaments.map(t => (
           <Card
             key={t.tournamentId ?? undefined}
             hoverable
-            className="h-full"
+            className="adminui:h-full"
             onClick={() => navigate(`/${t.tournamentId}`)}
             title={
-              <div className="flex justify-between items-center">
+              <div className="adminui:flex adminui:justify-between adminui:items-center">
                 <span>{t.name}</span>
                 <StatusBadge status={t.status} />
               </div>
@@ -135,14 +135,14 @@ function TournamentList() {
 
 function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; onCreate: () => void }) {
   return (
-    <div className="flex justify-between items-center mb-4">
+    <div className="adminui:flex adminui:justify-between adminui:items-center adminui:mb-4">
       <div>
-        <Typography.Title level={2} className="m-0!">
+        <Typography.Title level={2} className="adminui:m-0!">
           Tournaments
         </Typography.Title>
         <Typography.Text type="secondary">Browse and manage tournament competitions</Typography.Text>
       </div>
-      <div className="flex gap-2">
+      <div className="adminui:flex adminui:gap-2">
         <Button onClick={onRefresh}>Refresh</Button>
         <Button type="primary" onClick={onCreate}>
           Create Tournament
@@ -196,7 +196,7 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
       onCancel={handleCancel}
       destroyOnHidden
       footer={null}>
-      <Form form={form} layout="vertical" onFinish={handleSubmit} className="mt-4">
+      <Form form={form} layout="vertical" onFinish={handleSubmit} className="adminui:mt-4">
         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Tournament name is required' }]}>
           <Input placeholder="e.g. Summer Championship" />
         </Form.Item>
@@ -209,14 +209,14 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
           label="Max Participants"
           name="maxParticipants"
           rules={[{ required: true, message: 'Max participants is required' }]}>
-          <InputNumber min={2} className="w-full" placeholder="e.g. 16" />
+          <InputNumber min={2} className="adminui:w-full" placeholder="e.g. 16" />
         </Form.Item>
 
         <Form.Item
           label="Start & End Date"
           name="dateRange"
           rules={[{ required: true, message: 'Start and end date are required' }]}>
-          <DatePicker.RangePicker showTime className="w-full" />
+          <DatePicker.RangePicker showTime className="adminui:w-full" />
         </Form.Item>
 
         {createMutation.isError && (
@@ -225,8 +225,8 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
           </Form.Item>
         )}
 
-        <Form.Item className="mb-0 flex justify-end">
-          <div className="flex gap-2 justify-end">
+        <Form.Item className="adminui:mb-0 adminui:flex adminui:justify-end">
+          <div className="adminui:flex adminui:gap-2 adminui:justify-end">
             <Button onClick={handleCancel}>Cancel</Button>
             <Button type="primary" htmlType="submit" loading={createMutation.isPending}>
               Create
@@ -243,7 +243,7 @@ function ParticipantCount({ current, max }: { current: number; max: number }) {
   const isFull = current >= max && max > 0
 
   return (
-    <div className="inline-flex items-center gap-2 py-2 px-3 rounded-md border border-[#d9d9d9] text-sm">
+    <div className="adminui:inline-flex adminui:items-center adminui:gap-2 adminui:py-2 adminui:px-3 adminui:rounded-md adminui:border adminui:border-[#d9d9d9] adminui:text-sm">
       <span>👥</span>
       <span>
         <strong>{current}</strong> / {max} participants {isFull ? '(Full)' : `(${percentage}%)`}
@@ -297,26 +297,26 @@ function TournamentDetail() {
 
   return (
     <>
-      <Button type="link" className="pl-0! mb-2!" onClick={() => navigate('/')}>
+      <Button type="link" className="adminui:pl-0! adminui:mb-2!" onClick={() => navigate('/')}>
         ← Back to Tournaments
       </Button>
 
-      <div className="bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] text-white p-8 rounded-lg mb-8">
-        <Typography.Title level={2} className="text-white! m-0! mb-2!">
+      <div className="adminui:bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] adminui:text-white adminui:p-8 adminui:rounded-lg adminui:mb-8">
+        <Typography.Title level={2} className="adminui:text-white! adminui:m-0! adminui:mb-2!">
           {tournament.name || 'Untitled Tournament'}
         </Typography.Title>
-        <Typography.Paragraph className="text-white/90! my-2!">{tournament.description || 'No description provided'}</Typography.Paragraph>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-6">
+        <Typography.Paragraph className="adminui:text-white/90! adminui:my-2!">{tournament.description || 'No description provided'}</Typography.Paragraph>
+        <div className="adminui:grid adminui:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] adminui:gap-4 adminui:mt-6">
           <InfoCard label="Status">
             <StatusBadge status={tournament.status} />
           </InfoCard>
           <InfoCard label="Participants">
-            <strong className="text-xl">
+            <strong className="adminui:text-xl">
               {tournament.currentParticipants ?? 0} / {tournament.maxParticipants ?? 0}
             </strong>
           </InfoCard>
           <InfoCard label="Created">
-            <strong className="text-xl">{tournament.createdAt ? new Date(tournament.createdAt).toLocaleDateString() : '—'}</strong>
+            <strong className="adminui:text-xl">{tournament.createdAt ? new Date(tournament.createdAt).toLocaleDateString() : '—'}</strong>
           </InfoCard>
         </div>
       </div>
@@ -325,15 +325,15 @@ function TournamentDetail() {
         <WinnerBanner winnerUserId={winner} participants={participants as TournamentParticipant[]} />
       )}
 
-      <div className="flex justify-between items-center mt-8 mb-4 pb-2 border-b-2 border-[#f0f0f0]">
-        <Typography.Title level={3} className="m-0!">
+      <div className="adminui:flex adminui:justify-between adminui:items-center adminui:mt-8 adminui:mb-4 adminui:pb-2 adminui:border-b-2 adminui:border-[#f0f0f0]">
+        <Typography.Title level={3} className="adminui:m-0!">
           Participants
         </Typography.Title>
       </div>
       <ParticipantGrid participants={participants as TournamentParticipant[]} isLoading={!participantsData} />
 
-      <div className="flex justify-between items-center mt-8 mb-4 pb-2 border-b-2 border-[#f0f0f0]">
-        <Typography.Title level={3} className="m-0!">
+      <div className="adminui:flex adminui:justify-between adminui:items-center adminui:mt-8 adminui:mb-4 adminui:pb-2 adminui:border-b-2 adminui:border-[#f0f0f0]">
+        <Typography.Title level={3} className="adminui:m-0!">
           Tournament Bracket
         </Typography.Title>
       </div>
@@ -348,8 +348,8 @@ function TournamentDetail() {
 
 function InfoCard({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="bg-white/10 p-4 rounded-md backdrop-blur-md text-white">
-      <div className="text-xs uppercase tracking-wide opacity-80 mb-1">{label}</div>
+    <div className="adminui:bg-white/10 adminui:p-4 adminui:rounded-md adminui:backdrop-blur-md adminui:text-white">
+      <div className="adminui:text-xs adminui:uppercase adminui:tracking-wide adminui:opacity-80 adminui:mb-1">{label}</div>
       {children}
     </div>
   )
@@ -360,12 +360,12 @@ function WinnerBanner({ winnerUserId, participants }: { winnerUserId: string; pa
   const winnerName = winnerParticipant ? getParticipantName(winnerParticipant) : winnerUserId
 
   return (
-    <div className="bg-[linear-gradient(135deg,#ffd700_0%,#ffed4e_100%)] border-[3px] border-[#f9a825] rounded-lg p-6 mb-8 text-center shadow-[0_4px_12px_rgba(249,168,37,0.3)]">
-      <span className="text-5xl block mb-2">🏆</span>
-      <Typography.Title level={3} className="text-[#f57f17]! m-0! mb-2!">
+    <div className="adminui:bg-[linear-gradient(135deg,#ffd700_0%,#ffed4e_100%)] adminui:border-[3px] adminui:border-[#f9a825] adminui:rounded-lg adminui:p-6 adminui:mb-8 adminui:text-center adminui:shadow-[0_4px_12px_rgba(249,168,37,0.3)]">
+      <span className="adminui:text-5xl adminui:block adminui:mb-2">🏆</span>
+      <Typography.Title level={3} className="adminui:text-[#f57f17]! adminui:m-0! adminui:mb-2!">
         Tournament Winner
       </Typography.Title>
-      <div className="text-4xl font-extrabold text-[#e65100] [text-shadow:1px_1px_2px_rgba(0,0,0,0.1)]">{winnerName}</div>
+      <div className="adminui:text-4xl adminui:font-extrabold adminui:text-[#e65100] adminui:[text-shadow:1px_1px_2px_rgba(0,0,0,0.1)]">{winnerName}</div>
     </div>
   )
 }
@@ -378,7 +378,7 @@ function ParticipantGrid({ participants, isLoading }: { participants: Tournament
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mt-4">
+    <div className="adminui:grid adminui:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] adminui:gap-4 adminui:mt-4">
       {participants.map((p, i) => {
         const name = getParticipantName(p)
         const userId = getParticipantUserId(p)
@@ -387,13 +387,13 @@ function ParticipantGrid({ participants, isLoading }: { participants: Tournament
         return (
           <div
             key={userId || i}
-            className="py-3 px-4 border border-[#f0f0f0] rounded-md flex items-center gap-3 transition-[transform,box-shadow] duration-200 ease-out cursor-default">
-            <div className="size-10 shrink-0 bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] text-white flex items-center justify-center rounded-full font-semibold text-lg">
+            className="adminui:py-3 adminui:px-4 adminui:border adminui:border-[#f0f0f0] adminui:rounded-md adminui:flex adminui:items-center adminui:gap-3 adminui:transition-[transform,box-shadow] adminui:duration-200 adminui:ease-out adminui:cursor-default">
+            <div className="adminui:size-10 adminui:shrink-0 adminui:bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] adminui:text-white adminui:flex adminui:items-center adminui:justify-center adminui:rounded-full adminui:font-semibold adminui:text-lg">
               {initial}
             </div>
-            <div className="flex-1">
-              <strong className="block text-[0.9375rem]">{name}</strong>
-              <Typography.Text type="secondary" className="text-[0.8125rem]!">
+            <div className="adminui:flex-1">
+              <strong className="adminui:block adminui:text-[0.9375rem]">{name}</strong>
+              <Typography.Text type="secondary" className="adminui:text-[0.8125rem]!">
                 {userId}
               </Typography.Text>
             </div>
@@ -449,14 +449,14 @@ function BracketContent({ matches, participants }: { matches: TournamentMatch[];
   const totalRounds = rounds.length
 
   return (
-    <div className="bg-[#f8f9fa] rounded-lg border border-[#dee2e6] p-5 overflow-x-auto overflow-y-hidden">
-      <div className="flex gap-10 min-w-fit items-start">
+    <div className="adminui:bg-[#f8f9fa] adminui:rounded-lg adminui:border adminui:border-[#dee2e6] adminui:p-5 adminui:overflow-x-auto adminui:overflow-y-hidden">
+      <div className="adminui:flex adminui:gap-10 adminui:min-w-fit adminui:items-start">
         {rounds.map(([roundNum, roundMatches], roundIdx) => (
-          <div key={roundNum} className="flex flex-col gap-4 min-w-[180px]">
-            <div className="text-center font-semibold text-sm text-[#333] pb-2 border-b-2 border-[#dee2e6]">
+          <div key={roundNum} className="adminui:flex adminui:flex-col adminui:gap-4 adminui:min-w-[180px]">
+            <div className="adminui:text-center adminui:font-semibold adminui:text-sm adminui:text-[#333] adminui:pb-2 adminui:border-b-2 adminui:border-[#dee2e6]">
               {roundIdx === totalRounds - 1 ? 'Final' : roundIdx === totalRounds - 2 ? 'Semi-Final' : `Round ${roundNum}`}
             </div>
-            <div className="flex flex-col gap-4 justify-around flex-1">
+            <div className="adminui:flex adminui:flex-col adminui:gap-4 adminui:justify-around adminui:flex-1">
               {roundMatches.map(match => (
                 <BracketMatch key={match.matchId || `${match.round}-${match.position}`} match={match} participantMap={participantMap} />
               ))}
@@ -487,10 +487,10 @@ function BracketMatch({ match, participantMap }: { match: TournamentMatch; parti
 
   return (
     <div
-      className={`border-2 rounded-md overflow-hidden min-w-[160px] ${isInProgress ? 'bg-[#e3f2fd]' : 'bg-white'}`}
+      className={`adminui:border-2 adminui:rounded-md adminui:overflow-hidden adminui:min-w-[160px] ${isInProgress ? 'adminui:bg-[#e3f2fd]' : 'adminui:bg-white'}`}
       style={{ borderColor }}>
       <MatchOpponent name={p1Name} isWinner={p1IsWinner} isLoser={isCompleted && !p1IsWinner && p1Id !== null} isTbd={!p1Id} />
-      <div className="h-px bg-[#e0e0e0]" />
+      <div className="adminui:h-px adminui:bg-[#e0e0e0]" />
       <MatchOpponent name={p2Name} isWinner={p2IsWinner} isLoser={isCompleted && !p2IsWinner && p2Id !== null} isTbd={!p2Id} />
     </div>
   )
@@ -500,10 +500,10 @@ function MatchOpponent({ name, isWinner, isLoser, isTbd }: { name: string; isWin
   return (
     <div
       className={[
-        'px-2 py-1 text-[13px]',
-        isWinner && 'font-bold text-[#2e7d32] bg-[#e8f5e9] rounded',
-        isLoser && 'opacity-60 line-through text-[#757575]',
-        isTbd && 'text-[#999] italic'
+        'adminui:px-2 adminui:py-1 adminui:text-[13px]',
+        isWinner && 'adminui:font-bold adminui:text-[#2e7d32] adminui:bg-[#e8f5e9] adminui:rounded',
+        isLoser && 'adminui:opacity-60 adminui:line-through adminui:text-[#757575]',
+        isTbd && 'adminui:text-[#999] adminui:italic'
       ]
         .filter(Boolean)
         .join(' ')}>

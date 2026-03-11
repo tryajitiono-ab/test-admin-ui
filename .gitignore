@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 .__mf__temp
-.claude
+.claude/settings.local.json
