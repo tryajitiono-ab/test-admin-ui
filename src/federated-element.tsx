@@ -19,13 +19,13 @@ export function FederatedElement() {
   useExchangeAuthorizationCode()
 
   return (
-    <main className="adminui:p-4">
+    <div className="adminui:p-4">
       <Routes>
         <Route path="*" element={<GameConfigs />}>
           <Route path=":configKey" element={<GameConfigDetail />} />
         </Route>
       </Routes>
-    </main>
+    </div>
   )
 }
 

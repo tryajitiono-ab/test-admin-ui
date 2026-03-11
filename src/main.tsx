@@ -1,6 +1,11 @@
 import './index.css'
 import { module } from './module.tsx'
 
+if (import.meta.env.DEV) {
+  // Dev mode only, we want to reset preflight to make it as same as Admin Portal as possible.
+  import('./devmode.css')
+}
+
 const extendAppName = import.meta.env.VITE_EXTEND_APP_NAME
 const loginBaseURL = import.meta.env.DEV ? `${window.location.origin}/proxy` : import.meta.env.VITE_AGS_URL
 let baseURL = loginBaseURL

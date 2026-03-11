@@ -60,12 +60,12 @@ export function FederatedTournamentElement() {
   useExchangeAuthorizationCode()
 
   return (
-    <main className="adminui:p-4">
+    <div className="adminui:p-4">
       <Routes>
         <Route path="*" element={<TournamentList />} />
         <Route path=":tournamentId" element={<TournamentDetail />} />
       </Routes>
-    </main>
+    </div>
   )
 }
 
