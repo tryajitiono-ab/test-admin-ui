@@ -22,6 +22,10 @@ export const module: ExtendAdminUIModule = {
             <ContextProvider
               contextValue={{
                 sdk: createSdk(hostContext.sdkConfig, loginSdkConfig),
+                tournamentSdk: createSdk({
+                  ...hostContext.sdkConfig,
+                  baseURL: `${hostContext.sdkConfig.baseURL}/ext-${hostContext.sdkConfig.namespace}-tournament-system`
+                }),
                 loginSdk: createSdk(loginSdkConfig)
               }}>
               {import.meta.env.VITE_APP_NAME === 'gameconfigs' ? <FederatedElement /> : <FederatedTournamentElement />}

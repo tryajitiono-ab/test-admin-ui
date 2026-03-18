@@ -70,7 +70,7 @@ export function FederatedTournamentElement() {
 }
 
 function TournamentList() {
-  const { sdk } = useGlobalContext()
+  const { tournamentSdk: sdk } = useGlobalContext()
   const navigate = useNavigate()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const { data, isLoading, error, refetch } = useTournamentServiceApi_GetTournaments(sdk, {})
@@ -160,7 +160,7 @@ type CreateTournamentFormValues = {
 }
 
 function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { sdk } = useGlobalContext()
+  const { tournamentSdk: sdk } = useGlobalContext()
   const queryClient = useQueryClient()
   const [form] = Form.useForm<CreateTournamentFormValues>()
 
@@ -242,7 +242,7 @@ function ParticipantCount({ current, max }: { current: number; max: number }) {
 }
 
 function TournamentDetail() {
-  const { sdk } = useGlobalContext()
+  const { tournamentSdk: sdk } = useGlobalContext()
   const { tournamentId = '' } = useParams()
   const navigate = useNavigate()
 
