@@ -49,7 +49,6 @@ export default defineConfig(({ mode }) => {
       federation({
         name: 'remote',
         filename: 'remoteEntry.js',
-        publicPath: mode === 'production' ? `${BASE_URL}/` : undefined,
         manifest: true,
         exposes: {
           '.': './src/mf-entry.ts'
