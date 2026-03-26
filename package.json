@@ -17,7 +17,7 @@
     "format": "prettier --write src/**/*",
     "clean": "rimraf node_modules",
     "cg:prettify": "prettier --write --no-error-on-unmatched-pattern src/tournamentapi/codegen/**/*",
-    "cg:generate": "accelbyte-codegen generate-code --config swaggers.json --swaggersOutput swaggers --output src/tournamentapi",
+    "cg:generate": "accelbyte-codegen generate-code --config swaggers.json --swaggersOutput swaggers --output src/tournamentapi/codegen",
     "codegen": "rimraf src/tournamentapi/codegen && npm run cg:generate && npm run cg:prettify"
   },
   "dependencies": {
