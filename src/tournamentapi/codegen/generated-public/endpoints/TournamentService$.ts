@@ -19,13 +19,13 @@ import { TournamentServiceRegisterForTournamentBody } from '../../generated-defi
 
 export class TournamentService$ {
   private axiosInstance: AxiosInstance
-  private useSchemaValidation: boolean
   private namespace: string
+  private useSchemaValidation: boolean
 
   constructor(axiosInstance: AxiosInstance, namespace: string, useSchemaValidation = true) {
     this.axiosInstance = axiosInstance
-    this.useSchemaValidation = useSchemaValidation
     this.namespace = namespace
+    this.useSchemaValidation = useSchemaValidation
   }
 
   /**
