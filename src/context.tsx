@@ -3,8 +3,6 @@ import { createContext, useContext } from 'react'
 
 export interface GlobalContextType {
   sdk: AccelByteSDK
-  tournamentSdk: AccelByteSDK
-  loginSdk: AccelByteSDK
 }
 
 export const GlobalContext = createContext<GlobalContextType>(null!)

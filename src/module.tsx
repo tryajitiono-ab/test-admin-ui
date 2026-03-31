@@ -13,7 +13,6 @@ const client = new QueryClient({ defaultOptions: { queries: { retry: false } } }
 export const module: ExtendAdminUIModule = {
   mount(container, hostContext) {
     const root = createRoot(container)
-    const loginSdkConfig = hostContext.loginSdkConfig ?? hostContext.sdkConfig
 
     root.render(
       <StrictMode>
@@ -21,12 +20,7 @@ export const module: ExtendAdminUIModule = {
           <BrowserRouter basename={hostContext.basePath}>
             <ContextProvider
               contextValue={{
-                sdk: createSdk(hostContext.sdkConfig, loginSdkConfig),
-                tournamentSdk: createSdk({
-                  ...hostContext.sdkConfig,
-                  baseURL: `${hostContext.sdkConfig.baseURL}/ext-${hostContext.sdkConfig.namespace}-tournament-system`
-                }),
-                loginSdk: createSdk(loginSdkConfig)
+                sdk: createSdk(hostContext.sdkConfig)
               }}>
               {import.meta.env.VITE_APP_NAME === 'gameconfigs' ? <FederatedElement /> : <FederatedTournamentElement />}
             </ContextProvider>

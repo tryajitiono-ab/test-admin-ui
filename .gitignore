@@ -24,4 +24,6 @@ dist-ssr
 *.sw?
 
 .__mf__temp
+.claude
+dev-cli
 .claude/settings.local.json

@@ -7,7 +7,6 @@ const PORT_STRING = process.env.PORT || '5173'
 const PORT = Number(PORT_STRING)
 process.env.VITE_PORT = PORT_STRING
 
-const BASE_PATH = process.env.BASE_PATH || '/'
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`
 const OUT_DIR = process.env.OUT_DIR || 'dist'
 
@@ -16,7 +15,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.')
 
   return {
-    base: mode === 'production' ? BASE_URL : BASE_PATH,
+    base: mode === 'production' ? BASE_URL : '/',
     build: {
       outDir: OUT_DIR,
       rollupOptions: {

@@ -9,7 +9,7 @@
       "name": "TournamentService"
     }
   ],
-  "basePath": "/tournament",
+  "basePath": "/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2",
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
