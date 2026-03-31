@@ -16,27 +16,11 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.')
 
   return {
-    base: mode === 'production' ? `${BASE_URL}/` : BASE_PATH,
+    base: mode === 'production' ? BASE_URL : BASE_PATH,
     build: {
       outDir: OUT_DIR,
       rollupOptions: {
         output: {
-          // Mega cache busting.
-          // entryFileNames: entry => {
-          //   console.info('entry', entry.name)
-          //   return `assets/[name]-[hash]-${Date.now()}.js`
-          // },
-          // chunkFileNames: entry => {
-          //   if (entry.name === 'mf-entry') {
-          //     return `assets/[name]-[hash].js`
-          //   }
-          //   console.info('chunk', entry.name)
-          //   return `assets/[name]-[hash]-${Date.now()}.js`
-          // },
-          // assetFileNames: entry => {
-          //   console.info('asset', entry.names)
-          //   return `assets/[name]-[hash]-${Date.now()}.[ext]`
-          // }
           entryFileNames: `assets/[name]-[hash].js`,
           chunkFileNames: `assets/[name]-[hash].js`,
           assetFileNames: `assets/[name]-[hash].[ext]`
