@@ -17,7 +17,14 @@ export default defineConfig(({ mode }) => {
   return {
     base: mode === 'production' ? BASE_URL : '/',
     build: {
-      outDir: OUT_DIR
+      outDir: OUT_DIR,
+      rollupOptions: {
+        output: {
+          entryFileNames: `assets/[name]-[hash].js`,
+          chunkFileNames: `assets/[name]-[hash].js`,
+          assetFileNames: `assets/[name]-[hash].[ext]`
+        }
+      }
     },
     plugins: [
       react(),

@@ -60,6 +60,15 @@ jobs:
           VITE_INSTANCE_LABEL: 3rd
         run: npx vite build
 
+      - name: Build 4th variant (gameconfigs4th)
+        env:
+          OUT_DIR: dist/gameconfigs4th
+          BASE_PATH: /${{ github.event.repository.name }}/gameconfigs4th/
+          BASE_URL: /${{ github.event.repository.name }}/gameconfigs4th
+          VITE_CONFIG_KEY: gameconfigs4th
+          VITE_INSTANCE_LABEL: 4th
+        run: npx vite build
+
       - name: Build tournament-system variant
         env:
           OUT_DIR: dist/tournament-system

@@ -9,7 +9,7 @@
       "name": "TournamentService"
     }
   ],
-  "basePath": "",
+  "basePath": "/tournament",
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
