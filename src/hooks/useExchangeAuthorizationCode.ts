@@ -10,15 +10,15 @@ import { useGlobalContext } from '../context'
  * `code` and `state` parameters from the URL. This should only happen in dev env.
  */
 export function useExchangeAuthorizationCode() {
-  const { loginSdk } = useGlobalContext()
-  useUsersAdminApi_GetUsersMe_v3(loginSdk, {})
+  const { sdk } = useGlobalContext()
+  useUsersAdminApi_GetUsersMe_v3(sdk, {})
   const [, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     const { code, state } = Object.fromEntries(new URL(window.location.href).searchParams)
     if (!code || !state || import.meta.env.PROD) return
 
-    new IamUserAuthorizationClient(loginSdk).exchangeAuthorizationCode({ code, state })
+    new IamUserAuthorizationClient(sdk).exchangeAuthorizationCode({ code, state })
 
     setSearchParams(prev => {
       const next = new URLSearchParams(prev)

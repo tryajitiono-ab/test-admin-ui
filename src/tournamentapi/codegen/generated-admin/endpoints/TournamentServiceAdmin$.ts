@@ -39,7 +39,10 @@ export class TournamentServiceAdmin$ {
    */
   createTournament(data: TournamentServiceCreateTournamentBody): Promise<Response<TournamentCreateTournamentResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/v1/admin/namespace/{namespace}/tournaments'.replace('{namespace}', this.namespace)
+    const url = '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/admin/namespace/{namespace}/tournaments'.replace(
+      '{namespace}',
+      this.namespace
+    )
     const resultPromise = this.axiosInstance.post(url, data, { params })
 
     return Validate.validateOrReturnResponse(
@@ -57,7 +60,7 @@ export class TournamentServiceAdmin$ {
     data: TournamentServiceStartTournamentBody
   ): Promise<Response<TournamentStartTournamentResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/start'
+    const url = '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/start'
       .replace('{namespace}', this.namespace)
       .replace('{tournamentId}', tournamentId)
     const resultPromise = this.axiosInstance.post(url, data, { params })
@@ -77,7 +80,7 @@ export class TournamentServiceAdmin$ {
     data: TournamentServiceCancelTournamentBody
   ): Promise<Response<TournamentCancelTournamentResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/cancel'
+    const url = '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/cancel'
       .replace('{namespace}', this.namespace)
       .replace('{tournamentId}', tournamentId)
     const resultPromise = this.axiosInstance.post(url, data, { params })
@@ -97,9 +100,10 @@ export class TournamentServiceAdmin$ {
     data: TournamentServiceActivateTournamentBody
   ): Promise<Response<TournamentActivateTournamentResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/activate'
-      .replace('{namespace}', this.namespace)
-      .replace('{tournamentId}', tournamentId)
+    const url =
+      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/activate'
+        .replace('{namespace}', this.namespace)
+        .replace('{tournamentId}', tournamentId)
     const resultPromise = this.axiosInstance.post(url, data, { params })
 
     return Validate.validateOrReturnResponse(
@@ -114,10 +118,11 @@ export class TournamentServiceAdmin$ {
    */
   deleteParticipant_ByTournamentId_ByUserId(tournamentId: string, userId: string): Promise<Response<TournamentRemoveParticipantResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/participants/{userId}'
-      .replace('{namespace}', this.namespace)
-      .replace('{tournamentId}', tournamentId)
-      .replace('{userId}', userId)
+    const url =
+      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/participants/{userId}'
+        .replace('{namespace}', this.namespace)
+        .replace('{tournamentId}', tournamentId)
+        .replace('{userId}', userId)
     const resultPromise = this.axiosInstance.delete(url, { params })
 
     return Validate.validateOrReturnResponse(
@@ -136,10 +141,11 @@ export class TournamentServiceAdmin$ {
     data: TournamentServiceSubmitMatchResultBody
   ): Promise<Response<TournamentSubmitMatchResultResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result'
-      .replace('{namespace}', this.namespace)
-      .replace('{tournamentId}', tournamentId)
-      .replace('{matchId}', matchId)
+    const url =
+      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result'
+        .replace('{namespace}', this.namespace)
+        .replace('{tournamentId}', tournamentId)
+        .replace('{matchId}', matchId)
     const resultPromise = this.axiosInstance.post(url, data, { params })
 
     return Validate.validateOrReturnResponse(
@@ -158,10 +164,11 @@ export class TournamentServiceAdmin$ {
     data: TournamentServiceAdminSubmitMatchResultBody
   ): Promise<Response<TournamentAdminSubmitMatchResultResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result/admin'
-      .replace('{namespace}', this.namespace)
-      .replace('{tournamentId}', tournamentId)
-      .replace('{matchId}', matchId)
+    const url =
+      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result/admin'
+        .replace('{namespace}', this.namespace)
+        .replace('{tournamentId}', tournamentId)
+        .replace('{matchId}', matchId)
     const resultPromise = this.axiosInstance.post(url, data, { params })
 
     return Validate.validateOrReturnResponse(
