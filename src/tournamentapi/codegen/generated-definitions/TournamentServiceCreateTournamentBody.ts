@@ -6,11 +6,11 @@
 import { z } from 'zod'
 
 export const TournamentServiceCreateTournamentBody = z.object({
-  name: z.string().nullish(),
   description: z.string().nullish(),
+  endTime: z.string().nullish(),
   maxParticipants: z.number().int().nullish(),
-  startTime: z.string().nullish(),
-  endTime: z.string().nullish()
+  name: z.string().nullish(),
+  startTime: z.string().nullish()
 })
 
 export interface TournamentServiceCreateTournamentBody extends z.TypeOf<typeof TournamentServiceCreateTournamentBody> {}

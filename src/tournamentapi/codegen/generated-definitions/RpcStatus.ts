@@ -8,8 +8,8 @@ import { ProtobufAny } from './ProtobufAny.js'
 
 export const RpcStatus = z.object({
   code: z.number().int().nullish(),
-  message: z.string().nullish(),
-  details: z.array(ProtobufAny).nullish()
+  details: z.array(ProtobufAny).nullish(),
+  message: z.string().nullish()
 })
 
 export interface RpcStatus extends z.TypeOf<typeof RpcStatus> {}

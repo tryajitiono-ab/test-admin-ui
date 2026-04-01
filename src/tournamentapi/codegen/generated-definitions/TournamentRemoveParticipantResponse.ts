@@ -6,9 +6,9 @@
 import { z } from 'zod'
 
 export const TournamentRemoveParticipantResponse = z.object({
+  removed: z.boolean().nullish(),
   tournamentId: z.string().nullish(),
-  userId: z.string().nullish(),
-  removed: z.boolean().nullish()
+  userId: z.string().nullish()
 })
 
 export interface TournamentRemoveParticipantResponse extends z.TypeOf<typeof TournamentRemoveParticipantResponse> {}

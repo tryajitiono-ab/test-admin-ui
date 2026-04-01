@@ -7,16 +7,16 @@ import { z } from 'zod'
 import { TournamentTournamentStatus } from './TournamentTournamentStatus.js'
 
 export const TournamentTournament = z.object({
-  tournamentId: z.string().nullish(),
-  name: z.string().nullish(),
-  description: z.string().nullish(),
-  maxParticipants: z.number().int().nullish(),
-  currentParticipants: z.number().int().nullish(),
-  status: TournamentTournamentStatus.nullish(),
   createdAt: z.string().nullish(),
-  updatedAt: z.string().nullish(),
+  currentParticipants: z.number().int().nullish(),
+  description: z.string().nullish(),
+  endTime: z.string().nullish(),
+  maxParticipants: z.number().int().nullish(),
+  name: z.string().nullish(),
   startTime: z.string().nullish(),
-  endTime: z.string().nullish()
+  status: TournamentTournamentStatus.nullish(),
+  tournamentId: z.string().nullish(),
+  updatedAt: z.string().nullish()
 })
 
 export interface TournamentTournament extends z.TypeOf<typeof TournamentTournament> {}

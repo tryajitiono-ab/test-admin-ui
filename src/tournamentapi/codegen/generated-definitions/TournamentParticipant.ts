@@ -6,13 +6,13 @@
 import { z } from 'zod'
 
 export const TournamentParticipant = z.object({
-  participantId: z.string().nullish(),
-  userId: z.string().nullish(),
-  username: z.string().nullish(),
   displayName: z.string().nullish(),
-  tournamentId: z.string().nullish(),
+  participantId: z.string().nullish(),
   registeredAt: z.string().nullish(),
-  updatedAt: z.string().nullish()
+  tournamentId: z.string().nullish(),
+  updatedAt: z.string().nullish(),
+  userId: z.string().nullish(),
+  username: z.string().nullish()
 })
 
 export interface TournamentParticipant extends z.TypeOf<typeof TournamentParticipant> {}

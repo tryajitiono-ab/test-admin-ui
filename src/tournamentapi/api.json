@@ -1,23 +1,41 @@
 {
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "swagger": "2.0",
   "info": {
     "title": "Tournament API",
     "version": "1.0"
   },
-  "tags": [
-    {
-      "name": "TournamentService"
-    }
-  ],
-  "basePath": "/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2",
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "basePath": "/ext-abtesttryaji2026033001-demotournament-tournament-system",
   "paths": {
     "/v1/admin/namespace/{namespace}/tournaments": {
       "post": {
-        "summary": "Create Tournament",
+        "security": [
+          {
+            "Bearer": [],
+            "ServiceToken": []
+          }
+        ],
         "description": "Create a new tournament with specified configuration",
+        "tags": ["TournamentService"],
+        "summary": "Create Tournament",
         "operationId": "TournamentService_CreateTournament",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TournamentServiceCreateTournamentBody"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -31,37 +49,43 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
+        }
+      }
+    },
+    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/activate": {
+      "post": {
+        "security": [
+          {
+            "Bearer": [],
+            "ServiceToken": []
+          }
+        ],
+        "description": "Activate a tournament to open registration for participants",
+        "tags": ["TournamentService"],
+        "summary": "Activate Tournament",
+        "operationId": "TournamentService_ActivateTournament",
         "parameters": [
           {
+            "type": "string",
             "name": "namespace",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TournamentServiceCreateTournamentBody"
+              "$ref": "#/definitions/TournamentServiceActivateTournamentBody"
             }
           }
         ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": [],
-            "ServiceToken": []
-          }
-        ]
-      }
-    },
-    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/activate": {
-      "post": {
-        "summary": "Activate Tournament",
-        "description": "Activate a tournament to open registration for participants",
-        "operationId": "TournamentService_ActivateTournament",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -75,43 +99,43 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
+        }
+      }
+    },
+    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/cancel": {
+      "post": {
+        "security": [
+          {
+            "Bearer": [],
+            "ServiceToken": []
+          }
+        ],
+        "description": "Cancel a tournament and prevent further participation",
+        "tags": ["TournamentService"],
+        "summary": "Cancel Tournament",
+        "operationId": "TournamentService_CancelTournament",
         "parameters": [
           {
+            "type": "string",
             "name": "namespace",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
           },
           {
+            "type": "string",
             "name": "tournamentId",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TournamentServiceActivateTournamentBody"
+              "$ref": "#/definitions/TournamentServiceCancelTournamentBody"
             }
           }
         ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": [],
-            "ServiceToken": []
-          }
-        ]
-      }
-    },
-    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/cancel": {
-      "post": {
-        "summary": "Cancel Tournament",
-        "description": "Cancel a tournament and prevent further participation",
-        "operationId": "TournamentService_CancelTournament",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -125,43 +149,48 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
+        }
+      }
+    },
+    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result": {
+      "post": {
+        "security": [
+          {
+            "ServiceToken": []
+          }
+        ],
+        "description": "Game server: Submit match result with winner information",
+        "tags": ["TournamentService"],
+        "summary": "Submit Match Result",
+        "operationId": "TournamentService_SubmitMatchResult",
         "parameters": [
           {
+            "type": "string",
             "name": "namespace",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
           },
           {
+            "type": "string",
             "name": "tournamentId",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "matchId",
+            "in": "path",
+            "required": true
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TournamentServiceCancelTournamentBody"
+              "$ref": "#/definitions/TournamentServiceSubmitMatchResultBody"
             }
           }
         ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": [],
-            "ServiceToken": []
-          }
-        ]
-      }
-    },
-    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result": {
-      "post": {
-        "summary": "Submit Match Result",
-        "description": "Game server: Submit match result with winner information",
-        "operationId": "TournamentService_SubmitMatchResult",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -175,48 +204,48 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
+        }
+      }
+    },
+    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result/admin": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Admin override: Submit match result with winner information",
+        "tags": ["TournamentService"],
+        "summary": "Admin Submit Match Result",
+        "operationId": "TournamentService_AdminSubmitMatchResult",
         "parameters": [
           {
+            "type": "string",
             "name": "namespace",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
           },
           {
+            "type": "string",
             "name": "tournamentId",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
           },
           {
+            "type": "string",
             "name": "matchId",
             "in": "path",
-            "required": true,
-            "type": "string"
+            "required": true
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TournamentServiceSubmitMatchResultBody"
+              "$ref": "#/definitions/TournamentServiceAdminSubmitMatchResultBody"
             }
           }
         ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "ServiceToken": []
-          }
-        ]
-      }
-    },
-    "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}/result/admin": {
-      "post": {
-        "summary": "Admin Submit Match Result",
-        "description": "Admin override: Submit match result with winner information",
-        "operationId": "TournamentService_AdminSubmitMatchResult",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -230,48 +259,40 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "matchId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TournamentServiceAdminSubmitMatchResultBody"
-            }
-          }
-        ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        }
       }
     },
     "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/participants/{userId}": {
       "delete": {
-        "summary": "Remove Tournament Participant",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "description": "Admin-only: Remove participant from tournament",
+        "tags": ["TournamentService"],
+        "summary": "Remove Tournament Participant",
         "operationId": "TournamentService_RemoveParticipant",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "userId",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -285,40 +306,43 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        }
       }
     },
     "/v1/admin/namespace/{namespace}/tournaments/{tournamentId}/start": {
       "post": {
-        "summary": "Start Tournament",
+        "security": [
+          {
+            "Bearer": [],
+            "ServiceToken": []
+          }
+        ],
         "description": "Start a tournament to generate brackets and begin competition",
+        "tags": ["TournamentService"],
+        "summary": "Start Tournament",
         "operationId": "TournamentService_StartTournament",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TournamentServiceStartTournamentBody"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -332,43 +356,67 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TournamentServiceStartTournamentBody"
-            }
-          }
-        ],
-        "tags": ["TournamentService"],
+        }
+      }
+    },
+    "/v1/public/namespace/{namespace}/tournaments": {
+      "get": {
         "security": [
           {
             "Bearer": [],
             "ServiceToken": []
           }
-        ]
-      }
-    },
-    "/v1/public/namespace/{namespace}/tournaments": {
-      "get": {
-        "summary": "List Tournaments",
+        ],
         "description": "List tournaments with optional filtering by status and date range",
+        "tags": ["TournamentService"],
+        "summary": "List Tournaments",
         "operationId": "TournamentService_ListTournaments",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "format": "int32",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int32",
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "TOURNAMENT_STATUS_UNSPECIFIED",
+              "TOURNAMENT_STATUS_DRAFT",
+              "TOURNAMENT_STATUS_ACTIVE",
+              "TOURNAMENT_STATUS_STARTED",
+              "TOURNAMENT_STATUS_COMPLETED",
+              "TOURNAMENT_STATUS_CANCELLED"
+            ],
+            "type": "string",
+            "default": "TOURNAMENT_STATUS_UNSPECIFIED",
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "name": "startDateFrom",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "name": "startDateTo",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -382,72 +430,35 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "TOURNAMENT_STATUS_UNSPECIFIED",
-              "TOURNAMENT_STATUS_DRAFT",
-              "TOURNAMENT_STATUS_ACTIVE",
-              "TOURNAMENT_STATUS_STARTED",
-              "TOURNAMENT_STATUS_COMPLETED",
-              "TOURNAMENT_STATUS_CANCELLED"
-            ],
-            "default": "TOURNAMENT_STATUS_UNSPECIFIED"
-          },
-          {
-            "name": "startDateFrom",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "startDateTo",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "tags": ["TournamentService"],
+        }
+      }
+    },
+    "/v1/public/namespace/{namespace}/tournaments/{tournamentId}": {
+      "get": {
         "security": [
           {
             "Bearer": [],
             "ServiceToken": []
           }
-        ]
-      }
-    },
-    "/v1/public/namespace/{namespace}/tournaments/{tournamentId}": {
-      "get": {
-        "summary": "Get Tournament",
+        ],
         "description": "Get tournament details by tournament ID",
+        "tags": ["TournamentService"],
+        "summary": "Get Tournament",
         "operationId": "TournamentService_GetTournament",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -461,35 +472,41 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": ["TournamentService"],
+        }
+      }
+    },
+    "/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches": {
+      "get": {
         "security": [
           {
             "Bearer": [],
             "ServiceToken": []
           }
-        ]
-      }
-    },
-    "/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches": {
-      "get": {
-        "summary": "Get Tournament Matches",
+        ],
         "description": "Get all matches for a tournament organized by round",
+        "tags": ["TournamentService"],
+        "summary": "Get Tournament Matches",
         "operationId": "TournamentService_GetTournamentMatches",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "format": "int32",
+            "name": "round",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -503,42 +520,41 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "round",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": ["TournamentService"],
+        }
+      }
+    },
+    "/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}": {
+      "get": {
         "security": [
           {
             "Bearer": [],
             "ServiceToken": []
           }
-        ]
-      }
-    },
-    "/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}": {
-      "get": {
-        "summary": "Get Match Details",
+        ],
         "description": "Get detailed information about a specific match",
+        "tags": ["TournamentService"],
+        "summary": "Get Match Details",
         "operationId": "TournamentService_GetMatch",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "matchId",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -552,41 +568,45 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "matchId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": [],
-            "ServiceToken": []
-          }
-        ]
+        }
       }
     },
     "/v1/public/namespace/{namespace}/tournaments/{tournamentId}/participants": {
       "get": {
-        "summary": "Get Tournament Participants",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "description": "List all participants for a tournament with pagination",
+        "tags": ["TournamentService"],
+        "summary": "Get Tournament Participants",
         "operationId": "TournamentService_GetTournamentParticipants",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "format": "int32",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "pageToken",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -600,47 +620,42 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "pageToken",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        }
       }
     },
     "/v1/public/namespace/{namespace}/tournaments/{tournamentId}/register": {
       "post": {
-        "summary": "Register for Tournament",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "description": "Register user for tournament with capacity enforcement",
+        "tags": ["TournamentService"],
+        "summary": "Register for Tournament",
         "operationId": "TournamentService_RegisterForTournament",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "namespace",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "tournamentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TournamentServiceRegisterForTournamentBody"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -654,35 +669,7 @@
               "$ref": "#/definitions/rpcStatus"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "tournamentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TournamentServiceRegisterForTournamentBody"
-            }
-          }
-        ],
-        "tags": ["TournamentService"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        }
       }
     }
   },
@@ -704,21 +691,21 @@
     "TournamentServiceCreateTournamentBody": {
       "type": "object",
       "properties": {
-        "name": {
-          "type": "string"
-        },
         "description": {
           "type": "string"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
         },
         "maxParticipants": {
           "type": "integer",
           "format": "int32"
         },
-        "startTime": {
-          "type": "string",
-          "format": "date-time"
+        "name": {
+          "type": "string"
         },
-        "endTime": {
+        "startTime": {
           "type": "string",
           "format": "date-time"
         }
@@ -740,6 +727,11 @@
     },
     "protobufAny": {
       "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
       "additionalProperties": {}
     },
     "rpcStatus": {
@@ -749,15 +741,15 @@
           "type": "integer",
           "format": "int32"
         },
-        "message": {
-          "type": "string"
-        },
         "details": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        },
+        "message": {
+          "type": "string"
         }
       }
     },
@@ -804,6 +796,10 @@
     "tournamentGetTournamentMatchesResponse": {
       "type": "object",
       "properties": {
+        "currentRound": {
+          "type": "integer",
+          "format": "int32"
+        },
         "matches": {
           "type": "array",
           "items": {
@@ -814,16 +810,15 @@
         "totalRounds": {
           "type": "integer",
           "format": "int32"
-        },
-        "currentRound": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
     "tournamentGetTournamentParticipantsResponse": {
       "type": "object",
       "properties": {
+        "nextPageToken": {
+          "type": "string"
+        },
         "participants": {
           "type": "array",
           "items": {
@@ -834,9 +829,6 @@
         "totalParticipants": {
           "type": "integer",
           "format": "int32"
-        },
-        "nextPageToken": {
-          "type": "string"
         }
       }
     },
@@ -851,35 +843,31 @@
     "tournamentListTournamentsResponse": {
       "type": "object",
       "properties": {
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        },
         "tournaments": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/tournamentTournament"
           }
-        },
-        "totalCount": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
     "tournamentMatch": {
       "type": "object",
       "properties": {
+        "completedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
         "matchId": {
           "type": "string"
         },
-        "tournamentId": {
+        "nextMatchId": {
           "type": "string"
-        },
-        "round": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "position": {
-          "type": "integer",
-          "format": "int32"
         },
         "participant1": {
           "$ref": "#/definitions/tournamentTournamentParticipant"
@@ -887,67 +875,71 @@
         "participant2": {
           "$ref": "#/definitions/tournamentTournamentParticipant"
         },
-        "winner": {
-          "type": "string"
+        "position": {
+          "type": "integer",
+          "format": "int32"
         },
-        "status": {
-          "$ref": "#/definitions/tournamentMatchStatus"
-        },
-        "startedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "completedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "nextMatchId": {
-          "type": "string"
+        "round": {
+          "type": "integer",
+          "format": "int32"
         },
         "sourceMatch1Id": {
           "type": "string"
         },
         "sourceMatch2Id": {
           "type": "string"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/definitions/tournamentMatchStatus"
+        },
+        "tournamentId": {
+          "type": "string"
+        },
+        "winner": {
+          "type": "string"
         }
       }
     },
     "tournamentMatchStatus": {
       "type": "string",
+      "default": "MATCH_STATUS_UNSPECIFIED",
       "enum": [
         "MATCH_STATUS_UNSPECIFIED",
         "MATCH_STATUS_SCHEDULED",
         "MATCH_STATUS_IN_PROGRESS",
         "MATCH_STATUS_COMPLETED",
         "MATCH_STATUS_CANCELLED"
-      ],
-      "default": "MATCH_STATUS_UNSPECIFIED"
+      ]
     },
     "tournamentParticipant": {
       "type": "object",
       "properties": {
-        "participantId": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
         "displayName": {
           "type": "string"
         },
-        "tournamentId": {
+        "participantId": {
           "type": "string"
         },
         "registeredAt": {
           "type": "string",
           "format": "date-time"
         },
+        "tournamentId": {
+          "type": "string"
+        },
         "updatedAt": {
           "type": "string",
           "format": "date-time"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
         }
       }
     },
@@ -957,29 +949,29 @@
         "participantId": {
           "type": "string"
         },
+        "registeredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
         "tournamentId": {
           "type": "string"
         },
         "userId": {
           "type": "string"
-        },
-        "registeredAt": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
     "tournamentRemoveParticipantResponse": {
       "type": "object",
       "properties": {
+        "removed": {
+          "type": "boolean"
+        },
         "tournamentId": {
           "type": "string"
         },
         "userId": {
           "type": "string"
-        },
-        "removed": {
-          "type": "boolean"
         }
       }
     },
@@ -1002,39 +994,39 @@
     "tournamentTournament": {
       "type": "object",
       "properties": {
-        "tournamentId": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "maxParticipants": {
-          "type": "integer",
-          "format": "int32"
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
         },
         "currentParticipants": {
           "type": "integer",
           "format": "int32"
         },
-        "status": {
-          "$ref": "#/definitions/tournamentTournamentStatus"
+        "description": {
+          "type": "string"
         },
-        "createdAt": {
+        "endTime": {
           "type": "string",
           "format": "date-time"
         },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
+        "maxParticipants": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
         },
         "startTime": {
           "type": "string",
           "format": "date-time"
         },
-        "endTime": {
+        "status": {
+          "$ref": "#/definitions/tournamentTournamentStatus"
+        },
+        "tournamentId": {
+          "type": "string"
+        },
+        "updatedAt": {
           "type": "string",
           "format": "date-time"
         }
@@ -1043,19 +1035,20 @@
     "tournamentTournamentParticipant": {
       "type": "object",
       "properties": {
+        "displayName": {
+          "type": "string"
+        },
         "userId": {
           "type": "string"
         },
         "username": {
-          "type": "string"
-        },
-        "displayName": {
           "type": "string"
         }
       }
     },
     "tournamentTournamentStatus": {
       "type": "string",
+      "default": "TOURNAMENT_STATUS_UNSPECIFIED",
       "enum": [
         "TOURNAMENT_STATUS_UNSPECIFIED",
         "TOURNAMENT_STATUS_DRAFT",
@@ -1063,22 +1056,26 @@
         "TOURNAMENT_STATUS_STARTED",
         "TOURNAMENT_STATUS_COMPLETED",
         "TOURNAMENT_STATUS_CANCELLED"
-      ],
-      "default": "TOURNAMENT_STATUS_UNSPECIFIED"
+      ]
     }
   },
   "securityDefinitions": {
     "Bearer": {
-      "type": "apiKey",
       "description": "User Bearer token for authentication (from AccelByte IAM)",
+      "type": "apiKey",
       "name": "Authorization",
       "in": "header"
     },
     "ServiceToken": {
-      "type": "apiKey",
       "description": "Service token for game server authentication",
+      "type": "apiKey",
       "name": "X-Service-Token",
       "in": "header"
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "TournamentService"
+    }
+  ]
 }

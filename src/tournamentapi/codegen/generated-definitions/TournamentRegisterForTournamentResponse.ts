@@ -7,9 +7,9 @@ import { z } from 'zod'
 
 export const TournamentRegisterForTournamentResponse = z.object({
   participantId: z.string().nullish(),
+  registeredAt: z.string().nullish(),
   tournamentId: z.string().nullish(),
-  userId: z.string().nullish(),
-  registeredAt: z.string().nullish()
+  userId: z.string().nullish()
 })
 
 export interface TournamentRegisterForTournamentResponse extends z.TypeOf<typeof TournamentRegisterForTournamentResponse> {}

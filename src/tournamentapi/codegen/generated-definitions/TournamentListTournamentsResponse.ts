@@ -7,8 +7,8 @@ import { z } from 'zod'
 import { TournamentTournament } from './TournamentTournament.js'
 
 export const TournamentListTournamentsResponse = z.object({
-  tournaments: z.array(TournamentTournament).nullish(),
-  totalCount: z.number().int().nullish()
+  totalCount: z.number().int().nullish(),
+  tournaments: z.array(TournamentTournament).nullish()
 })
 
 export interface TournamentListTournamentsResponse extends z.TypeOf<typeof TournamentListTournamentsResponse> {}

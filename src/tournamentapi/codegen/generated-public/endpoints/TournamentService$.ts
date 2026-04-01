@@ -45,7 +45,7 @@ export class TournamentService$ {
     startDateTo?: string | null
   }): Promise<Response<TournamentListTournamentsResponse>> {
     const params = { status: 'TOURNAMENT_STATUS_UNSPECIFIED', ...queryParams } as AxiosRequestConfig
-    const url = '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/public/namespace/{namespace}/tournaments'.replace(
+    const url = '/ext-abtesttryaji2026033001-demotournament-tournament-system/v1/public/namespace/{namespace}/tournaments'.replace(
       '{namespace}',
       this.namespace
     )
@@ -63,7 +63,7 @@ export class TournamentService$ {
    */
   getTournament_ByTournamentId(tournamentId: string): Promise<Response<TournamentGetTournamentResponse>> {
     const params = {} as AxiosRequestConfig
-    const url = '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/public/namespace/{namespace}/tournaments/{tournamentId}'
+    const url = '/ext-abtesttryaji2026033001-demotournament-tournament-system/v1/public/namespace/{namespace}/tournaments/{tournamentId}'
       .replace('{namespace}', this.namespace)
       .replace('{tournamentId}', tournamentId)
     const resultPromise = this.axiosInstance.get(url, { params })
@@ -84,7 +84,7 @@ export class TournamentService$ {
   ): Promise<Response<TournamentGetTournamentMatchesResponse>> {
     const params = { ...queryParams } as AxiosRequestConfig
     const url =
-      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches'
+      '/ext-abtesttryaji2026033001-demotournament-tournament-system/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches'
         .replace('{namespace}', this.namespace)
         .replace('{tournamentId}', tournamentId)
     const resultPromise = this.axiosInstance.get(url, { params })
@@ -105,7 +105,7 @@ export class TournamentService$ {
   ): Promise<Response<TournamentRegisterForTournamentResponse>> {
     const params = {} as AxiosRequestConfig
     const url =
-      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/public/namespace/{namespace}/tournaments/{tournamentId}/register'
+      '/ext-abtesttryaji2026033001-demotournament-tournament-system/v1/public/namespace/{namespace}/tournaments/{tournamentId}/register'
         .replace('{namespace}', this.namespace)
         .replace('{tournamentId}', tournamentId)
     const resultPromise = this.axiosInstance.post(url, data, { params })
@@ -126,7 +126,7 @@ export class TournamentService$ {
   ): Promise<Response<TournamentGetTournamentParticipantsResponse>> {
     const params = { ...queryParams } as AxiosRequestConfig
     const url =
-      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/public/namespace/{namespace}/tournaments/{tournamentId}/participants'
+      '/ext-abtesttryaji2026033001-demotournament-tournament-system/v1/public/namespace/{namespace}/tournaments/{tournamentId}/participants'
         .replace('{namespace}', this.namespace)
         .replace('{tournamentId}', tournamentId)
     const resultPromise = this.axiosInstance.get(url, { params })
@@ -144,7 +144,7 @@ export class TournamentService$ {
   getMatche_ByTournamentId_ByMatchId(tournamentId: string, matchId: string): Promise<Response<TournamentGetMatchResponse>> {
     const params = {} as AxiosRequestConfig
     const url =
-      '/ext-abtesttryaji2026033001-xdd-tournmanet-system-local2/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}'
+      '/ext-abtesttryaji2026033001-demotournament-tournament-system/v1/public/namespace/{namespace}/tournaments/{tournamentId}/matches/{matchId}'
         .replace('{namespace}', this.namespace)
         .replace('{tournamentId}', tournamentId)
         .replace('{matchId}', matchId)

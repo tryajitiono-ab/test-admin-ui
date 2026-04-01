@@ -7,9 +7,9 @@ import { z } from 'zod'
 import { TournamentMatch } from './TournamentMatch.js'
 
 export const TournamentGetTournamentMatchesResponse = z.object({
+  currentRound: z.number().int().nullish(),
   matches: z.array(TournamentMatch).nullish(),
-  totalRounds: z.number().int().nullish(),
-  currentRound: z.number().int().nullish()
+  totalRounds: z.number().int().nullish()
 })
 
 export interface TournamentGetTournamentMatchesResponse extends z.TypeOf<typeof TournamentGetTournamentMatchesResponse> {}
