@@ -6,18 +6,18 @@ import { useMemo, useState, type ReactNode } from 'react'
 import { Route, Routes, useNavigate, useParams } from 'react-router'
 import { useGlobalContext } from './context'
 import { useExchangeAuthorizationCode } from './hooks/useExchangeAuthorizationCode'
-import { useTournamentServiceAdminApi_CreateTournamentMutation } from './tournamentapi/codegen/generated-admin/queries/TournamentServiceAdmin.query'
-import type { TournamentMatch } from './tournamentapi/codegen/generated-definitions/TournamentMatch'
-import type { TournamentParticipant } from './tournamentapi/codegen/generated-definitions/TournamentParticipant'
-import type { TournamentTournament } from './tournamentapi/codegen/generated-definitions/TournamentTournament'
-import type { TournamentTournamentParticipant } from './tournamentapi/codegen/generated-definitions/TournamentTournamentParticipant'
+import { useTournamentServiceAdminApi_CreateTournamentMutation } from './tournamentapi/generated-admin/queries/TournamentServiceAdmin.query'
+import type { TournamentMatch } from './tournamentapi/generated-definitions/TournamentMatch'
+import type { TournamentParticipant } from './tournamentapi/generated-definitions/TournamentParticipant'
+import type { TournamentTournament } from './tournamentapi/generated-definitions/TournamentTournament'
+import type { TournamentTournamentParticipant } from './tournamentapi/generated-definitions/TournamentTournamentParticipant'
 import {
   Key_TournamentService,
   useTournamentServiceApi_GetMatches_ByTournamentId,
   useTournamentServiceApi_GetParticipants_ByTournamentId,
   useTournamentServiceApi_GetTournament_ByTournamentId,
   useTournamentServiceApi_GetTournaments
-} from './tournamentapi/codegen/generated-public/queries/TournamentService.query'
+} from './tournamentapi/generated-public/queries/TournamentService.query'
 
 const STATUS_MAP: Record<string, { text: string; color: string }> = {
   TOURNAMENT_STATUS_DRAFT: { text: 'Draft', color: 'blue' },
