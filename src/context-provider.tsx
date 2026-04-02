@@ -45,7 +45,6 @@ function DevProvider({ sdkConfig, children }: AdminUiContextProviderProps) {
 
   const sdk = useMemo(() => {
     const interceptors: Interceptor[] = []
-    const sdk = AccelByte.SDK({ coreConfig: sdkConfig, axiosConfig: { interceptors } })
 
     interceptors.push(
       createAuthInterceptor({
@@ -61,6 +60,7 @@ function DevProvider({ sdkConfig, children }: AdminUiContextProviderProps) {
       })
     )
 
+    const sdk = AccelByte.SDK({ coreConfig: sdkConfig, axiosConfig: { interceptors } })
     return sdk
   }, [sdkConfig, code, state])
 
@@ -76,9 +76,9 @@ function DevProvider({ sdkConfig, children }: AdminUiContextProviderProps) {
         newURL.searchParams.delete('state')
         window.history.replaceState({}, '', newURL)
 
-        return { isError: true }
-      } catch {
         return { isError: false }
+      } catch {
+        return { isError: true }
       }
     },
     enabled: !!code && !!state
