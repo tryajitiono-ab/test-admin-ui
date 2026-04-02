@@ -1,8 +1,8 @@
 import { AccelByte, createAuthInterceptor, type Interceptor } from '@accelbyte/sdk'
-import { IamUserAuthorizationClient } from '@accelbyte/sdk-iam'
-import { Key_UsersAdmin, useRolesAdminApi_GetRoles_v4, useUsersAdminApi_GetUsersMe_v3 } from '@accelbyte/sdk-iam/react-query'
-import { PermissionGuard, getRoleIdsByNamespace, type AdminUser, type CrudRolePermission } from '@accelbyte/validator'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { IamUserAuthorizationClient, RolesAdminApi, RoleV4Response } from '@accelbyte/sdk-iam'
+import { useUsersAdminApi_GetUsersMe_v3 } from '@accelbyte/sdk-iam/react-query'
+import { getRoleIdsByNamespace, PermissionGuard, type AdminUser, type CrudRolePermission } from '@accelbyte/validator'
+import { useQuery } from '@tanstack/react-query'
 import { useMemo, type ReactNode } from 'react'
 import { AdminUiContext, type AdminUiContextValue } from './context'
 import type { SdkConfigOptions } from './types'
@@ -35,12 +35,19 @@ function ProdProvider({ sdkConfig, isCurrentUserHasPermission, children }: Admin
   return <AdminUiContext.Provider value={contextValue}>{children}</AdminUiContext.Provider>
 }
 
-function DevProvider({ sdkConfig, children }: Omit<AdminUiContextProviderProps, 'isCurrentUserHasPermission'>) {
-  const queryClient = useQueryClient()
+// What this does:
+//
+// 1. Exchanges auth code.
+// 2. Gets current user and gets list of roles.
+// 3. Creates a permission guard for development purposes.
+function DevProvider({ sdkConfig, children }: AdminUiContextProviderProps) {
   const { code, error, state } = Object.fromEntries(new URL(window.location.href).searchParams)
 
   const sdk = useMemo(() => {
-    const interceptors: Interceptor[] = [
+    const interceptors: Interceptor[] = []
+    const sdk = AccelByte.SDK({ coreConfig: sdkConfig, axiosConfig: { interceptors } })
+
+    interceptors.push(
       createAuthInterceptor({
         clientId: sdkConfig.clientId,
         async onSessionExpired() {
@@ -48,37 +55,30 @@ function DevProvider({ sdkConfig, children }: Omit<AdminUiContextProviderProps, 
           if (!code && !state) {
             const refreshed = await iamClient.refreshToken()
             if (refreshed) return
-
             window.location.replace(iamClient.createLoginURL())
-            return
           }
         }
       })
-    ]
-
-    const sdk = AccelByte.SDK({
-      coreConfig: sdkConfig,
-      axiosConfig: { interceptors }
-    })
+    )
 
     return sdk
   }, [sdkConfig, code, state])
 
+  // Exchange code. We bypass the `useEffect` by using `useQuery` like this, preventing double fetch in strict mode.
   const exchangeCodeResult = useQuery({
     queryKey: ['exchange-auth-code'],
     queryFn: async () => {
       try {
         await new IamUserAuthorizationClient(sdk).exchangeAuthorizationCode({ code, error, state })
-        queryClient.invalidateQueries({ queryKey: [Key_UsersAdmin.UsersMe_v3] })
 
         const newURL = new URL(window.location.href)
         newURL.searchParams.delete('code')
         newURL.searchParams.delete('state')
         window.history.replaceState({}, '', newURL)
 
-        return { ok: true }
+        return { isError: true }
       } catch {
-        return { ok: false }
+        return { isError: false }
       }
     },
     enabled: !!code && !!state
@@ -97,17 +97,31 @@ function DevProvider({ sdkConfig, children }: Omit<AdminUiContextProviderProps, 
     }
   )
 
-  const { data: rolesData, isLoading: isRolesLoading } = useRolesAdminApi_GetRoles_v4(
-    sdk,
-    { queryParams: { limit: 100 } },
-    { enabled: !!userData }
-  )
+  const { data: allRoles, isLoading: isRolesLoading } = useQuery<RoleV4Response[]>({
+    queryKey: ['all-roles'],
+    queryFn: async () => {
+      const api = RolesAdminApi(sdk)
+      const allData: RoleV4Response[] = []
+      let offset = 0
+      const LIMIT = 100
+
+      while (true) {
+        const resp = await api.getRoles_v4({ limit: LIMIT, offset })
+        allData.push(...resp.data.data)
+        if (!resp.data.paging.next) break
+        offset += LIMIT
+      }
+
+      return allData
+    },
+    enabled: !!userData
+  })
 
   const permissionGuard = useMemo(() => {
-    if (!userData || !rolesData) return null
+    if (!userData || !allRoles) return null
 
     const relevantRoleIds = getRoleIdsByNamespace(userData?.namespaceRoles || [], currentNamespace)
-    const allPermissions: AdminUser['permissions'] = rolesData.data
+    const allPermissions: AdminUser['permissions'] = allRoles
       .filter(role => relevantRoleIds.includes(role.roleId))
       .flatMap(role =>
         (role.permissions ?? []).map(permission => ({
@@ -131,7 +145,7 @@ function DevProvider({ sdkConfig, children }: Omit<AdminUiContextProviderProps, 
     }
 
     return new PermissionGuard({ user: adminUser, currentNamespace })
-  }, [userData, rolesData, currentNamespace])
+  }, [userData, allRoles, currentNamespace])
 
   const contextValue: AdminUiContextValue = {
     sdk,
@@ -139,7 +153,7 @@ function DevProvider({ sdkConfig, children }: Omit<AdminUiContextProviderProps, 
     isCurrentUserHasPermission: permission => permissionGuard?.hasPermission(permission) ?? false
   }
 
-  if (exchangeCodeResult.data && !exchangeCodeResult.data.ok) {
+  if (exchangeCodeResult.data && exchangeCodeResult.data.isError) {
     const message = userError instanceof Error ? userError.message : 'Authentication failed'
     return (
       <div style={{ padding: '20px', color: '#dc2626', fontFamily: 'sans-serif' }}>
