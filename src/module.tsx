@@ -3,7 +3,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 import { ContextProvider } from './context-provider'
-import { FederatedElement } from './federated-element'
 import { FederatedTournamentElement } from './federated-tournament-element'
 import { createSdk } from './sdk'
 import type { ExtendAdminUIModule } from './types'
@@ -22,7 +21,7 @@ export const module: ExtendAdminUIModule = {
               contextValue={{
                 sdk: createSdk(hostContext.sdkConfig)
               }}>
-              {import.meta.env.VITE_APP_NAME === 'gameconfigs' ? <FederatedElement /> : <FederatedTournamentElement />}
+              <FederatedTournamentElement />
             </ContextProvider>
           </BrowserRouter>
         </QueryClientProvider>
