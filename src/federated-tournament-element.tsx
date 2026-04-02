@@ -4,8 +4,7 @@ import Input from 'antd/es/input/Input'
 import TextArea from 'antd/es/input/TextArea'
 import { useMemo, useState, type ReactNode } from 'react'
 import { Route, Routes, useNavigate, useParams } from 'react-router'
-import { useGlobalContext } from './context'
-import { useExchangeAuthorizationCode } from './hooks/useExchangeAuthorizationCode'
+import { useAdminUiContext } from './context'
 import { useTournamentServiceAdminApi_CreateTournamentMutation } from './tournamentapi/generated-admin/queries/TournamentServiceAdmin.query'
 import type { TournamentMatch } from './tournamentapi/generated-definitions/TournamentMatch'
 import type { TournamentParticipant } from './tournamentapi/generated-definitions/TournamentParticipant'
@@ -57,8 +56,6 @@ function findTournamentWinner(matches: TournamentMatch[]): string | null {
 }
 
 export function FederatedTournamentElement() {
-  useExchangeAuthorizationCode()
-
   return (
     <div className="adminui:p-4">
       <Routes>
@@ -70,7 +67,7 @@ export function FederatedTournamentElement() {
 }
 
 function TournamentList() {
-  const { sdk } = useGlobalContext()
+  const { sdk } = useAdminUiContext()
   const navigate = useNavigate()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const { data, isLoading, error, refetch } = useTournamentServiceApi_GetTournaments(sdk, {})
@@ -160,7 +157,7 @@ type CreateTournamentFormValues = {
 }
 
 function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { sdk } = useGlobalContext()
+  const { sdk } = useAdminUiContext()
   const queryClient = useQueryClient()
   const [form] = Form.useForm<CreateTournamentFormValues>()
 
@@ -242,7 +239,7 @@ function ParticipantCount({ current, max }: { current: number; max: number }) {
 }
 
 function TournamentDetail() {
-  const { sdk } = useGlobalContext()
+  const { sdk } = useAdminUiContext()
   const { tournamentId = '' } = useParams()
   const navigate = useNavigate()
 

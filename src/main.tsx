@@ -20,11 +20,8 @@ module.mount(document.getElementById('root')!, {
     clientId: import.meta.env.VITE_AGS_CLIENT_ID,
     namespace: import.meta.env.VITE_AGS_GAME_NAMESPACE,
     redirectURI: import.meta.env.VITE_AGS_REDIRECT_URI
-  },
-  loginSdkConfig: {
-    baseURL: loginBaseURL,
-    clientId: import.meta.env.VITE_AGS_CLIENT_ID,
-    namespace: import.meta.env.VITE_AGS_NAMESPACE,
-    redirectURI: import.meta.env.VITE_AGS_REDIRECT_URI
   }
+  // isCurrentUserHasPermission is omitted — AdminUiContextProvider falls back
+  // to the dev-only implementation automatically. In production the Admin Portal
+  // host passes this via HostContext.
 })

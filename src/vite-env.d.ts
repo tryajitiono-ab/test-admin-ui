@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_INSTANCE_LABEL: string
   readonly VITE_EXTEND_APP_NAME: string
   readonly VITE_AGS_GAME_NAMESPACE: string
+  readonly VITE_BASE_PATH: string
 }
 
 interface ImportMeta {
