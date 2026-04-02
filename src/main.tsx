@@ -7,10 +7,9 @@ if (import.meta.env.DEV) {
 }
 
 const extendAppName = import.meta.env.VITE_EXTEND_APP_NAME
-const loginBaseURL = import.meta.env.DEV ? `${window.location.origin}/proxy` : import.meta.env.VITE_AGS_URL
-let baseURL = loginBaseURL
-if (extendAppName) {
-  baseURL += `/ext-${import.meta.env.VITE_AGS_GAME_NAMESPACE}-${extendAppName}`
+let baseURL = window.location.origin
+if (import.meta.env.VITE_SINGLE_EXTEND_APP_ONLY) {
+  baseURL = `${baseURL}/ext-${import.meta.env.VITE_AGS_NAMESPACE}-${extendAppName}`
 }
 
 module.mount(document.getElementById('root')!, {
@@ -18,7 +17,7 @@ module.mount(document.getElementById('root')!, {
   sdkConfig: {
     baseURL,
     clientId: import.meta.env.VITE_AGS_CLIENT_ID,
-    namespace: import.meta.env.VITE_AGS_GAME_NAMESPACE,
+    namespace: import.meta.env.VITE_AGS_NAMESPACE,
     redirectURI: import.meta.env.VITE_AGS_REDIRECT_URI
   }
   // isCurrentUserHasPermission is omitted — AdminUiContextProvider falls back
