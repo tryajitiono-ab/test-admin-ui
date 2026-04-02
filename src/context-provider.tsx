@@ -104,22 +104,16 @@ function DevProvider({ sdkConfig, children }: AdminUiContextProviderProps) {
       const allData: RoleV4Response[] = []
       const LIMIT = 100
       let offset = 0
-      let shouldBreak = false
 
-      while (!shouldBreak) {
+      while (true) {
         try {
           const resp = await api.getRoles_v4({ limit: LIMIT, offset })
           allData.push(...resp.data.data)
-
-          if (!resp.data.paging.next) {
-            shouldBreak = true
-          }
+          if (!resp.data.paging.next) break
+          offset += LIMIT
         } catch {
-          // No-op.
-          shouldBreak = true
+          break
         }
-
-        offset += LIMIT
       }
 
       return allData
