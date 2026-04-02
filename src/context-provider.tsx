@@ -102,13 +102,23 @@ function DevProvider({ sdkConfig, children }: AdminUiContextProviderProps) {
     queryFn: async () => {
       const api = RolesAdminApi(sdk)
       const allData: RoleV4Response[] = []
-      let offset = 0
       const LIMIT = 100
+      let offset = 0
+      let shouldBreak = false
 
-      while (true) {
-        const resp = await api.getRoles_v4({ limit: LIMIT, offset })
-        allData.push(...resp.data.data)
-        if (!resp.data.paging.next) break
+      while (!shouldBreak) {
+        try {
+          const resp = await api.getRoles_v4({ limit: LIMIT, offset })
+          allData.push(...resp.data.data)
+
+          if (!resp.data.paging.next) {
+            shouldBreak = true
+          }
+        } catch {
+          // No-op.
+          shouldBreak = true
+        }
+
         offset += LIMIT
       }
 
