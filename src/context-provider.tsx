@@ -9,14 +9,6 @@ import type { SdkConfigOptions } from './types'
 
 const PROXY_URL = `${window.location.origin}/proxy`
 
-function detectMode(): 'development' | 'production' {
-  if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production') {
-    return 'production'
-  }
-
-  return 'development'
-}
-
 interface AdminUiContextProviderProps {
   sdkConfig: SdkConfigOptions
   isCurrentUserHasPermission?: (permission: CrudRolePermission) => boolean
@@ -268,7 +260,7 @@ function DevProvider({ sdkConfig, children }: AdminUiContextProviderProps) {
  * - In production mode: creates SDK instance and forwards the permission check passed from AGS Admin Portal.
  */
 export function AdminUiContextProvider({ isCurrentUserHasPermission, ...props }: AdminUiContextProviderProps) {
-  return detectMode() === 'production' ? (
+  return process.env.NODE_ENV === 'production' ? (
     <ProdProvider {...props} isCurrentUserHasPermission={isCurrentUserHasPermission} />
   ) : (
     <DevProvider {...props} />
