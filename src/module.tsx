@@ -2,13 +2,12 @@
 // from '@accelbyte/sdk-extend-app-ui' once the SDK package is published.
 // For now, we use the local implementations.
 
+import { AdminUiContextProvider, type ExtendAdminUIModule } from '@accelbyte/sdk-extend-app-ui'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
-import { AdminUiContextProvider } from './context-provider'
 import { FederatedTournamentElement } from './federated-tournament-element'
-import type { ExtendAdminUIModule } from './types'
 
 const client = new QueryClient({ defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } } })
 
