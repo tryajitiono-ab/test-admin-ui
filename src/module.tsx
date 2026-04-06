@@ -15,6 +15,12 @@ const client = new QueryClient({ defaultOptions: { queries: { retry: false, refe
 export const module: ExtendAdminUIModule = {
   mount(container, hostContext) {
     const root = createRoot(container)
+    const sdkConfig = { ...hostContext.sdkConfig }
+
+    const extendAppName = import.meta.env.VITE_AB_EXTEND_APP_NAME
+    if (import.meta.env.VITE_SINGLE_EXTEND_APP_ONLY) {
+      sdkConfig.baseURL = `${sdkConfig.baseURL}/ext-${import.meta.env.VITE_AB_NAMESPACE}-${extendAppName}`
+    }
 
     root.render(
       <StrictMode>
