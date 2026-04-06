@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@accelbyte/codegen": "0.0.0-dev-20260326093546",
+    "@accelbyte/sdk-extend-app-ui": "file:../justice-typescript-sdk/packages/sdk-extend-app-ui",
     "@eslint/js": "9.39.1",
     "@tailwindcss/vite": "4.2.1",
     "@types/http-proxy": "1.17.17",
