@@ -1,4 +1,4 @@
-import { type ExtendappuiModule } from '@accelbyte/sdk-extend-app-ui'
+import { AppUIContextProvider, type AppUIModule } from '@accelbyte/sdk-extend-app-ui'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -8,7 +8,7 @@ import { FederatedElement } from './federated-element'
 const client = new QueryClient({ defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } } })
 const isSingleApp = import.meta.env.VITE_SINGLE_EXTEND_APP_ONLY ?? true
 
-export const module: ExtendappuiModule = {
+export const module: AppUIModule = {
   mount(container, hostContext) {
     const root = createRoot(container)
     const sdkConfig = { ...hostContext.sdkConfig }
@@ -22,9 +22,9 @@ export const module: ExtendappuiModule = {
       <StrictMode>
         <QueryClientProvider client={client}>
           <BrowserRouter basename={hostContext.basePath}>
-            <appuiContextProvider sdkConfig={hostContext.sdkConfig} isCurrentUserHasPermission={hostContext.isCurrentUserHasPermission}>
+            <AppUIContextProvider sdkConfig={hostContext.sdkConfig} isCurrentUserHasPermission={hostContext.isCurrentUserHasPermission}>
               <FederatedElement />
-            </appuiContextProvider>
+            </AppUIContextProvider>
           </BrowserRouter>
         </QueryClientProvider>
       </StrictMode>

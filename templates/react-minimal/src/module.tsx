@@ -1,10 +1,10 @@
-import { type ExtendappuiModule } from '@accelbyte/sdk-extend-app-ui'
+import { type AppUIModule } from '@accelbyte/sdk-extend-app-ui'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { FederatedElement } from './federated-element'
 import './index.css'
 
-export const module: ExtendappuiModule = {
+export const module: AppUIModule = {
   mount(container) {
     const root = createRoot(container)
 

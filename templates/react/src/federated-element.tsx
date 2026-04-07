@@ -1,4 +1,4 @@
-import { useappuiContext } from '@accelbyte/sdk-extend-app-ui'
+import { useAppUIContext } from '@accelbyte/sdk-extend-app-ui'
 import { CrudType } from '@accelbyte/validator'
 import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, DatePicker, Form, InputNumber, Modal, Spin, Tag, Typography } from 'antd'
@@ -68,7 +68,7 @@ export function FederatedElement() {
 }
 
 function TournamentList() {
-  const { sdk } = useappuiContext()
+  const { sdk } = useAppUIContext()
   const navigate = useNavigate()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const { data, isLoading, error, refetch } = useTournamentServiceApi_GetTournaments(sdk, {})
@@ -132,7 +132,7 @@ function TournamentList() {
 }
 
 function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; onCreate: () => void }) {
-  const { isCurrentUserHasPermission } = useappuiContext()
+  const { isCurrentUserHasPermission } = useAppUIContext()
 
   return (
     <div className="appui:flex appui:justify-between appui:items-center appui:mb-4">
@@ -162,7 +162,7 @@ type CreateTournamentFormValues = {
 }
 
 function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { sdk } = useappuiContext()
+  const { sdk } = useAppUIContext()
   const queryClient = useQueryClient()
   const [form] = Form.useForm<CreateTournamentFormValues>()
 
@@ -244,7 +244,7 @@ function ParticipantCount({ current, max }: { current: number; max: number }) {
 }
 
 function TournamentDetail() {
-  const { sdk } = useappuiContext()
+  const { sdk } = useAppUIContext()
   const { tournamentId = '' } = useParams()
   const navigate = useNavigate()
 

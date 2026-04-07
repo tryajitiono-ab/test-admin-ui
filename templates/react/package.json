@@ -15,9 +15,9 @@
     "codegen": "rimraf src/tournamentapi && npm run cg:generate && npm run cg:prettify"
   },
   "dependencies": {
-    "@accelbyte/sdk": "0.0.0-dev-20260406042959",
-    "@accelbyte/sdk-extend-app-ui": "0.0.0-dev-20260406042959",
-    "@accelbyte/sdk-iam": "0.0.0-dev-20260406042959",
+    "@accelbyte/sdk": "0.0.0-dev-20260407233405",
+    "@accelbyte/sdk-extend-app-ui": "0.0.0-dev-20260407233405",
+    "@accelbyte/sdk-iam": "0.0.0-dev-20260407233405",
     "@accelbyte/validator": "0.2.30",
     "@module-federation/vite": "1.11.1",
     "@tanstack/react-query": "5.90.21",

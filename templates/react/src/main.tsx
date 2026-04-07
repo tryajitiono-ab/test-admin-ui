@@ -14,7 +14,7 @@ module.mount(document.getElementById('root')!, {
     baseURL,
     clientId: import.meta.env.VITE_AB_CLIENT_ID,
     namespace: import.meta.env.VITE_AB_NAMESPACE,
-    redirectURI: import.meta.env.VITE_AGS_REDIRECT_URI
+    redirectURI: import.meta.env.VITE_AB_REDIRECT_URI
   }
   // isCurrentUserHasPermission is omitted — appuiContextProvider falls back
   // to the dev-only implementation automatically. In production the Admin Portal
