@@ -56,7 +56,7 @@ function findTournamentWinner(matches: TournamentMatch[]): string | null {
   return finalMatch?.winner ?? null
 }
 
-export function FederatedTournamentElement() {
+export function FederatedElement() {
   return (
     <div className="adminui:p-4">
       <Routes>

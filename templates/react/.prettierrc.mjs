@@ -6,5 +6,6 @@ export default {
   trailingComma: 'none',
   bracketSpacing: true,
   bracketSameLine: true,
-  arrowParens: 'avoid'
-}
+  arrowParens: 'avoid',
+  plugins: ['prettier-plugin-organize-imports']
+};
