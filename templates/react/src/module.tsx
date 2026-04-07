@@ -22,7 +22,7 @@ export const module: AppUIModule = {
       <StrictMode>
         <QueryClientProvider client={client}>
           <BrowserRouter basename={hostContext.basePath}>
-            <AppUIContextProvider sdkConfig={hostContext.sdkConfig} isCurrentUserHasPermission={hostContext.isCurrentUserHasPermission}>
+            <AppUIContextProvider sdkConfig={sdkConfig} isCurrentUserHasPermission={hostContext.isCurrentUserHasPermission}>
               <FederatedElement />
             </AppUIContextProvider>
           </BrowserRouter>
