@@ -1,12 +1,41 @@
-# Test Extend App UI
+# Extend App UI — Minimal Template
 
-- Clone the repository
-- Copy .env.example to .env.local. Keep the predefined values but change the following:
-  - `VITE_AB_URL`: the same value as `AB_BASE_URL`.
-  - `VITE_AB_NAMESPACE`: your game namespace.
-  - `VITE_AB_CLIENT_ID`: your public IAM client ID. Set the redirect URI to http://localhost:5173.
-  - `VITE_AB_EXTEND_APP_NAME`: your Extend app name.
-- Run `npm install`.
-- Ensure that you have the proper Extend Helper CLI variables exported in your CLI session.
-- Run `extend-helper-cli adminui create --namespace <your-namespace> --adminui-name <your-app-ui-name>`.
-- Run `extend-helper-cli adminui upload --namespace <your-namespace> --adminui-name <your-app-ui-name>`.
+A blank-slate React template for building Extend App UIs that embed in the AGS Admin Portal.
+
+## Quick start
+
+```bash
+npx tiged AccelByte/extend-app-ui-templates/templates/react-minimal my-app-ui
+cd my-app-ui
+```
+
+Export your AGS credentials (keep this terminal session open):
+
+```bash
+export AB_BASE_URL='<YourAGSBaseURL>'
+export AB_CLIENT_ID='<YourClientID>'
+export AB_CLIENT_SECRET='<YourClientSecret>'
+export AB_NAMESPACE='<YourGameNamespace>'
+export AB_ADMINUI_NAME='<YourAppUIName>'
+```
+
+Register the App UI and install dependencies:
+
+```bash
+extend-helper-cli appui create --namespace $AB_NAMESPACE --name $AB_ADMINUI_NAME
+npm install
+```
+
+Run the dev server:
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:5173`. You should see a "Hello world!" page. Edits are reflected immediately.
+
+When ready to deploy:
+
+```bash
+extend-helper-cli appui upload --namespace $AB_NAMESPACE --name $AB_ADMINUI_NAME
+```

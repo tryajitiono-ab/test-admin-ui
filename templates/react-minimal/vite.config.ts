@@ -1,5 +1,4 @@
 import { federation } from '@module-federation/vite'
-import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
@@ -9,7 +8,6 @@ export default defineConfig(({ mode }) => {
     base: mode === 'production' ? process.env.BASE_URL : '/',
     plugins: [
       react(),
-      tailwindcss(),
       federation({
         name: 'remote',
         filename: 'remoteEntry.js',

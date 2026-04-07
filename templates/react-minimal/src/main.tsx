@@ -10,7 +10,7 @@ module.mount(document.getElementById('root')!, {
     namespace: import.meta.env.VITE_AB_NAMESPACE,
     redirectURI: import.meta.env.VITE_AGS_REDIRECT_URI
   }
-  // isCurrentUserHasPermission is omitted — AdminUiContextProvider falls back
+  // isCurrentUserHasPermission is omitted — appuiContextProvider falls back
   // to the dev-only implementation automatically. In production the Admin Portal
   // host passes this via HostContext.
 })

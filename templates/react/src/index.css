@@ -1,2 +1,2 @@
-@import 'tailwindcss/theme' prefix(adminui);
-@import 'tailwindcss/utilities.css' prefix(adminui);
+@import "tailwindcss/theme" prefix(appui);
+@import "tailwindcss/utilities.css" prefix(appui);

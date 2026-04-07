@@ -1,4 +1,4 @@
-import { useAdminUiContext } from '@accelbyte/sdk-extend-app-ui'
+import { useappuiContext } from '@accelbyte/sdk-extend-app-ui'
 import { CrudType } from '@accelbyte/validator'
 import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, DatePicker, Form, InputNumber, Modal, Spin, Tag, Typography } from 'antd'
@@ -58,7 +58,7 @@ function findTournamentWinner(matches: TournamentMatch[]): string | null {
 
 export function FederatedElement() {
   return (
-    <div className="adminui:p-4">
+    <div className="appui:p-4">
       <Routes>
         <Route path="/" index element={<TournamentList />} />
         <Route path=":tournamentId" element={<TournamentDetail />} />
@@ -68,7 +68,7 @@ export function FederatedElement() {
 }
 
 function TournamentList() {
-  const { sdk } = useAdminUiContext()
+  const { sdk } = useappuiContext()
   const navigate = useNavigate()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const { data, isLoading, error, refetch } = useTournamentServiceApi_GetTournaments(sdk, {})
@@ -95,7 +95,7 @@ function TournamentList() {
     return (
       <>
         <TournamentListHeader onRefresh={refetch} onCreate={() => setIsCreateOpen(true)} />
-        <div className="adminui:text-center adminui:py-16 adminui:px-8 adminui:border-2 adminui:border-dashed adminui:border-[#d9d9d9] adminui:rounded-lg">
+        <div className="appui:text-center appui:py-16 appui:px-8 appui:border-2 appui:border-dashed appui:border-[#d9d9d9] appui:rounded-lg">
           <Typography.Text type="secondary">No tournaments</Typography.Text>
         </div>
         <CreateTournamentModal open={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
@@ -107,15 +107,15 @@ function TournamentList() {
     <>
       <TournamentListHeader onRefresh={refetch} onCreate={() => setIsCreateOpen(true)} />
       <CreateTournamentModal open={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
-      <div className="adminui:grid adminui:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] adminui:gap-6 adminui:mt-8">
+      <div className="appui:grid appui:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] appui:gap-6 appui:mt-8">
         {tournaments.map(t => (
           <Card
             key={t.tournamentId ?? undefined}
             hoverable
-            className="adminui:h-full"
+            className="appui:h-full"
             onClick={() => navigate(`/${t.tournamentId}`)}
             title={
-              <div className="adminui:flex adminui:justify-between adminui:items-center">
+              <div className="appui:flex appui:justify-between appui:items-center">
                 <span>{t.name}</span>
                 <StatusBadge status={t.status} />
               </div>
@@ -132,18 +132,18 @@ function TournamentList() {
 }
 
 function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; onCreate: () => void }) {
-  const { isCurrentUserHasPermission } = useAdminUiContext()
+  const { isCurrentUserHasPermission } = useappuiContext()
 
   return (
-    <div className="adminui:flex adminui:justify-between adminui:items-center adminui:mb-4">
+    <div className="appui:flex appui:justify-between appui:items-center appui:mb-4">
       <div>
-        <Typography.Title level={2} className="adminui:m-0!">
+        <Typography.Title level={2} className="appui:m-0!">
           Tournaments
         </Typography.Title>
         <Typography.Text type="secondary">Browse and manage tournament competitions</Typography.Text>
       </div>
       <div
-        className="adminui:flex adminui:gap-2"
+        className="appui:flex appui:gap-2"
         hidden={!isCurrentUserHasPermission({ resource: 'ADMIN:NAMESPACE:{namespace}:TOURNAMENTSYSTEM', action: CrudType.CREATE })}>
         <Button onClick={onRefresh}>Refresh</Button>
         <Button type="primary" onClick={onCreate}>
@@ -162,7 +162,7 @@ type CreateTournamentFormValues = {
 }
 
 function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { sdk } = useAdminUiContext()
+  const { sdk } = useappuiContext()
   const queryClient = useQueryClient()
   const [form] = Form.useForm<CreateTournamentFormValues>()
 
@@ -193,7 +193,7 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
 
   return (
     <Modal title="Create Tournament" open={open} onCancel={handleCancel} destroyOnHidden footer={null}>
-      <Form form={form} layout="vertical" onFinish={handleSubmit} className="adminui:mt-4">
+      <Form form={form} layout="vertical" onFinish={handleSubmit} className="appui:mt-4">
         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Tournament name is required' }]}>
           <Input placeholder="e.g. Summer Championship" />
         </Form.Item>
@@ -203,11 +203,11 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
         </Form.Item>
 
         <Form.Item label="Max Participants" name="maxParticipants" rules={[{ required: true, message: 'Max participants is required' }]}>
-          <InputNumber min={2} className="adminui:w-full" placeholder="e.g. 16" />
+          <InputNumber min={2} className="appui:w-full" placeholder="e.g. 16" />
         </Form.Item>
 
         <Form.Item label="Start & End Date" name="dateRange" rules={[{ required: true, message: 'Start and end date are required' }]}>
-          <DatePicker.RangePicker showTime className="adminui:w-full" />
+          <DatePicker.RangePicker showTime className="appui:w-full" />
         </Form.Item>
 
         {createMutation.isError && (
@@ -216,8 +216,8 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
           </Form.Item>
         )}
 
-        <Form.Item className="adminui:mb-0 adminui:flex adminui:justify-end">
-          <div className="adminui:flex adminui:gap-2 adminui:justify-end">
+        <Form.Item className="appui:mb-0 appui:flex appui:justify-end">
+          <div className="appui:flex appui:gap-2 appui:justify-end">
             <Button onClick={handleCancel}>Cancel</Button>
             <Button type="primary" htmlType="submit" loading={createMutation.isPending}>
               Create
@@ -234,7 +234,7 @@ function ParticipantCount({ current, max }: { current: number; max: number }) {
   const isFull = current >= max && max > 0
 
   return (
-    <div className="adminui:inline-flex adminui:items-center adminui:gap-2 adminui:py-2 adminui:px-3 adminui:rounded-md adminui:border adminui:border-[#d9d9d9] adminui:text-sm">
+    <div className="appui:inline-flex appui:items-center appui:gap-2 appui:py-2 appui:px-3 appui:rounded-md appui:border appui:border-[#d9d9d9] appui:text-sm">
       <span>👥</span>
       <span>
         <strong>{current}</strong> / {max} participants {isFull ? '(Full)' : `(${percentage}%)`}
@@ -244,7 +244,7 @@ function ParticipantCount({ current, max }: { current: number; max: number }) {
 }
 
 function TournamentDetail() {
-  const { sdk } = useAdminUiContext()
+  const { sdk } = useappuiContext()
   const { tournamentId = '' } = useParams()
   const navigate = useNavigate()
 
@@ -288,28 +288,28 @@ function TournamentDetail() {
 
   return (
     <>
-      <Button type="link" className="adminui:pl-0! adminui:mb-2!" onClick={() => navigate('/')}>
+      <Button type="link" className="appui:pl-0! appui:mb-2!" onClick={() => navigate('/')}>
         ← Back to Tournaments
       </Button>
 
-      <div className="adminui:bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] adminui:text-white adminui:p-8 adminui:rounded-lg adminui:mb-8">
-        <Typography.Title level={2} className="adminui:text-white! adminui:m-0! adminui:mb-2!">
+      <div className="appui:bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] appui:text-white appui:p-8 appui:rounded-lg appui:mb-8">
+        <Typography.Title level={2} className="appui:text-white! appui:m-0! appui:mb-2!">
           {tournament.name || 'Untitled Tournament'}
         </Typography.Title>
-        <Typography.Paragraph className="adminui:text-white/90! adminui:my-2!">
+        <Typography.Paragraph className="appui:text-white/90! appui:my-2!">
           {tournament.description || 'No description provided'}
         </Typography.Paragraph>
-        <div className="adminui:grid adminui:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] adminui:gap-4 adminui:mt-6">
+        <div className="appui:grid appui:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] appui:gap-4 appui:mt-6">
           <InfoCard label="Status">
             <StatusBadge status={tournament.status} />
           </InfoCard>
           <InfoCard label="Participants">
-            <strong className="adminui:text-xl">
+            <strong className="appui:text-xl">
               {tournament.currentParticipants ?? 0} / {tournament.maxParticipants ?? 0}
             </strong>
           </InfoCard>
           <InfoCard label="Created">
-            <strong className="adminui:text-xl">{tournament.createdAt ? new Date(tournament.createdAt).toLocaleDateString() : '—'}</strong>
+            <strong className="appui:text-xl">{tournament.createdAt ? new Date(tournament.createdAt).toLocaleDateString() : '—'}</strong>
           </InfoCard>
         </div>
       </div>
@@ -318,15 +318,15 @@ function TournamentDetail() {
         <WinnerBanner winnerUserId={winner} participants={participants as TournamentParticipant[]} />
       )}
 
-      <div className="adminui:flex adminui:justify-between adminui:items-center adminui:mt-8 adminui:mb-4 adminui:pb-2 adminui:border-b-2 adminui:border-[#f0f0f0]">
-        <Typography.Title level={3} className="adminui:m-0!">
+      <div className="appui:flex appui:justify-between appui:items-center appui:mt-8 appui:mb-4 appui:pb-2 appui:border-b-2 appui:border-[#f0f0f0]">
+        <Typography.Title level={3} className="appui:m-0!">
           Participants
         </Typography.Title>
       </div>
       <ParticipantGrid participants={participants as TournamentParticipant[]} isLoading={!participantsData} />
 
-      <div className="adminui:flex adminui:justify-between adminui:items-center adminui:mt-8 adminui:mb-4 adminui:pb-2 adminui:border-b-2 adminui:border-[#f0f0f0]">
-        <Typography.Title level={3} className="adminui:m-0!">
+      <div className="appui:flex appui:justify-between appui:items-center appui:mt-8 appui:mb-4 appui:pb-2 appui:border-b-2 appui:border-[#f0f0f0]">
+        <Typography.Title level={3} className="appui:m-0!">
           Tournament Bracket
         </Typography.Title>
       </div>
@@ -341,8 +341,8 @@ function TournamentDetail() {
 
 function InfoCard({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="adminui:bg-white/10 adminui:p-4 adminui:rounded-md adminui:backdrop-blur-md adminui:text-white">
-      <div className="adminui:text-xs adminui:uppercase adminui:tracking-wide adminui:opacity-80 adminui:mb-1">{label}</div>
+    <div className="appui:bg-white/10 appui:p-4 appui:rounded-md appui:backdrop-blur-md appui:text-white">
+      <div className="appui:text-xs appui:uppercase appui:tracking-wide appui:opacity-80 appui:mb-1">{label}</div>
       {children}
     </div>
   )
@@ -353,12 +353,12 @@ function WinnerBanner({ winnerUserId, participants }: { winnerUserId: string; pa
   const winnerName = winnerParticipant ? getParticipantName(winnerParticipant) : winnerUserId
 
   return (
-    <div className="adminui:bg-[linear-gradient(135deg,#ffd700_0%,#ffed4e_100%)] adminui:border-[3px] adminui:border-[#f9a825] adminui:rounded-lg adminui:p-6 adminui:mb-8 adminui:text-center adminui:shadow-[0_4px_12px_rgba(249,168,37,0.3)]">
-      <span className="adminui:text-5xl adminui:block adminui:mb-2">🏆</span>
-      <Typography.Title level={3} className="adminui:text-[#f57f17]! adminui:m-0! adminui:mb-2!">
+    <div className="appui:bg-[linear-gradient(135deg,#ffd700_0%,#ffed4e_100%)] appui:border-[3px] appui:border-[#f9a825] appui:rounded-lg appui:p-6 appui:mb-8 appui:text-center appui:shadow-[0_4px_12px_rgba(249,168,37,0.3)]">
+      <span className="appui:text-5xl appui:block appui:mb-2">🏆</span>
+      <Typography.Title level={3} className="appui:text-[#f57f17]! appui:m-0! appui:mb-2!">
         Tournament Winner
       </Typography.Title>
-      <div className="adminui:text-4xl adminui:font-extrabold adminui:text-[#e65100] adminui:[text-shadow:1px_1px_2px_rgba(0,0,0,0.1)]">
+      <div className="appui:text-4xl appui:font-extrabold appui:text-[#e65100] appui:[text-shadow:1px_1px_2px_rgba(0,0,0,0.1)]">
         {winnerName}
       </div>
     </div>
@@ -373,7 +373,7 @@ function ParticipantGrid({ participants, isLoading }: { participants: Tournament
   }
 
   return (
-    <div className="adminui:grid adminui:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] adminui:gap-4 adminui:mt-4">
+    <div className="appui:grid appui:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] appui:gap-4 appui:mt-4">
       {participants.map((p, i) => {
         const name = getParticipantName(p)
         const userId = getParticipantUserId(p)
@@ -382,13 +382,13 @@ function ParticipantGrid({ participants, isLoading }: { participants: Tournament
         return (
           <div
             key={userId || i}
-            className="adminui:py-3 adminui:px-4 adminui:border adminui:border-[#f0f0f0] adminui:rounded-md adminui:flex adminui:items-center adminui:gap-3 adminui:transition-[transform,box-shadow] adminui:duration-200 adminui:ease-out adminui:cursor-default">
-            <div className="adminui:size-10 adminui:shrink-0 adminui:bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] adminui:text-white adminui:flex adminui:items-center adminui:justify-center adminui:rounded-full adminui:font-semibold adminui:text-lg">
+            className="appui:py-3 appui:px-4 appui:border appui:border-[#f0f0f0] appui:rounded-md appui:flex appui:items-center appui:gap-3 appui:transition-[transform,box-shadow] appui:duration-200 appui:ease-out appui:cursor-default">
+            <div className="appui:size-10 appui:shrink-0 appui:bg-[linear-gradient(135deg,#1677ff_0%,#0958d9_100%)] appui:text-white appui:flex appui:items-center appui:justify-center appui:rounded-full appui:font-semibold appui:text-lg">
               {initial}
             </div>
-            <div className="adminui:flex-1">
-              <strong className="adminui:block adminui:text-[0.9375rem]">{name}</strong>
-              <Typography.Text type="secondary" className="adminui:text-[0.8125rem]!">
+            <div className="appui:flex-1">
+              <strong className="appui:block appui:text-[0.9375rem]">{name}</strong>
+              <Typography.Text type="secondary" className="appui:text-[0.8125rem]!">
                 {userId}
               </Typography.Text>
             </div>
@@ -444,14 +444,14 @@ function BracketContent({ matches, participants }: { matches: TournamentMatch[];
   const totalRounds = rounds.length
 
   return (
-    <div className="adminui:bg-[#f8f9fa] adminui:rounded-lg adminui:border adminui:border-[#dee2e6] adminui:p-5 adminui:overflow-x-auto adminui:overflow-y-hidden">
-      <div className="adminui:flex adminui:gap-10 adminui:min-w-fit adminui:items-start">
+    <div className="appui:bg-[#f8f9fa] appui:rounded-lg appui:border appui:border-[#dee2e6] appui:p-5 appui:overflow-x-auto appui:overflow-y-hidden">
+      <div className="appui:flex appui:gap-10 appui:min-w-fit appui:items-start">
         {rounds.map(([roundNum, roundMatches], roundIdx) => (
-          <div key={roundNum} className="adminui:flex adminui:flex-col adminui:gap-4 adminui:min-w-[180px]">
-            <div className="adminui:text-center adminui:font-semibold adminui:text-sm adminui:text-[#333] adminui:pb-2 adminui:border-b-2 adminui:border-[#dee2e6]">
+          <div key={roundNum} className="appui:flex appui:flex-col appui:gap-4 appui:min-w-[180px]">
+            <div className="appui:text-center appui:font-semibold appui:text-sm appui:text-[#333] appui:pb-2 appui:border-b-2 appui:border-[#dee2e6]">
               {roundIdx === totalRounds - 1 ? 'Final' : roundIdx === totalRounds - 2 ? 'Semi-Final' : `Round ${roundNum}`}
             </div>
-            <div className="adminui:flex adminui:flex-col adminui:gap-4 adminui:justify-around adminui:flex-1">
+            <div className="appui:flex appui:flex-col appui:gap-4 appui:justify-around appui:flex-1">
               {roundMatches.map(match => (
                 <BracketMatch key={match.matchId || `${match.round}-${match.position}`} match={match} participantMap={participantMap} />
               ))}
@@ -482,10 +482,10 @@ function BracketMatch({ match, participantMap }: { match: TournamentMatch; parti
 
   return (
     <div
-      className={`adminui:border-2 adminui:rounded-md adminui:overflow-hidden adminui:min-w-[160px] ${isInProgress ? 'adminui:bg-[#e3f2fd]' : 'adminui:bg-white'}`}
+      className={`appui:border-2 appui:rounded-md appui:overflow-hidden appui:min-w-[160px] ${isInProgress ? 'appui:bg-[#e3f2fd]' : 'appui:bg-white'}`}
       style={{ borderColor }}>
       <MatchOpponent name={p1Name} isWinner={p1IsWinner} isLoser={isCompleted && !p1IsWinner && p1Id !== null} isTbd={!p1Id} />
-      <div className="adminui:h-px adminui:bg-[#e0e0e0]" />
+      <div className="appui:h-px appui:bg-[#e0e0e0]" />
       <MatchOpponent name={p2Name} isWinner={p2IsWinner} isLoser={isCompleted && !p2IsWinner && p2Id !== null} isTbd={!p2Id} />
     </div>
   )
@@ -495,10 +495,10 @@ function MatchOpponent({ name, isWinner, isLoser, isTbd }: { name: string; isWin
   return (
     <div
       className={[
-        'adminui:px-2 adminui:py-1 adminui:text-[13px]',
-        isWinner && 'adminui:font-bold adminui:text-[#2e7d32] adminui:bg-[#e8f5e9] adminui:rounded',
-        isLoser && 'adminui:opacity-60 adminui:line-through adminui:text-[#757575]',
-        isTbd && 'adminui:text-[#999] adminui:italic'
+        'appui:px-2 appui:py-1 appui:text-[13px]',
+        isWinner && 'appui:font-bold appui:text-[#2e7d32] appui:bg-[#e8f5e9] appui:rounded',
+        isLoser && 'appui:opacity-60 appui:line-through appui:text-[#757575]',
+        isTbd && 'appui:text-[#999] appui:italic'
       ]
         .filter(Boolean)
         .join(' ')}>
