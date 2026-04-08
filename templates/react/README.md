@@ -40,3 +40,8 @@ When ready to deploy:
 ```bash
 extend-helper-cli appui upload --namespace $AB_NAMESPACE --name $AB_APPUI_NAME
 ```
+
+## Code generating
+
+1. In `swaggers.json`, replace `<url-to-your-extend-service>` with your service URL. This can be found inside the Extend app detail inside Admin Portal, labelled by "Service URL". For example, after replacing, the value should be `https://spaceshooter-mygame.prod.gamingservices.accelbyte.io/ext-spaceshooter-mygame-myextendapp/apidocs/api.json`, where `spaceshooter-mygame` is the namespace and `myextendapp` is the Extend app name.
+2. Run `npm run codegen`. This will download and generate the TypeScript files based on the downloaded Swagger JSON file.

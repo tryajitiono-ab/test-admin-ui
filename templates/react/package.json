@@ -10,9 +10,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write src/**/*",
+    "format:swaggers": "prettier --write swaggers/**/*",
     "cg:prettify": "prettier --write --no-error-on-unmatched-pattern src/tournamentapi/codegen/**/*",
     "cg:generate": "accelbyte-codegen generate-code --config swaggers.json --swaggersOutput swaggers --output src/tournamentapi",
-    "codegen": "rimraf src/tournamentapi && npm run cg:generate && npm run cg:prettify"
+    "cg:download": "accelbyte-codegen download-swaggers --config swaggers.json --swaggersOutput swaggers && yarn format:swaggers",
+    "cg:clean-and-generate": "rimraf src/tournamentapi && npm run cg:generate && npm run cg:prettify",
+    "codegen": "npm run cg:download && npm run cg:clean-and-generate"
   },
   "dependencies": {
     "@accelbyte/sdk": "0.0.0-dev-20260407233405",
