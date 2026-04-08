@@ -1,6 +1,6 @@
 # Extend App UI — Full Example
 
-A full-featured React template with a tournament management UI and generated AGS API clients. Use this as a reference; start from the `react-minimal` template for a blank slate.
+A full-featured React template with a tournament management UI and generated AGS API clients. Use this as a reference; start from the `react-minimal` template for a blank slate. This example uses the Extend Service Extension Tournament System as the backend: https://github.com/AccelByte/extend-tournament-system.
 
 ## Quick start
 
