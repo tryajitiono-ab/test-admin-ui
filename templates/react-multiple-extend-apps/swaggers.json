@@ -3,12 +3,12 @@
     "tournamentapi",
     "tournamentapi",
     "tournament.json",
-    "https://abtesttryaji2026033001-demotournament.internal.gamingservices.accelbyte.io/ext-abtesttryaji2026033001-demotournament-tournament-system"
+    "https://abtesttryaji2026033001-demotournament.internal.gamingservices.accelbyte.io/ext-abtesttryaji2026033001-demotournament-tournament-system/apidocs/api.json"
   ],
   [
     "secondtournamentapi",
     "secondtournamentapi",
     "secondtournament.json",
-    "https://abtesttryaji2026033001-demotournament.internal.gamingservices.accelbyte.io/ext-abtesttryaji2026033001-demotournament-tournament-system-second"
+    "https://abtesttryaji2026033001-demotournament.internal.gamingservices.accelbyte.io/ext-abtesttryaji2026033001-demotournament-tournament-system-second/apidocs/api.json"
   ]
 ]

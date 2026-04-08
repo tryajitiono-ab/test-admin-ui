@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write src/**/*",
+    "format:swaggers": "prettier --write swaggers/**/*",
     "cg:prettify": "prettier --write --no-error-on-unmatched-pattern src/tournamentapi/**/*",
     "cg:generate": "accelbyte-codegen generate-code --config swaggers.json --swaggersOutput swaggers --output src/tournamentapi",
     "cg:download": "accelbyte-codegen download-swaggers --config swaggers.json --swaggersOutput swaggers && yarn format:swaggers",

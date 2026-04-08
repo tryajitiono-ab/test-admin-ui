@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: mode === 'production' ? process.env.BASE_URL : '/',
+    build: {
+      modulePreload: false
+    },
     plugins: [
       react(),
       tailwindcss(),
