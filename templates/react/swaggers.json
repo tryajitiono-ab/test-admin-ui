@@ -1,1 +1,8 @@
-[["tournamentapi", "tournamentapi", "tournament.json", "<url-to-your-extend-service>/apidocs/api.json"]]
+[
+  [
+    "tournamentapi",
+    "tournamentapi",
+    "tournament.json",
+    "https://abtesttryaji2026033001-demotournament.internal.gamingservices.accelbyte.io/ext-abtesttryaji2026033001-demotournament-tournament-system/apidocs/api.json"
+  ]
+]
