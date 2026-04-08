@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
   return {
     base: mode === 'production' ? process.env.BASE_URL : '/',
     build: {
+      // This has to be set to false to prevent Chrome sending request without a `referer` HTTP header.
       modulePreload: false
     },
     plugins: [

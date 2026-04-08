@@ -1,5 +1,4 @@
-import { useAppUIContext } from '@accelbyte/sdk-extend-app-ui'
-import { CrudType } from '@accelbyte/validator'
+import { CrudType, useAppUIContext } from '@accelbyte/sdk-extend-app-ui'
 import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, DatePicker, Form, InputNumber, Modal, Spin, Tag, Typography } from 'antd'
 import Input from 'antd/es/input/Input'
@@ -140,11 +139,15 @@ function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; 
         <Typography.Title level={2} className="appui:m-0!">
           Tournaments
         </Typography.Title>
+        <Typography.Title
+          level={2}
+          className="appui:m-0!"
+          hidden={isCurrentUserHasPermission({ action: CrudType.READ, resource: 'ADMIN:RANDOMRESOURCE' })}>
+          This is also a tournaments header but hidden because you may not have the permission
+        </Typography.Title>
         <Typography.Text type="secondary">Browse and manage tournament competitions</Typography.Text>
       </div>
-      <div
-        className="appui:flex appui:gap-2"
-        
+      <div className="appui:flex appui:gap-2">
         <Button onClick={onRefresh}>Refresh</Button>
         <Button type="primary" onClick={onCreate}>
           Create Tournament
