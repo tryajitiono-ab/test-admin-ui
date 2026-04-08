@@ -23,7 +23,7 @@ import { TournamentServiceSubmitMatchResultBody } from '../../generated-definiti
 import { TournamentStartTournamentResponse } from '../../generated-definitions/TournamentStartTournamentResponse.js'
 import { TournamentSubmitMatchResultResponse } from '../../generated-definitions/TournamentSubmitMatchResultResponse.js'
 
-export class TournamentServiceAdmin$ {
+export class SecondTournamentServiceAdmin$ {
   private axiosInstance: AxiosInstance
   private namespace: string
   private useSchemaValidation: boolean

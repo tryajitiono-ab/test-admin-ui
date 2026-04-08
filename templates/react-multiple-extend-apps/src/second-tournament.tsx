@@ -6,18 +6,18 @@ import Input from 'antd/es/input/Input'
 import TextArea from 'antd/es/input/TextArea'
 import { useMemo, useState, type ReactNode } from 'react'
 import { Route, Routes, useNavigate, useParams } from 'react-router'
-import { useTournamentServiceAdminApi_CreateTournamentMutation } from './tournamentapi/generated-admin/queries/TournamentServiceAdmin.query'
-import type { TournamentMatch } from './tournamentapi/generated-definitions/TournamentMatch'
-import type { TournamentParticipant } from './tournamentapi/generated-definitions/TournamentParticipant'
-import type { TournamentTournament } from './tournamentapi/generated-definitions/TournamentTournament'
-import type { TournamentTournamentParticipant } from './tournamentapi/generated-definitions/TournamentTournamentParticipant'
+import { useSecondTournamentServiceAdminApi_CreateTournamentMutation } from './codegen/secondtournamentapi/generated-admin/queries/SecondTournamentServiceAdmin.query'
+import type { TournamentMatch } from './codegen/secondtournamentapi/generated-definitions/TournamentMatch'
+import type { TournamentParticipant } from './codegen/secondtournamentapi/generated-definitions/TournamentParticipant'
+import type { TournamentTournament } from './codegen/secondtournamentapi/generated-definitions/TournamentTournament'
+import type { TournamentTournamentParticipant } from './codegen/secondtournamentapi/generated-definitions/TournamentTournamentParticipant'
 import {
-  Key_TournamentService,
-  useTournamentServiceApi_GetMatches_ByTournamentId,
-  useTournamentServiceApi_GetParticipants_ByTournamentId,
-  useTournamentServiceApi_GetTournament_ByTournamentId,
-  useTournamentServiceApi_GetTournaments
-} from './tournamentapi/generated-public/queries/TournamentService.query'
+  Key_SecondTournamentService,
+  useSecondTournamentServiceApi_GetMatches_ByTournamentId,
+  useSecondTournamentServiceApi_GetParticipants_ByTournamentId,
+  useSecondTournamentServiceApi_GetTournament_ByTournamentId,
+  useSecondTournamentServiceApi_GetTournaments
+} from './codegen/secondtournamentapi/generated-public/queries/SecondTournamentService.query'
 
 const STATUS_MAP: Record<string, { text: string; color: string }> = {
   TOURNAMENT_STATUS_DRAFT: { text: 'Draft', color: 'blue' },
@@ -71,7 +71,7 @@ function TournamentList() {
   const { sdk } = useAppUIContext()
   const navigate = useNavigate()
   const [isCreateOpen, setIsCreateOpen] = useState(false)
-  const { data, isLoading, error, refetch } = useTournamentServiceApi_GetTournaments(sdk, {})
+  const { data, isLoading, error, refetch } = useSecondTournamentServiceApi_GetTournaments(sdk, {})
 
   const tournaments = data?.tournaments ?? []
 
@@ -166,9 +166,9 @@ function CreateTournamentModal({ open, onClose }: { open: boolean; onClose: () =
   const queryClient = useQueryClient()
   const [form] = Form.useForm<CreateTournamentFormValues>()
 
-  const createMutation = useTournamentServiceAdminApi_CreateTournamentMutation(sdk, {
+  const createMutation = useSecondTournamentServiceAdminApi_CreateTournamentMutation(sdk, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Key_TournamentService.Tournaments] })
+      queryClient.invalidateQueries({ queryKey: [Key_SecondTournamentService.Tournaments] })
       form.resetFields()
       onClose()
     }
@@ -253,15 +253,15 @@ function TournamentDetail() {
     isLoading,
     error,
     refetch
-  } = useTournamentServiceApi_GetTournament_ByTournamentId(sdk, { tournamentId }, { enabled: !!tournamentId })
+  } = useSecondTournamentServiceApi_GetTournament_ByTournamentId(sdk, { tournamentId }, { enabled: !!tournamentId })
 
-  const { data: participantsData } = useTournamentServiceApi_GetParticipants_ByTournamentId(
+  const { data: participantsData } = useSecondTournamentServiceApi_GetParticipants_ByTournamentId(
     sdk,
     { tournamentId },
     { enabled: !!tournamentId }
   )
 
-  const { data: matchesData } = useTournamentServiceApi_GetMatches_ByTournamentId(sdk, { tournamentId }, { enabled: !!tournamentId })
+  const { data: matchesData } = useSecondTournamentServiceApi_GetMatches_ByTournamentId(sdk, { tournamentId }, { enabled: !!tournamentId })
 
   if (isLoading) return <Spin description="Loading tournament..." />
 

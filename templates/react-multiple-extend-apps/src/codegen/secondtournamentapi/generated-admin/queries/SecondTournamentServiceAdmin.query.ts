@@ -10,7 +10,7 @@ import type { AccelByteSDK, ApiError, SdkSetConfigParam } from '@accelbyte/sdk'
 import type { UseMutationOptions, UseMutationResult } from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
-import { TournamentServiceAdminApi } from '../TournamentServiceAdminApi.js'
+import { SecondTournamentServiceAdminApi } from '../SecondTournamentServiceAdminApi.js'
 
 import { TournamentActivateTournamentResponse } from '../../generated-definitions/TournamentActivateTournamentResponse.js'
 import { TournamentAdminSubmitMatchResultResponse } from '../../generated-definitions/TournamentAdminSubmitMatchResultResponse.js'
@@ -26,14 +26,14 @@ import { TournamentServiceSubmitMatchResultBody } from '../../generated-definiti
 import { TournamentStartTournamentResponse } from '../../generated-definitions/TournamentStartTournamentResponse.js'
 import { TournamentSubmitMatchResultResponse } from '../../generated-definitions/TournamentSubmitMatchResultResponse.js'
 
-export const Key_TournamentServiceAdmin = {
-  Tournament: 'Secondtournamentapi.TournamentServiceAdmin.Tournament',
-  Start_ByTournamentId: 'Secondtournamentapi.TournamentServiceAdmin.Start_ByTournamentId',
-  Cancel_ByTournamentId: 'Secondtournamentapi.TournamentServiceAdmin.Cancel_ByTournamentId',
-  Activate_ByTournamentId: 'Secondtournamentapi.TournamentServiceAdmin.Activate_ByTournamentId',
-  Participant_ByTournamentId_ByUserId: 'Secondtournamentapi.TournamentServiceAdmin.Participant_ByTournamentId_ByUserId',
-  Result_ByTournamentId_ByMatchId: 'Secondtournamentapi.TournamentServiceAdmin.Result_ByTournamentId_ByMatchId',
-  ResultAdmin_ByTournamentId_ByMatchId: 'Secondtournamentapi.TournamentServiceAdmin.ResultAdmin_ByTournamentId_ByMatchId'
+export const Key_SecondTournamentServiceAdmin = {
+  Tournament: 'Secondtournamentapi.SecondTournamentServiceAdmin.Tournament',
+  Start_ByTournamentId: 'Secondtournamentapi.SecondTournamentServiceAdmin.Start_ByTournamentId',
+  Cancel_ByTournamentId: 'Secondtournamentapi.SecondTournamentServiceAdmin.Cancel_ByTournamentId',
+  Activate_ByTournamentId: 'Secondtournamentapi.SecondTournamentServiceAdmin.Activate_ByTournamentId',
+  Participant_ByTournamentId_ByUserId: 'Secondtournamentapi.SecondTournamentServiceAdmin.Participant_ByTournamentId_ByUserId',
+  Result_ByTournamentId_ByMatchId: 'Secondtournamentapi.SecondTournamentServiceAdmin.Result_ByTournamentId_ByMatchId',
+  ResultAdmin_ByTournamentId_ByMatchId: 'Secondtournamentapi.SecondTournamentServiceAdmin.ResultAdmin_ByTournamentId_ByMatchId'
 } as const
 
 /**
@@ -43,11 +43,11 @@ export const Key_TournamentServiceAdmin = {
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentServiceAdmin.Tournament, input]
+ *    queryKey: [Key_SecondTournamentServiceAdmin.Tournament, input]
  * }
  * ```
  */
-export const useTournamentServiceAdminApi_CreateTournamentMutation = (
+export const useSecondTournamentServiceAdminApi_CreateTournamentMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -64,7 +64,7 @@ export const useTournamentServiceAdminApi_CreateTournamentMutation = (
   SdkSetConfigParam & { data: TournamentServiceCreateTournamentBody }
 > => {
   const mutationFn = async (input: SdkSetConfigParam & { data: TournamentServiceCreateTournamentBody }) => {
-    const response = await TournamentServiceAdminApi(sdk, {
+    const response = await SecondTournamentServiceAdminApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).createTournament(input.data)
@@ -73,7 +73,7 @@ export const useTournamentServiceAdminApi_CreateTournamentMutation = (
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentServiceAdmin.Tournament],
+    mutationKey: [Key_SecondTournamentServiceAdmin.Tournament],
     mutationFn,
     ...options
   })
@@ -86,11 +86,11 @@ export const useTournamentServiceAdminApi_CreateTournamentMutation = (
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentServiceAdmin.Start_ByTournamentId, input]
+ *    queryKey: [Key_SecondTournamentServiceAdmin.Start_ByTournamentId, input]
  * }
  * ```
  */
-export const useTournamentServiceAdminApi_CreateStart_ByTournamentIdMutation = (
+export const useSecondTournamentServiceAdminApi_CreateStart_ByTournamentIdMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -107,7 +107,7 @@ export const useTournamentServiceAdminApi_CreateStart_ByTournamentIdMutation = (
   SdkSetConfigParam & { tournamentId: string; data: TournamentServiceStartTournamentBody }
 > => {
   const mutationFn = async (input: SdkSetConfigParam & { tournamentId: string; data: TournamentServiceStartTournamentBody }) => {
-    const response = await TournamentServiceAdminApi(sdk, {
+    const response = await SecondTournamentServiceAdminApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).createStart_ByTournamentId(input.tournamentId, input.data)
@@ -116,7 +116,7 @@ export const useTournamentServiceAdminApi_CreateStart_ByTournamentIdMutation = (
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentServiceAdmin.Start_ByTournamentId],
+    mutationKey: [Key_SecondTournamentServiceAdmin.Start_ByTournamentId],
     mutationFn,
     ...options
   })
@@ -129,11 +129,11 @@ export const useTournamentServiceAdminApi_CreateStart_ByTournamentIdMutation = (
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentServiceAdmin.Cancel_ByTournamentId, input]
+ *    queryKey: [Key_SecondTournamentServiceAdmin.Cancel_ByTournamentId, input]
  * }
  * ```
  */
-export const useTournamentServiceAdminApi_CreateCancel_ByTournamentIdMutation = (
+export const useSecondTournamentServiceAdminApi_CreateCancel_ByTournamentIdMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -150,7 +150,7 @@ export const useTournamentServiceAdminApi_CreateCancel_ByTournamentIdMutation = 
   SdkSetConfigParam & { tournamentId: string; data: TournamentServiceCancelTournamentBody }
 > => {
   const mutationFn = async (input: SdkSetConfigParam & { tournamentId: string; data: TournamentServiceCancelTournamentBody }) => {
-    const response = await TournamentServiceAdminApi(sdk, {
+    const response = await SecondTournamentServiceAdminApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).createCancel_ByTournamentId(input.tournamentId, input.data)
@@ -159,7 +159,7 @@ export const useTournamentServiceAdminApi_CreateCancel_ByTournamentIdMutation = 
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentServiceAdmin.Cancel_ByTournamentId],
+    mutationKey: [Key_SecondTournamentServiceAdmin.Cancel_ByTournamentId],
     mutationFn,
     ...options
   })
@@ -172,11 +172,11 @@ export const useTournamentServiceAdminApi_CreateCancel_ByTournamentIdMutation = 
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentServiceAdmin.Activate_ByTournamentId, input]
+ *    queryKey: [Key_SecondTournamentServiceAdmin.Activate_ByTournamentId, input]
  * }
  * ```
  */
-export const useTournamentServiceAdminApi_CreateActivate_ByTournamentIdMutation = (
+export const useSecondTournamentServiceAdminApi_CreateActivate_ByTournamentIdMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -193,7 +193,7 @@ export const useTournamentServiceAdminApi_CreateActivate_ByTournamentIdMutation 
   SdkSetConfigParam & { tournamentId: string; data: TournamentServiceActivateTournamentBody }
 > => {
   const mutationFn = async (input: SdkSetConfigParam & { tournamentId: string; data: TournamentServiceActivateTournamentBody }) => {
-    const response = await TournamentServiceAdminApi(sdk, {
+    const response = await SecondTournamentServiceAdminApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).createActivate_ByTournamentId(input.tournamentId, input.data)
@@ -202,7 +202,7 @@ export const useTournamentServiceAdminApi_CreateActivate_ByTournamentIdMutation 
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentServiceAdmin.Activate_ByTournamentId],
+    mutationKey: [Key_SecondTournamentServiceAdmin.Activate_ByTournamentId],
     mutationFn,
     ...options
   })
@@ -215,11 +215,11 @@ export const useTournamentServiceAdminApi_CreateActivate_ByTournamentIdMutation 
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentServiceAdmin.Participant_ByTournamentId_ByUserId, input]
+ *    queryKey: [Key_SecondTournamentServiceAdmin.Participant_ByTournamentId_ByUserId, input]
  * }
  * ```
  */
-export const useTournamentServiceAdminApi_DeleteParticipant_ByTournamentId_ByUserIdMutation = (
+export const useSecondTournamentServiceAdminApi_DeleteParticipant_ByTournamentId_ByUserIdMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -236,7 +236,7 @@ export const useTournamentServiceAdminApi_DeleteParticipant_ByTournamentId_ByUse
   SdkSetConfigParam & { tournamentId: string; userId: string }
 > => {
   const mutationFn = async (input: SdkSetConfigParam & { tournamentId: string; userId: string }) => {
-    const response = await TournamentServiceAdminApi(sdk, {
+    const response = await SecondTournamentServiceAdminApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).deleteParticipant_ByTournamentId_ByUserId(input.tournamentId, input.userId)
@@ -245,7 +245,7 @@ export const useTournamentServiceAdminApi_DeleteParticipant_ByTournamentId_ByUse
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentServiceAdmin.Participant_ByTournamentId_ByUserId],
+    mutationKey: [Key_SecondTournamentServiceAdmin.Participant_ByTournamentId_ByUserId],
     mutationFn,
     ...options
   })
@@ -258,11 +258,11 @@ export const useTournamentServiceAdminApi_DeleteParticipant_ByTournamentId_ByUse
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentServiceAdmin.Result_ByTournamentId_ByMatchId, input]
+ *    queryKey: [Key_SecondTournamentServiceAdmin.Result_ByTournamentId_ByMatchId, input]
  * }
  * ```
  */
-export const useTournamentServiceAdminApi_CreateResult_ByTournamentId_ByMatchIdMutation = (
+export const useSecondTournamentServiceAdminApi_CreateResult_ByTournamentId_ByMatchIdMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -281,7 +281,7 @@ export const useTournamentServiceAdminApi_CreateResult_ByTournamentId_ByMatchIdM
   const mutationFn = async (
     input: SdkSetConfigParam & { tournamentId: string; matchId: string; data: TournamentServiceSubmitMatchResultBody }
   ) => {
-    const response = await TournamentServiceAdminApi(sdk, {
+    const response = await SecondTournamentServiceAdminApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).createResult_ByTournamentId_ByMatchId(input.tournamentId, input.matchId, input.data)
@@ -290,7 +290,7 @@ export const useTournamentServiceAdminApi_CreateResult_ByTournamentId_ByMatchIdM
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentServiceAdmin.Result_ByTournamentId_ByMatchId],
+    mutationKey: [Key_SecondTournamentServiceAdmin.Result_ByTournamentId_ByMatchId],
     mutationFn,
     ...options
   })
@@ -303,11 +303,11 @@ export const useTournamentServiceAdminApi_CreateResult_ByTournamentId_ByMatchIdM
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentServiceAdmin.ResultAdmin_ByTournamentId_ByMatchId, input]
+ *    queryKey: [Key_SecondTournamentServiceAdmin.ResultAdmin_ByTournamentId_ByMatchId, input]
  * }
  * ```
  */
-export const useTournamentServiceAdminApi_CreateResultAdmin_ByTournamentId_ByMatchIdMutation = (
+export const useSecondTournamentServiceAdminApi_CreateResultAdmin_ByTournamentId_ByMatchIdMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -326,7 +326,7 @@ export const useTournamentServiceAdminApi_CreateResultAdmin_ByTournamentId_ByMat
   const mutationFn = async (
     input: SdkSetConfigParam & { tournamentId: string; matchId: string; data: TournamentServiceAdminSubmitMatchResultBody }
   ) => {
-    const response = await TournamentServiceAdminApi(sdk, {
+    const response = await SecondTournamentServiceAdminApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).createResultAdmin_ByTournamentId_ByMatchId(input.tournamentId, input.matchId, input.data)
@@ -335,7 +335,7 @@ export const useTournamentServiceAdminApi_CreateResultAdmin_ByTournamentId_ByMat
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentServiceAdmin.ResultAdmin_ByTournamentId_ByMatchId],
+    mutationKey: [Key_SecondTournamentServiceAdmin.ResultAdmin_ByTournamentId_ByMatchId],
     mutationFn,
     ...options
   })

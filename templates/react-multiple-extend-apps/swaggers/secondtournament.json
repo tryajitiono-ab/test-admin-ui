@@ -17,7 +17,7 @@
           }
         ],
         "description": "Create a new tournament with specified configuration",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Create Tournament",
         "operationId": "TournamentService_CreateTournament",
         "parameters": [
@@ -61,7 +61,7 @@
           }
         ],
         "description": "Activate a tournament to open registration for participants",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Activate Tournament",
         "operationId": "TournamentService_ActivateTournament",
         "parameters": [
@@ -111,7 +111,7 @@
           }
         ],
         "description": "Cancel a tournament and prevent further participation",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Cancel Tournament",
         "operationId": "TournamentService_CancelTournament",
         "parameters": [
@@ -160,7 +160,7 @@
           }
         ],
         "description": "Game server: Submit match result with winner information",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Submit Match Result",
         "operationId": "TournamentService_SubmitMatchResult",
         "parameters": [
@@ -215,7 +215,7 @@
           }
         ],
         "description": "Admin override: Submit match result with winner information",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Admin Submit Match Result",
         "operationId": "TournamentService_AdminSubmitMatchResult",
         "parameters": [
@@ -270,7 +270,7 @@
           }
         ],
         "description": "Admin-only: Remove participant from tournament",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Remove Tournament Participant",
         "operationId": "TournamentService_RemoveParticipant",
         "parameters": [
@@ -318,7 +318,7 @@
           }
         ],
         "description": "Start a tournament to generate brackets and begin competition",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Start Tournament",
         "operationId": "TournamentService_StartTournament",
         "parameters": [
@@ -368,7 +368,7 @@
           }
         ],
         "description": "List tournaments with optional filtering by status and date range",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "List Tournaments",
         "operationId": "TournamentService_ListTournaments",
         "parameters": [
@@ -442,7 +442,7 @@
           }
         ],
         "description": "Get tournament details by tournament ID",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Get Tournament",
         "operationId": "TournamentService_GetTournament",
         "parameters": [
@@ -484,7 +484,7 @@
           }
         ],
         "description": "Get all matches for a tournament organized by round",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Get Tournament Matches",
         "operationId": "TournamentService_GetTournamentMatches",
         "parameters": [
@@ -532,7 +532,7 @@
           }
         ],
         "description": "Get detailed information about a specific match",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Get Match Details",
         "operationId": "TournamentService_GetMatch",
         "parameters": [
@@ -579,7 +579,7 @@
           }
         ],
         "description": "List all participants for a tournament with pagination",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Get Tournament Participants",
         "operationId": "TournamentService_GetTournamentParticipants",
         "parameters": [
@@ -631,7 +631,7 @@
           }
         ],
         "description": "Register user for tournament with capacity enforcement",
-        "tags": ["TournamentService"],
+        "tags": ["SecondTournamentService"],
         "summary": "Register for Tournament",
         "operationId": "TournamentService_RegisterForTournament",
         "parameters": [

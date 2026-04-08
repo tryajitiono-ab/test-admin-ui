@@ -10,7 +10,7 @@ import type { AccelByteSDK, ApiError, SdkSetConfigParam } from '@accelbyte/sdk'
 import type { UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { AxiosError, AxiosResponse } from 'axios'
-import { TournamentServiceApi } from '../TournamentServiceApi.js'
+import { SecondTournamentServiceApi } from '../SecondTournamentServiceApi.js'
 
 import { TournamentGetMatchResponse } from '../../generated-definitions/TournamentGetMatchResponse.js'
 import { TournamentGetTournamentMatchesResponse } from '../../generated-definitions/TournamentGetTournamentMatchesResponse.js'
@@ -20,13 +20,13 @@ import { TournamentListTournamentsResponse } from '../../generated-definitions/T
 import { TournamentRegisterForTournamentResponse } from '../../generated-definitions/TournamentRegisterForTournamentResponse.js'
 import { TournamentServiceRegisterForTournamentBody } from '../../generated-definitions/TournamentServiceRegisterForTournamentBody.js'
 
-export const Key_TournamentService = {
-  Tournaments: 'Secondtournamentapi.TournamentService.Tournaments',
-  Tournament_ByTournamentId: 'Secondtournamentapi.TournamentService.Tournament_ByTournamentId',
-  Matches_ByTournamentId: 'Secondtournamentapi.TournamentService.Matches_ByTournamentId',
-  Register_ByTournamentId: 'Secondtournamentapi.TournamentService.Register_ByTournamentId',
-  Participants_ByTournamentId: 'Secondtournamentapi.TournamentService.Participants_ByTournamentId',
-  Matche_ByTournamentId_ByMatchId: 'Secondtournamentapi.TournamentService.Matche_ByTournamentId_ByMatchId'
+export const Key_SecondTournamentService = {
+  Tournaments: 'Secondtournamentapi.SecondTournamentService.Tournaments',
+  Tournament_ByTournamentId: 'Secondtournamentapi.SecondTournamentService.Tournament_ByTournamentId',
+  Matches_ByTournamentId: 'Secondtournamentapi.SecondTournamentService.Matches_ByTournamentId',
+  Register_ByTournamentId: 'Secondtournamentapi.SecondTournamentService.Register_ByTournamentId',
+  Participants_ByTournamentId: 'Secondtournamentapi.SecondTournamentService.Participants_ByTournamentId',
+  Matche_ByTournamentId_ByMatchId: 'Secondtournamentapi.SecondTournamentService.Matche_ByTournamentId_ByMatchId'
 } as const
 
 /**
@@ -36,11 +36,11 @@ export const Key_TournamentService = {
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentService.Tournaments, input]
+ *    queryKey: [Key_SecondTournamentService.Tournaments, input]
  * }
  * ```
  */
-export const useTournamentServiceApi_GetTournaments = (
+export const useSecondTournamentServiceApi_GetTournaments = (
   sdk: AccelByteSDK,
   input: SdkSetConfigParam & {
     queryParams?: {
@@ -60,8 +60,8 @@ export const useTournamentServiceApi_GetTournaments = (
   options?: Omit<UseQueryOptions<TournamentListTournamentsResponse, AxiosError<ApiError>>, 'queryKey'>,
   callback?: (data: AxiosResponse<TournamentListTournamentsResponse>) => void
 ): UseQueryResult<TournamentListTournamentsResponse, AxiosError<ApiError>> => {
-  const queryFn = (sdk: AccelByteSDK, input: Parameters<typeof useTournamentServiceApi_GetTournaments>[1]) => async () => {
-    const response = await TournamentServiceApi(sdk, { coreConfig: input.coreConfig, axiosConfig: input.axiosConfig }).getTournaments(
+  const queryFn = (sdk: AccelByteSDK, input: Parameters<typeof useSecondTournamentServiceApi_GetTournaments>[1]) => async () => {
+    const response = await SecondTournamentServiceApi(sdk, { coreConfig: input.coreConfig, axiosConfig: input.axiosConfig }).getTournaments(
       input.queryParams
     )
     callback?.(response)
@@ -69,7 +69,7 @@ export const useTournamentServiceApi_GetTournaments = (
   }
 
   return useQuery<TournamentListTournamentsResponse, AxiosError<ApiError>>({
-    queryKey: [Key_TournamentService.Tournaments, input],
+    queryKey: [Key_SecondTournamentService.Tournaments, input],
     queryFn: queryFn(sdk, input),
     ...options
   })
@@ -82,27 +82,28 @@ export const useTournamentServiceApi_GetTournaments = (
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentService.Tournament_ByTournamentId, input]
+ *    queryKey: [Key_SecondTournamentService.Tournament_ByTournamentId, input]
  * }
  * ```
  */
-export const useTournamentServiceApi_GetTournament_ByTournamentId = (
+export const useSecondTournamentServiceApi_GetTournament_ByTournamentId = (
   sdk: AccelByteSDK,
   input: SdkSetConfigParam & { tournamentId: string },
   options?: Omit<UseQueryOptions<TournamentGetTournamentResponse, AxiosError<ApiError>>, 'queryKey'>,
   callback?: (data: AxiosResponse<TournamentGetTournamentResponse>) => void
 ): UseQueryResult<TournamentGetTournamentResponse, AxiosError<ApiError>> => {
-  const queryFn = (sdk: AccelByteSDK, input: Parameters<typeof useTournamentServiceApi_GetTournament_ByTournamentId>[1]) => async () => {
-    const response = await TournamentServiceApi(sdk, {
-      coreConfig: input.coreConfig,
-      axiosConfig: input.axiosConfig
-    }).getTournament_ByTournamentId(input.tournamentId)
-    callback?.(response)
-    return response.data
-  }
+  const queryFn =
+    (sdk: AccelByteSDK, input: Parameters<typeof useSecondTournamentServiceApi_GetTournament_ByTournamentId>[1]) => async () => {
+      const response = await SecondTournamentServiceApi(sdk, {
+        coreConfig: input.coreConfig,
+        axiosConfig: input.axiosConfig
+      }).getTournament_ByTournamentId(input.tournamentId)
+      callback?.(response)
+      return response.data
+    }
 
   return useQuery<TournamentGetTournamentResponse, AxiosError<ApiError>>({
-    queryKey: [Key_TournamentService.Tournament_ByTournamentId, input],
+    queryKey: [Key_SecondTournamentService.Tournament_ByTournamentId, input],
     queryFn: queryFn(sdk, input),
     ...options
   })
@@ -115,18 +116,18 @@ export const useTournamentServiceApi_GetTournament_ByTournamentId = (
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentService.Matches_ByTournamentId, input]
+ *    queryKey: [Key_SecondTournamentService.Matches_ByTournamentId, input]
  * }
  * ```
  */
-export const useTournamentServiceApi_GetMatches_ByTournamentId = (
+export const useSecondTournamentServiceApi_GetMatches_ByTournamentId = (
   sdk: AccelByteSDK,
   input: SdkSetConfigParam & { tournamentId: string; queryParams?: { round?: number } },
   options?: Omit<UseQueryOptions<TournamentGetTournamentMatchesResponse, AxiosError<ApiError>>, 'queryKey'>,
   callback?: (data: AxiosResponse<TournamentGetTournamentMatchesResponse>) => void
 ): UseQueryResult<TournamentGetTournamentMatchesResponse, AxiosError<ApiError>> => {
-  const queryFn = (sdk: AccelByteSDK, input: Parameters<typeof useTournamentServiceApi_GetMatches_ByTournamentId>[1]) => async () => {
-    const response = await TournamentServiceApi(sdk, {
+  const queryFn = (sdk: AccelByteSDK, input: Parameters<typeof useSecondTournamentServiceApi_GetMatches_ByTournamentId>[1]) => async () => {
+    const response = await SecondTournamentServiceApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).getMatches_ByTournamentId(input.tournamentId, input.queryParams)
@@ -135,7 +136,7 @@ export const useTournamentServiceApi_GetMatches_ByTournamentId = (
   }
 
   return useQuery<TournamentGetTournamentMatchesResponse, AxiosError<ApiError>>({
-    queryKey: [Key_TournamentService.Matches_ByTournamentId, input],
+    queryKey: [Key_SecondTournamentService.Matches_ByTournamentId, input],
     queryFn: queryFn(sdk, input),
     ...options
   })
@@ -148,11 +149,11 @@ export const useTournamentServiceApi_GetMatches_ByTournamentId = (
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentService.Register_ByTournamentId, input]
+ *    queryKey: [Key_SecondTournamentService.Register_ByTournamentId, input]
  * }
  * ```
  */
-export const useTournamentServiceApi_CreateRegister_ByTournamentIdMutation = (
+export const useSecondTournamentServiceApi_CreateRegister_ByTournamentIdMutation = (
   sdk: AccelByteSDK,
   options?: Omit<
     UseMutationOptions<
@@ -169,7 +170,7 @@ export const useTournamentServiceApi_CreateRegister_ByTournamentIdMutation = (
   SdkSetConfigParam & { tournamentId: string; data: TournamentServiceRegisterForTournamentBody }
 > => {
   const mutationFn = async (input: SdkSetConfigParam & { tournamentId: string; data: TournamentServiceRegisterForTournamentBody }) => {
-    const response = await TournamentServiceApi(sdk, {
+    const response = await SecondTournamentServiceApi(sdk, {
       coreConfig: input.coreConfig,
       axiosConfig: input.axiosConfig
     }).createRegister_ByTournamentId(input.tournamentId, input.data)
@@ -178,7 +179,7 @@ export const useTournamentServiceApi_CreateRegister_ByTournamentIdMutation = (
   }
 
   return useMutation({
-    mutationKey: [Key_TournamentService.Register_ByTournamentId],
+    mutationKey: [Key_SecondTournamentService.Register_ByTournamentId],
     mutationFn,
     ...options
   })
@@ -191,27 +192,28 @@ export const useTournamentServiceApi_CreateRegister_ByTournamentIdMutation = (
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentService.Participants_ByTournamentId, input]
+ *    queryKey: [Key_SecondTournamentService.Participants_ByTournamentId, input]
  * }
  * ```
  */
-export const useTournamentServiceApi_GetParticipants_ByTournamentId = (
+export const useSecondTournamentServiceApi_GetParticipants_ByTournamentId = (
   sdk: AccelByteSDK,
   input: SdkSetConfigParam & { tournamentId: string; queryParams?: { pageSize?: number; pageToken?: string | null } },
   options?: Omit<UseQueryOptions<TournamentGetTournamentParticipantsResponse, AxiosError<ApiError>>, 'queryKey'>,
   callback?: (data: AxiosResponse<TournamentGetTournamentParticipantsResponse>) => void
 ): UseQueryResult<TournamentGetTournamentParticipantsResponse, AxiosError<ApiError>> => {
-  const queryFn = (sdk: AccelByteSDK, input: Parameters<typeof useTournamentServiceApi_GetParticipants_ByTournamentId>[1]) => async () => {
-    const response = await TournamentServiceApi(sdk, {
-      coreConfig: input.coreConfig,
-      axiosConfig: input.axiosConfig
-    }).getParticipants_ByTournamentId(input.tournamentId, input.queryParams)
-    callback?.(response)
-    return response.data
-  }
+  const queryFn =
+    (sdk: AccelByteSDK, input: Parameters<typeof useSecondTournamentServiceApi_GetParticipants_ByTournamentId>[1]) => async () => {
+      const response = await SecondTournamentServiceApi(sdk, {
+        coreConfig: input.coreConfig,
+        axiosConfig: input.axiosConfig
+      }).getParticipants_ByTournamentId(input.tournamentId, input.queryParams)
+      callback?.(response)
+      return response.data
+    }
 
   return useQuery<TournamentGetTournamentParticipantsResponse, AxiosError<ApiError>>({
-    queryKey: [Key_TournamentService.Participants_ByTournamentId, input],
+    queryKey: [Key_SecondTournamentService.Participants_ByTournamentId, input],
     queryFn: queryFn(sdk, input),
     ...options
   })
@@ -224,19 +226,19 @@ export const useTournamentServiceApi_GetParticipants_ByTournamentId = (
  * The default options include:
  * ```
  * {
- *    queryKey: [Key_TournamentService.Matche_ByTournamentId_ByMatchId, input]
+ *    queryKey: [Key_SecondTournamentService.Matche_ByTournamentId_ByMatchId, input]
  * }
  * ```
  */
-export const useTournamentServiceApi_GetMatche_ByTournamentId_ByMatchId = (
+export const useSecondTournamentServiceApi_GetMatche_ByTournamentId_ByMatchId = (
   sdk: AccelByteSDK,
   input: SdkSetConfigParam & { tournamentId: string; matchId: string },
   options?: Omit<UseQueryOptions<TournamentGetMatchResponse, AxiosError<ApiError>>, 'queryKey'>,
   callback?: (data: AxiosResponse<TournamentGetMatchResponse>) => void
 ): UseQueryResult<TournamentGetMatchResponse, AxiosError<ApiError>> => {
   const queryFn =
-    (sdk: AccelByteSDK, input: Parameters<typeof useTournamentServiceApi_GetMatche_ByTournamentId_ByMatchId>[1]) => async () => {
-      const response = await TournamentServiceApi(sdk, {
+    (sdk: AccelByteSDK, input: Parameters<typeof useSecondTournamentServiceApi_GetMatche_ByTournamentId_ByMatchId>[1]) => async () => {
+      const response = await SecondTournamentServiceApi(sdk, {
         coreConfig: input.coreConfig,
         axiosConfig: input.axiosConfig
       }).getMatche_ByTournamentId_ByMatchId(input.tournamentId, input.matchId)
@@ -245,7 +247,7 @@ export const useTournamentServiceApi_GetMatche_ByTournamentId_ByMatchId = (
     }
 
   return useQuery<TournamentGetMatchResponse, AxiosError<ApiError>>({
-    queryKey: [Key_TournamentService.Matche_ByTournamentId_ByMatchId, input],
+    queryKey: [Key_SecondTournamentService.Matche_ByTournamentId_ByMatchId, input],
     queryFn: queryFn(sdk, input),
     ...options
   })
