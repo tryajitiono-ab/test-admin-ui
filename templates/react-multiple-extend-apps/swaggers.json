@@ -1,4 +1,14 @@
 [
-  ["tournamentapi", "tournamentapi", "tournament.json", "..."],
-  ["secondtournamentapi", "secondtournamentapi", "secondtournament.json", "..."]
+  [
+    "tournamentapi",
+    "tournamentapi",
+    "tournament.json",
+    "https://abtesttryaji2026033001-demotournament.internal.gamingservices.accelbyte.io/ext-abtesttryaji2026033001-demotournament-tournament-system"
+  ],
+  [
+    "secondtournamentapi",
+    "secondtournamentapi",
+    "secondtournament.json",
+    "https://abtesttryaji2026033001-demotournament.internal.gamingservices.accelbyte.io/ext-abtesttryaji2026033001-demotournament-tournament-system-second"
+  ]
 ]
