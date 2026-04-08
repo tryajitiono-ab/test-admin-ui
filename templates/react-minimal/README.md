@@ -16,13 +16,13 @@ export AB_BASE_URL='<YourAGSBaseURL>'
 export AB_CLIENT_ID='<YourClientID>'
 export AB_CLIENT_SECRET='<YourClientSecret>'
 export AB_NAMESPACE='<YourGameNamespace>'
-export AB_ADMINUI_NAME='<YourAppUIName>'
+export AB_APPUI_NAME='<YourAppUIName>'
 ```
 
 Register the App UI and install dependencies:
 
 ```bash
-extend-helper-cli appui create --namespace $AB_NAMESPACE --name $AB_ADMINUI_NAME
+extend-helper-cli appui create --namespace $AB_NAMESPACE --name $AB_APPUI_NAME
 npm install
 ```
 
@@ -37,5 +37,5 @@ Open `http://localhost:5173`. You should see a "Hello world!" page. Edits are re
 When ready to deploy:
 
 ```bash
-extend-helper-cli appui upload --namespace $AB_NAMESPACE --name $AB_ADMINUI_NAME
+extend-helper-cli appui upload --namespace $AB_NAMESPACE --name $AB_APPUI_NAME
 ```

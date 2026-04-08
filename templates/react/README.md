@@ -16,18 +16,18 @@ export AB_BASE_URL='<YourAGSBaseURL>'
 export AB_CLIENT_ID='<YourClientID>'
 export AB_CLIENT_SECRET='<YourClientSecret>'
 export AB_NAMESPACE='<YourGameNamespace>'
-export AB_ADMINUI_NAME='<YourAppUIName>'
+export AB_APPUI_NAME='<YourAppUIName>'
 ```
 
 Register the App UI, generate the local `.env.local` for AGS API access, and install dependencies:
 
 ```bash
-extend-helper-cli appui create --namespace $AB_NAMESPACE --name $AB_ADMINUI_NAME
-extend-helper-cli appui setup-env --namespace $AB_NAMESPACE --name $AB_ADMINUI_NAME
+extend-helper-cli appui create --namespace $AB_NAMESPACE --name $AB_APPUI_NAME
+extend-helper-cli appui setup-env --namespace $AB_NAMESPACE --name $AB_APPUI_NAME
 npm install
 ```
 
-Run the dev server:
+Then, in the new `.env.local`, provide your `VITE_AB_EXTEND_APP_NAME`. This is the name of your Extend app (in this template, we will only use a single Extend app to point at). After that, run the dev server:
 
 ```bash
 npm run dev
@@ -38,5 +38,5 @@ Open `http://localhost:5173`. You should see the tournament management UI. Edits
 When ready to deploy:
 
 ```bash
-extend-helper-cli appui upload --namespace $AB_NAMESPACE --name $AB_ADMINUI_NAME
+extend-helper-cli appui upload --namespace $AB_NAMESPACE --name $AB_APPUI_NAME
 ```

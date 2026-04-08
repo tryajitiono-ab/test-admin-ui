@@ -6,9 +6,11 @@ module.mount(document.getElementById('root')!, {
   basePath: import.meta.env.VITE_BASE_PATH || '/',
   sdkConfig: {
     baseURL,
-    clientId: import.meta.env.VITE_AB_CLIENT_ID,
-    namespace: import.meta.env.VITE_AB_NAMESPACE,
-    redirectURI: import.meta.env.VITE_AB_REDIRECT_URI
+    // These are unused in this minimal template — no AGS API calls are made.
+    // See the `react` template for a complete example that connects to AGS.
+    clientId: '',
+    namespace: '',
+    redirectURI: ''
   }
   // isCurrentUserHasPermission is omitted — appuiContextProvider falls back
   // to the dev-only implementation automatically. In production the Admin Portal
