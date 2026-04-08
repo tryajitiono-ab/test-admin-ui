@@ -1,6 +1,6 @@
 # Extend App UI — Full Example
 
-A full-featured React template with a tournament management UI and generated AGS API clients. Use this as a reference; start from the `react-minimal` template for a blank slate. This example uses the Extend Service Extension Tournament System as the backend: https://github.com/AccelByte/extend-tournament-system.
+A full-featured React template with a tournament management UI and generated AGS API clients. Use this as a reference. For a blank slate, start from the `react-minimal` template instead. This example uses the Extend Service Extension Tournament System as the backend: https://github.com/AccelByte/extend-tournament-system.
 
 ## Quick start
 
@@ -27,7 +27,7 @@ extend-helper-cli appui setup-env --namespace $AB_NAMESPACE --name $AB_APPUI_NAM
 npm install
 ```
 
-Then, in the new `.env.local`, provide your `VITE_AB_EXTEND_APP_NAME`. This is the name of your Extend app (in this template, we will only use a single Extend app to point at). After that, run the dev server:
+Then, in the new `.env.local`, provide your `VITE_AB_EXTEND_APP_NAME`. This is the name of your Extend app (in this template, the UI targets a single Extend app), labeled by the "App Name" in the Extend detail page inside Admin Portal. After that, run the dev server:
 
 ```bash
 npm run dev
@@ -43,30 +43,31 @@ extend-helper-cli appui upload --namespace $AB_NAMESPACE --name $AB_APPUI_NAME
 
 ## Code generating
 
-1. In `swaggers.json`, replace `<url-to-your-extend-service>` with your service URL. This can be found inside the Extend app detail inside Admin Portal, labelled by "Service URL". For example, after replacing, the value should be `https://spaceshooter-mygame.prod.gamingservices.accelbyte.io/ext-spaceshooter-mygame-myextendapp/apidocs/api.json`, where `spaceshooter-mygame` is the namespace and `myextendapp` is the Extend app name.
-2. Run `npm run codegen`. This will download and generate the TypeScript files based on the downloaded Swagger JSON file.
+1. In `swaggers.json`, replace `<url-to-your-extend-service>` with your service URL. You can find this in the Admin Portal on your Extend app's detail page, labeled **Service URL**. For example, after replacing, the value should be (depending on the tenancy):
+   1. Shared Cloud: `https://spaceshooter-mygame.prod.gamingservices.accelbyte.io/ext-spaceshooter-mygame-myextendapp/apidocs/api.json`, where `spaceshooter-mygame` is the namespace and `myextendapp` is the Extend app name.
+   2. Private Cloud: `https://dev.customer.accelbyte.io/ext-mygame-myextendapp/apidocs/api.json`, where `mygame` is the namespace and `myextendapp` is the Extend app name.
+2. Run `npm run codegen`. This downloads your Extend service's Swagger spec and generates TypeScript client code from it.
 
 ### Codegen config
 
-`@accelbyte/codegen` provides several config to cater the Extend App UI scenarios, which you can see in `abcodegen.config.ts`. In this template, the config is as follows:
+`@accelbyte/codegen` provides several configuration options to cater to Extend App UI scenarios, configured in `abcodegen.config.ts`. In this template, the configuration is as follows:
 
 ```ts
 {
   // Nullify the effect of Swagger's `basePath` from the code-generated TypeScript files. This is because we want to define the
-  // Extend app name in `src/module.tsx`, so the Extend app name and namespace is not committed to source control in any ways.
+  // Extend app name in `src/module.tsx`, so the Extend app name and namespace are not committed to source control in any way.
   basePath: '',
   // By default, the codegen will produce index files (which is useful for libraries published in npm). But, since we are using this locally,
   // we do not need those index files.
   unstable_shouldProduceIndexFiles: false,
-  // There are some cases where some types result in an unknown type or a type that is not "derived" well in TypeScript. In such a case, we can
-  // bypass it and set the type as any.
+  // Occasionally, a type from the Swagger spec doesn't resolve cleanly to a TypeScript type. You can override it and set the type to any.
   unstable_overrideAsAny: {
     ProtobufAny: true
   }
 }
 ```
 
-In the case above, the `ProtobufAny` comes from this schema type in Swagger JSON:
+The `ProtobufAny` type above maps to this schema in the Swagger JSON:
 
 ```json
 {
