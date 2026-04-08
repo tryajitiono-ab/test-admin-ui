@@ -1,6 +1,6 @@
 {
   "name": "vite-project",
-  "description": "A full-set React template for Extend App UI, optimal for development",
+  "description": "A full-set React template for Extend App UI, along with targeting multiple Extend apps capability",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write src/**/*",
-    "cg:prettify": "prettier --write --no-error-on-unmatched-pattern src/tournamentapi/**/*",
-    "cg:generate": "accelbyte-codegen generate-code --config swaggers.json --swaggersOutput swaggers --output src/tournamentapi",
-    "codegen": "rimraf src/tournamentapi && npm run cg:generate && npm run cg:prettify"
+    "cg:prettify": "prettier --write --no-error-on-unmatched-pattern src/codegen/**/*",
+    "cg:generate": "accelbyte-codegen generate-code --config swaggers.json --swaggersOutput swaggers --output src/codegen",
+    "codegen": "rimraf src/codegen && npm run cg:generate && npm run cg:prettify"
   },
   "dependencies": {
     "@accelbyte/sdk": "0.0.0-dev-20260407233405",
