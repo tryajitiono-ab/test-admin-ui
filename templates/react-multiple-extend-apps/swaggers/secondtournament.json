@@ -6,7 +6,7 @@
     "title": "Tournament API",
     "version": "1.0"
   },
-  "basePath": "/ext-abtesttryaji2026033001-demotournament-tournament-system-second",
+  "basePath": "/ext-spaceshooter-mygame-tournament-system-second",
   "paths": {
     "/v1/admin/namespace/{namespace}/tournaments": {
       "post": {
