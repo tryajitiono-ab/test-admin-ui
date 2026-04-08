@@ -1,14 +1,4 @@
 [
-  [
-    "tournamentapi",
-    "tournamentapi",
-    "tournament.json",
-    "<url-to-your-first-extend-service>/apidocs/api.json"
-  ],
-  [
-    "secondtournamentapi",
-    "secondtournamentapi",
-    "secondtournament.json",
-    "<url-to-your-second-extend-service>/apidocs/api.json"
-  ]
+  ["tournamentapi", "tournamentapi", "tournament.json", "<url-to-your-first-extend-service>/apidocs/api.json"],
+  ["secondtournamentapi", "secondtournamentapi", "secondtournament.json", "<url-to-your-second-extend-service>/apidocs/api.json"]
 ]

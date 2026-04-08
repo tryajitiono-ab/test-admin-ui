@@ -142,7 +142,7 @@ function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; 
         <Typography.Title
           level={2}
           className="appui:m-0!"
-          hidden={isCurrentUserHasPermission({ action: CrudType.READ, resource: 'ADMIN:RANDOMRESOURCE' })}>
+          hidden={!isCurrentUserHasPermission({ action: CrudType.READ, resource: 'ADMIN:RANDOMRESOURCE' })}>
           This is also a tournaments header but hidden because you may not have the permission
         </Typography.Title>
         <Typography.Text type="secondary">Browse and manage tournament competitions</Typography.Text>
