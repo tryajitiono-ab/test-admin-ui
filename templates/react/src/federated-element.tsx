@@ -144,7 +144,7 @@ function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; 
       </div>
       <div
         className="appui:flex appui:gap-2"
-        hidden={!isCurrentUserHasPermission({ resource: 'ADMIN:NAMESPACE:{namespace}:TOURNAMENTSYSTEM', action: CrudType.CREATE })}>
+        
         <Button onClick={onRefresh}>Refresh</Button>
         <Button type="primary" onClick={onCreate}>
           Create Tournament

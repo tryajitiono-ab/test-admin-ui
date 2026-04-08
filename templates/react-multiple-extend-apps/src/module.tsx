@@ -6,17 +6,11 @@ import { BrowserRouter } from 'react-router'
 import { FederatedElement } from './federated-element'
 
 const client = new QueryClient({ defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } } })
-const isSingleApp = import.meta.env.VITE_SINGLE_EXTEND_APP_ONLY ?? true
 
 export const module: AppUIModule = {
   mount(container, hostContext) {
     const root = createRoot(container)
     const sdkConfig = { ...hostContext.sdkConfig }
-
-    if (isSingleApp) {
-      const extendAppName = import.meta.env.VITE_AB_EXTEND_APP_NAME
-      sdkConfig.baseURL = `${sdkConfig.baseURL}/ext-${import.meta.env.VITE_AB_NAMESPACE}-${extendAppName}`
-    }
 
     root.render(
       <StrictMode>

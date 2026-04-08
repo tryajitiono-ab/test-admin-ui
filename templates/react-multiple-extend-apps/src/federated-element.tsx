@@ -1,13 +1,19 @@
-import { Link, Navigate, Route, Routes } from 'react-router'
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router'
 import { FirstTournament } from './first-tournament'
 import { SecondTournament } from './second-tournament'
 
 export function FederatedElement() {
+  const { pathname } = useLocation()
+
   return (
     <div className="appui:p-4">
-      <nav className="appui:flex appui:gap-x-2">
-        <Link to="/first">First tournament service</Link>
-        <Link to="/second">Second tournament service</Link>
+      <nav className="appui:flex appui:gap-x-4">
+        <Link to="/first" className={pathname === '/first' ? 'appui:font-semibold appui:underline' : undefined}>
+          First tournament service
+        </Link>
+        <Link to="/second" className={pathname === '/second' ? 'appui:font-semibold appui:underline' : undefined}>
+          Second tournament service
+        </Link>
       </nav>
 
       <Routes>

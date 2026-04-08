@@ -1,5 +1,4 @@
 import { useAppUIContext } from '@accelbyte/sdk-extend-app-ui'
-import { CrudType } from '@accelbyte/validator'
 import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Button, Card, DatePicker, Form, InputNumber, Modal, Spin, Tag, Typography } from 'antd'
 import Input from 'antd/es/input/Input'
@@ -132,8 +131,6 @@ function TournamentList() {
 }
 
 function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; onCreate: () => void }) {
-  const { isCurrentUserHasPermission } = useAppUIContext()
-
   return (
     <div className="appui:flex appui:justify-between appui:items-center appui:mb-4">
       <div>
@@ -142,9 +139,7 @@ function TournamentListHeader({ onRefresh, onCreate }: { onRefresh: () => void; 
         </Typography.Title>
         <Typography.Text type="secondary">Browse and manage tournament competitions</Typography.Text>
       </div>
-      <div
-        className="appui:flex appui:gap-2"
-        hidden={!isCurrentUserHasPermission({ resource: 'ADMIN:NAMESPACE:{namespace}:TOURNAMENTSYSTEM', action: CrudType.CREATE })}>
+      <div className="appui:flex appui:gap-2">
         <Button onClick={onRefresh}>Refresh</Button>
         <Button type="primary" onClick={onCreate}>
           Create Tournament
