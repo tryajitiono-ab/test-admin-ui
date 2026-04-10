@@ -10,13 +10,12 @@ const client = new QueryClient({ defaultOptions: { queries: { retry: false, refe
 export const module: AppUIModule = {
   mount(container, hostContext) {
     const root = createRoot(container)
-    const sdkConfig = { ...hostContext.sdkConfig }
 
     root.render(
       <StrictMode>
         <QueryClientProvider client={client}>
           <BrowserRouter basename={hostContext.basePath}>
-            <AppUIContextProvider sdkConfig={sdkConfig} isCurrentUserHasPermission={hostContext.isCurrentUserHasPermission}>
+            <AppUIContextProvider sdkConfig={hostContext.sdkConfig} isCurrentUserHasPermission={hostContext.isCurrentUserHasPermission}>
               <FederatedElement />
             </AppUIContextProvider>
           </BrowserRouter>
