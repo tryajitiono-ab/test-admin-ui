@@ -1,0 +1,13 @@
+{
+  "name": "extend-app-ui-templates",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "devDependencies": {
+    "prettier": "3.8.1"
+  },
+  "overrides": {
+    "axios": "1.13.6",
+    "zod": "3.25.76"
+  }
+}
