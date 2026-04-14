@@ -112,7 +112,7 @@ function TournamentList() {
             key={t.tournamentId ?? undefined}
             hoverable
             className="appui:h-full"
-            onClick={() => navigate(`/${t.tournamentId}`)}
+            onClick={() => navigate(`./${t.tournamentId}`)}
             title={
               <div className="appui:flex appui:justify-between appui:items-center">
                 <span>{t.name}</span>
