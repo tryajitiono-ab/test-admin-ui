@@ -291,6 +291,7 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
         ]
       })
       queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements_ByUserId] })
+      queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements] })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Grant failed')
     } finally {
@@ -315,6 +316,7 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
     }
     setBusy(null)
     queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements_ByUserId] })
+    queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements] })
   }
 
   const revokeOne = async (row: Row, entitlementIds: string[]) => {
@@ -358,6 +360,7 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
             onClick={() => {
               rankingQuery.refetch()
               queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements_ByUserId] })
+              queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements] })
             }}>
             Refresh
           </Button>

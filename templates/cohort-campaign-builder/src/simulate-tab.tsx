@@ -113,13 +113,12 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
       // cookie from clobbering the admin's session. v4 returns `unknown`
       // because the response can be either a TokenResponse (success) or a
       // LoginQueueTicketResponse (queued); we narrow by checking user_id.
-      const { clientId } = sdk.assembly().coreConfig
       const token = (await tokenMutation.mutateAsync({
         platformId: 'device',
         data: { device_id: deviceId, skipSetCookie: true },
         axiosConfig: {
           request: {
-            headers: { Authorization: `Basic ${btoa(`${clientId}:`)}` }
+            headers: { Authorization: `Basic ${btoa(`${import.meta.env.VITE_AB_CLIENT_ID}:`)}` }
           }
         }
       })) as TokenResponseV3
