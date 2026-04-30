@@ -66,7 +66,6 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
 
   const tokenMutation = useOAuth20V4Api_PostTokenOauth_ByPlatformIdMutation_v4(sdk)
   const statMutation = useUserStatisticAdminApi_UpdateStatitemValue_ByUserId_ByStatCodeMutation_v2(sdk)
-
   const [deviceId, setDeviceId] = useState(generateDeviceId())
   const [statCode, setStatCode] = useState<string | undefined>(undefined)
   const [statValue, setStatValue] = useState<number>(100)
@@ -86,9 +85,7 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
     queryClient.invalidateQueries({ queryKey: [Key_GameRecordAdmin.Record_ByKey] })
   }
 
-  useEffect(() => {
-    if (lbStatCode && !statCode) setStatCode(lbStatCode)
-  }, [lbStatCode, statCode])
+  const effectiveStatCode = lbStatCode ?? statCode
 
   const persistEntry = async (entry: CreatedPlayer) => {
     // Drop any pre-existing entries with empty userIds — those are noise
@@ -101,8 +98,8 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
   }
 
   const handleCreate = async () => {
-    if (!statCode) {
-      setError('Pick a stat code first.')
+    if (!effectiveStatCode) {
+      setError('Select a leaderboard above, or pick a stat code manually.')
       return
     }
     setBusy(true)
@@ -130,10 +127,10 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
       if (!userId) throw new Error('Token response did not include a user_id (login may be queued — see LoginQueueTicketResponse)')
 
       // 2. Set the chosen stat for the new user so it appears on the leaderboard.
-      await statMutation.mutateAsync({ userId, statCode, data: { value: statValue, updateStrategy: 'OVERRIDE' } })
+      await statMutation.mutateAsync({ userId, statCode: effectiveStatCode, data: { value: statValue, updateStrategy: 'OVERRIDE' } })
 
       // 3. Persist the success in Cloud Save so it's visible across sessions.
-      await persistEntry({ deviceId, userId, statCode, statValue, ok: true, createdAt: new Date().toISOString() })
+      await persistEntry({ deviceId, userId, statCode: effectiveStatCode, statValue, ok: true, createdAt: new Date().toISOString() })
 
       setDeviceId(generateDeviceId())
     } catch (err) {
@@ -156,19 +153,6 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
           the Reward tab end-to-end.
         </Paragraph>
 
-        {leaderboardCode && lbStatCode && (
-          <Alert
-            type="info"
-            showIcon
-            className="appui:mb-4"
-            message={
-              <span>
-                Leaderboard <Text code>{leaderboardCode}</Text> is backed by stat <Text code>{lbStatCode}</Text> — pre-filled below.
-              </span>
-            }
-          />
-        )}
-
         <Form layout="vertical">
           <Form.Item label="Device ID" tooltip="Sent as platform_id=device, device_id=<this>. AGS auto-provisions a user bound to it.">
             <Space.Compact className="appui:w-full">
@@ -177,8 +161,12 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
             </Space.Compact>
           </Form.Item>
           <div className="appui:grid appui:grid-cols-2 appui:gap-4">
-            <Form.Item label="Stat code" tooltip="Type to search — server-side keyword filter via Statistic.GetStatsSearch.">
-              <StatCodeSelect value={statCode} onChange={setStatCode} placeholder="Pick a stat (type to search)" />
+            <Form.Item label="Stat code">
+              {lbStatCode ? (
+                <Input value={lbStatCode} disabled />
+              ) : (
+                <StatCodeSelect value={statCode} onChange={setStatCode} placeholder="Pick a stat (type to search)" />
+              )}
             </Form.Item>
             <Form.Item label="Value to set">
               <InputNumber
@@ -200,7 +188,14 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
       <Card
         title={`Seeded players (persisted at ${SIMULATION_RECORD_KEY})`}
         loading={historyRecord.isLoading}
-        extra={persistedEntries.length > 0 ? <Text type="secondary">{persistedEntries.length} entries</Text> : null}>
+        extra={
+          <Space>
+            {persistedEntries.length > 0 && <Text type="secondary">{persistedEntries.length} entries</Text>}
+            <Button size="small" loading={historyRecord.isFetching} onClick={() => historyRecord.refetch()}>
+              Refresh
+            </Button>
+          </Space>
+        }>
         {historyRecord.isError && (
           <Alert
             type="info"

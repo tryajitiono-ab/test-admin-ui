@@ -31,44 +31,46 @@ export function FederatedElement() {
   const [leaderboardCode, setLeaderboardCode] = useState<string | undefined>(undefined)
 
   return (
-    <div className="appui:p-6 appui:max-w-[1200px] appui:mx-auto">
-      <div className="appui:mb-6">
-        <Title level={2} className="appui:m-0!">
-          Cohort Campaign Builder
-        </Title>
-        <Paragraph type="secondary" className="appui:m-0!">
-          Configure tier-based rewards in <Text code>Cloud Save</Text>, grant <Text code>Platform</Text> entitlements to{' '}
-          <Text code>Leaderboard</Text> winners, and seed test players via <Text code>IAM</Text> + <Text code>Social</Text> — no Extend
-          backend.
-        </Paragraph>
-      </div>
+    <div className="appui:p-6">
+      <Card className="appui:max-w-[1200px] appui:mx-auto">
+        <div className="appui:mb-6">
+          <Title level={2} className="appui:m-0!">
+            Leaderboard Reward Manager
+          </Title>
+          <Paragraph type="secondary" className="appui:m-0!">
+            Configure tier-based rewards in <Text code>Cloud Save</Text>, grant <Text code>Platform</Text> entitlements to{' '}
+            <Text code>Leaderboard</Text> winners, and seed test players via <Text code>IAM</Text> + <Text code>Social</Text> — no Extend
+            backend.
+          </Paragraph>
+        </div>
 
-      <Card size="small" className="appui:mb-6">
-        <Form layout="inline">
-          <Form.Item label="Season key" tooltip="Used as the Cloud Save admin game-record key">
-            <Input value={seasonKey} onChange={e => setSeasonKey(e.target.value)} placeholder="pvp-season-1" />
-          </Form.Item>
-          <Form.Item label="Leaderboard">
-            <LeaderboardSelect value={leaderboardCode} onChange={setLeaderboardCode} />
-          </Form.Item>
-        </Form>
+        <Card size="small" className="appui:mb-6">
+          <Form layout="inline">
+            <Form.Item label="Season key" tooltip="Used as the Cloud Save admin game-record key">
+              <Input value={seasonKey} onChange={e => setSeasonKey(e.target.value)} placeholder="pvp-season-1" />
+            </Form.Item>
+            <Form.Item label="Leaderboard">
+              <LeaderboardSelect value={leaderboardCode} onChange={setLeaderboardCode} />
+            </Form.Item>
+          </Form>
+        </Card>
+
+        <Tabs
+          defaultActiveKey="reward"
+          items={[
+            {
+              key: 'reward',
+              label: 'Reward',
+              children: <RewardTab seasonKey={seasonKey} leaderboardCode={leaderboardCode} />
+            },
+            {
+              key: 'simulate',
+              label: 'Simulate',
+              children: <SimulateTab leaderboardCode={leaderboardCode} />
+            }
+          ]}
+        />
       </Card>
-
-      <Tabs
-        defaultActiveKey="reward"
-        items={[
-          {
-            key: 'reward',
-            label: 'Reward',
-            children: <RewardTab seasonKey={seasonKey} leaderboardCode={leaderboardCode} />
-          },
-          {
-            key: 'simulate',
-            label: 'Simulate',
-            children: <SimulateTab leaderboardCode={leaderboardCode} />
-          }
-        ]}
-      />
     </div>
   )
 }

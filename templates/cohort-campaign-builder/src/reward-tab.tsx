@@ -5,13 +5,16 @@ import {
   useGameRecordAdminApi_UpdateRecord_ByKeyMutation
 } from '@accelbyte/sdk-cloudsave/react-query'
 import {
+  Key_EntitlementAdmin,
   useEntitlementAdminApi_CreateEntitlement_ByUserIdMutation,
-  useEntitlementAdminApi_GetEntitlementsOwnershipByItemIds_ByUserId,
+  useEntitlementAdminApi_GetEntitlements,
+  useEntitlementAdminApi_GetEntitlements_ByUserId,
+  useEntitlementAdminApi_UpdateEntitlementRevokeById_ByUserIdMutation,
   useItemAdminApi_GetItemsByCriteria_v2
 } from '@accelbyte/sdk-platform/react-query'
 import { useLeaderboardDataV3AdminApi_GetAlltime_ByLeaderboardCode_v3 } from '@accelbyte/sdk-leaderboard/react-query'
 import { useQueryClient } from '@tanstack/react-query'
-import { Alert, Button, Card, Collapse, Form, Input, InputNumber, Select, Space, Table, Tag, Typography } from 'antd'
+import { Alert, Button, Card, Collapse, Form, Input, InputNumber, Select, Space, Table, Tag, Tooltip, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import type { RewardRecord, TierConfig } from './federated-element'
 
@@ -78,7 +81,7 @@ function ConfigureSection({ seasonKey }: { seasonKey: string }) {
     <Card title="1. Configure reward tiers">
       <Paragraph type="secondary" className="appui:mt-0!">
         Stored as a Cloud Save admin game record at key <Text code>{seasonKey}</Text>. Each tier maps a rank range to a Platform item +
-        quantity. Granted user IDs are tracked per tier so re-runs are idempotent.
+        quantity. Grant eligibility is checked live against Platform entitlements, so the Grant button is disabled as soon as a user owns the item.
       </Paragraph>
 
       <Collapse
@@ -91,7 +94,7 @@ function ConfigureSection({ seasonKey }: { seasonKey: string }) {
               <Space>
                 <Tag color="blue">ranks {tier.cfg.ranks || '—'}</Tag>
                 <Tag>×{tier.cfg.quantity}</Tag>
-                {tier.cfg.granted && tier.cfg.granted.length > 0 && <Tag color="green">{tier.cfg.granted.length} granted</Tag>}
+                {tier.cfg.itemId && <ItemOwnerCount itemId={tier.cfg.itemId} />}
               </Space>
             </div>
           ),
@@ -111,6 +114,23 @@ function ConfigureSection({ seasonKey }: { seasonKey: string }) {
         <Alert className="appui:mt-3" type="error" showIcon message="Failed to save record" description={updateRecord.error.message} />
       )}
     </Card>
+  )
+}
+
+function ItemOwnerCount({ itemId }: { itemId: string }) {
+  const { sdk } = useAppUIContext()
+  const query = useEntitlementAdminApi_GetEntitlements(sdk, { queryParams: { itemId: [itemId], limit: 200 } }, { enabled: !!itemId })
+  if (!itemId || query.isLoading) return null
+  const data = query.data?.data ?? []
+  const count = new Set(data.map(e => e.userId).filter(Boolean)).size
+  const hasMore = !!query.data?.paging?.next
+  const label = hasMore ? `${count}+ owners` : `${count} owner${count !== 1 ? 's' : ''}`
+  const color = count === 0 ? 'green' : count < 10 ? 'blue' : count < 50 ? 'orange' : 'red'
+  const tip = count === 0 ? 'No one owns this yet — truly rare' : count < 10 ? 'Rare' : count < 50 ? 'Uncommon' : 'Common'
+  return (
+    <Tag color={color} title={tip}>
+      {label}
+    </Tag>
   )
 }
 
@@ -162,6 +182,7 @@ function ItemSearchSelect({ value, onChange }: { value: string; onChange: (id: s
   const { sdk } = useAppUIContext()
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [selectedLabel, setSelectedLabel] = useState('')
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300)
@@ -186,14 +207,22 @@ function ItemSearchSelect({ value, onChange }: { value: string; onChange: (id: s
     value: it.itemId ?? '',
     label: `${it.name ?? '(unnamed)'} — ${it.sku ?? it.itemId} [${it.itemType ?? 'ITEM'}]`
   }))
-  if (value && !options.some(o => o.value === value)) options.unshift({ value, label: value })
+
+  const matchedLabel = options.find(o => o.value === value)?.label
+  if (matchedLabel && matchedLabel !== selectedLabel) setSelectedLabel(matchedLabel)
+
+  if (value && !options.some(o => o.value === value)) options.unshift({ value, label: selectedLabel || value })
 
   return (
     <Select
       showSearch
       placeholder="Search items by name"
       value={value || undefined}
-      onChange={onChange}
+      onChange={(id, option) => {
+        const opt = Array.isArray(option) ? option[0] : option
+        setSelectedLabel((opt as { label?: string })?.label ?? '')
+        onChange(id)
+      }}
       onSearch={setSearch}
       filterOption={false}
       loading={itemsQuery.isLoading}
@@ -209,7 +238,6 @@ type Row = {
   point: number
   tierName: string | null
   tierCfg: TierConfig | null
-  alreadyGranted: boolean // recorded in the game record
 }
 
 function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leaderboardCode: string | undefined }) {
@@ -230,26 +258,23 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
   const rows: Row[] = ranking.map((entry, idx) => {
     const rank = idx + 1
     const match = matchTier(rank, tiers)
-    const alreadyGranted = !!match && (match.cfg.granted ?? []).includes(entry.userId ?? '')
     return {
       rank,
       userId: entry.userId ?? '',
       point: entry.point ?? 0,
       tierName: match?.name ?? null,
-      tierCfg: match?.cfg ?? null,
-      alreadyGranted
+      tierCfg: match?.cfg ?? null
     }
   })
 
-  const updateRecord = useGameRecordAdminApi_UpdateRecord_ByKeyMutation(sdk)
   const grantEntitlement = useEntitlementAdminApi_CreateEntitlement_ByUserIdMutation(sdk)
+  const revokeEntitlements = useEntitlementAdminApi_UpdateEntitlementRevokeById_ByUserIdMutation(sdk)
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const grantOne = async (row: Row) => {
     if (!row.tierCfg || !row.userId) return
     const cfg = row.tierCfg
-    const tierName = row.tierName!
     setBusy(row.userId)
     setError(null)
     try {
@@ -265,13 +290,7 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
           }
         ]
       })
-      // Append the user to the granted list and re-save the record.
-      const next: RewardRecord = JSON.parse(JSON.stringify(tiers))
-      const list = next[tierName].granted ?? []
-      if (!list.includes(row.userId)) list.push(row.userId)
-      next[tierName].granted = list
-      await updateRecord.mutateAsync({ key: seasonKey, data: next })
-      queryClient.invalidateQueries({ queryKey: [Key_GameRecordAdmin.Record_ByKey] })
+      queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements_ByUserId] })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Grant failed')
     } finally {
@@ -281,27 +300,36 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
 
   const grantAll = async () => {
     setError(null)
-    const next: RewardRecord = JSON.parse(JSON.stringify(tiers))
     for (const row of rows) {
       if (!row.tierCfg || !row.userId) continue
-      if (row.alreadyGranted) continue
       setBusy(row.userId)
       try {
         await grantEntitlement.mutateAsync({
           userId: row.userId,
           data: [{ itemId: row.tierCfg.itemId, itemNamespace, quantity: row.tierCfg.quantity, source: 'OTHER', origin: 'System' }]
         })
-        const list = next[row.tierName!].granted ?? []
-        if (!list.includes(row.userId)) list.push(row.userId)
-        next[row.tierName!].granted = list
       } catch (err) {
         setError(err instanceof Error ? err.message : `Grant failed for ${row.userId}`)
         break
       }
     }
     setBusy(null)
-    await updateRecord.mutateAsync({ key: seasonKey, data: next })
-    queryClient.invalidateQueries({ queryKey: [Key_GameRecordAdmin.Record_ByKey] })
+    queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements_ByUserId] })
+  }
+
+  const revokeOne = async (row: Row, entitlementIds: string[]) => {
+    if (!row.userId || entitlementIds.length === 0) return
+    setBusy(row.userId)
+    setError(null)
+    try {
+      await revokeEntitlements.mutateAsync({ userId: row.userId, queryParams: { entitlementIds: entitlementIds.join(',') } })
+      queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements_ByUserId] })
+      queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements] })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Revoke failed')
+    } finally {
+      setBusy(null)
+    }
   }
 
   if (!leaderboardCode) {
@@ -324,13 +352,22 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
     <Card
       title="2. Grant rewards"
       extra={
-        <Button type="primary" loading={!!busy} onClick={grantAll} disabled={rows.every(r => r.alreadyGranted || !r.tierCfg)}>
-          Bulk grant all
-        </Button>
+        <Space>
+          <Button
+            loading={rankingQuery.isFetching}
+            onClick={() => {
+              rankingQuery.refetch()
+              queryClient.invalidateQueries({ queryKey: [Key_EntitlementAdmin.Entitlements_ByUserId] })
+            }}>
+            Refresh
+          </Button>
+          <Button type="primary" loading={!!busy} onClick={grantAll} disabled={rows.every(r => !r.tierCfg)}>
+            Bulk grant all
+          </Button>
+        </Space>
       }>
       <Paragraph type="secondary" className="appui:mt-0!">
-        Top {ranking.length} from the leaderboard, joined with the tier rules above. Each row also checks Platform ownership in real time so
-        you don't double-grant if a previous attempt partially succeeded.
+        Top {ranking.length} from the leaderboard, joined with the tier rules above. Status and Grant/Revoke actions reflect live Platform entitlement ownership.
       </Paragraph>
       {error && <Alert className="appui:mb-4" type="error" showIcon message={error} />}
       <Table<Row>
@@ -355,8 +392,8 @@ function GrantSection({ seasonKey, leaderboardCode }: { seasonKey: string; leade
           },
           {
             title: 'Action',
-            width: 120,
-            render: (_, r) => <RowAction row={r} busy={busy === r.userId} onGrant={() => grantOne(r)} />
+            width: 180,
+            render: (_, r) => <RowAction row={r} busy={busy === r.userId} onGrant={() => grantOne(r)} onRevoke={ids => revokeOne(r, ids)} />
           }
         ]}
       />
@@ -389,29 +426,42 @@ function rankInRange(rank: number, range: string): boolean {
 function useRowOwnership(row: Row) {
   const { sdk } = useAppUIContext()
   const enabled = !!row.tierCfg && !!row.userId
-  const ownershipQuery = useEntitlementAdminApi_GetEntitlementsOwnershipByItemIds_ByUserId(
+  const query = useEntitlementAdminApi_GetEntitlements_ByUserId(
     sdk,
-    { userId: row.userId, queryParams: { ids: row.tierCfg ? [row.tierCfg.itemId] : [] } },
+    { userId: row.userId, queryParams: { itemId: row.tierCfg ? [row.tierCfg.itemId] : [], activeOnly: true } },
     { enabled }
   )
-  const owns = (ownershipQuery.data ?? []).some(o => o.owned && o.itemId === row.tierCfg?.itemId)
-  return { owns, isLoading: ownershipQuery.isLoading }
+  const active = query.data?.data ?? []
+  const entitlementIds = active.map(e => e.id).filter((id): id is string => !!id)
+  return { owns: entitlementIds.length > 0, ownedCount: entitlementIds.length, entitlementIds, isLoading: query.isLoading }
 }
 
 function RowStatus({ row }: { row: Row }) {
-  const { owns, isLoading } = useRowOwnership(row)
+  const { owns, ownedCount, isLoading } = useRowOwnership(row)
   if (!row.tierCfg) return <Text type="secondary">No tier</Text>
-  if (row.alreadyGranted) return <Tag color="green">Granted (recorded)</Tag>
   if (isLoading) return <Tag>Checking…</Tag>
-  if (owns) return <Tag color="gold">Already owns</Tag>
+  if (owns) return <Tag color="green">Owns ×{ownedCount}</Tag>
   return <Tag>Pending</Tag>
 }
 
-function RowAction({ row, busy, onGrant }: { row: Row; busy: boolean; onGrant: () => void }) {
-  const { owns } = useRowOwnership(row)
+function RowAction({ row, busy, onGrant, onRevoke }: { row: Row; busy: boolean; onGrant: () => void; onRevoke: (ids: string[]) => void }) {
+  const { owns, entitlementIds, isLoading } = useRowOwnership(row)
+  const noTier = !row.tierCfg
+  const grantTip = noTier ? 'No tier assigned for this rank' : owns ? 'User already owns this item' : `Grant ×${row.tierCfg!.quantity}`
   return (
-    <Button size="small" disabled={!row.tierCfg || row.alreadyGranted || owns} loading={busy} onClick={onGrant}>
-      Grant
-    </Button>
+    <Space>
+      <Tooltip title={grantTip}>
+        <Button size="small" disabled={noTier || owns} loading={busy || isLoading} onClick={onGrant}>
+          Grant
+        </Button>
+      </Tooltip>
+      {owns && (
+        <Tooltip title={`Revoke ${entitlementIds.length} entitlement${entitlementIds.length !== 1 ? 's' : ''}`}>
+          <Button size="small" danger loading={busy || isLoading} onClick={() => onRevoke(entitlementIds)}>
+            Revoke
+          </Button>
+        </Tooltip>
+      )}
+    </Space>
   )
 }
