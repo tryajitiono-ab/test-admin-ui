@@ -258,7 +258,15 @@ export function SimulateTab({ leaderboardCode }: { leaderboardCode: string | und
 // GetStatsSearch rejects a blank keyword (NotBlank validation), so we only
 // enable it when the input has something to search; for the empty-input
 // state we fall back to GetStats (which lists all stats unconditionally).
-function StatCodeSelect({ value, onChange, placeholder }: { value: string | undefined; onChange: (v: string) => void; placeholder?: string }) {
+function StatCodeSelect({
+  value,
+  onChange,
+  placeholder
+}: {
+  value: string | undefined
+  onChange: (v: string) => void
+  placeholder?: string
+}) {
   const { sdk } = useAppUIContext()
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
@@ -379,10 +387,6 @@ function UpdateStatModal({
 
 // Build a plausible-looking but distinct device ID for each seeded player.
 function generateDeviceId(): string {
-  const rand = () =>
-    Math.random()
-      .toString(16)
-      .slice(2, 10)
-      .padEnd(8, '0')
+  const rand = () => Math.random().toString(16).slice(2, 10).padEnd(8, '0')
   return `sim-${rand()}-${rand()}`
 }
