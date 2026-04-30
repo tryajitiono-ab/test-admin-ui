@@ -1,0 +1,31 @@
+import { AppUIContextProvider, type AppUIModule } from '@accelbyte/sdk-extend-app-ui'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router'
+import { FederatedElement } from './federated-element'
+
+const client = new QueryClient({ defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } } })
+
+export const module: AppUIModule = {
+  mount(container, hostContext) {
+    const root = createRoot(container)
+    // No baseURL override here: this App UI calls AGS services directly
+    // (Statistic, Achievement, Reward, Lobby), not an Extend backend.
+    const sdkConfig = { ...hostContext.sdkConfig }
+
+    root.render(
+      <StrictMode>
+        <QueryClientProvider client={client}>
+          <BrowserRouter basename={hostContext.basePath}>
+            <AppUIContextProvider sdkConfig={sdkConfig} isCurrentUserHasPermission={hostContext.isCurrentUserHasPermission}>
+              <FederatedElement />
+            </AppUIContextProvider>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </StrictMode>
+    )
+
+    return () => root.unmount()
+  }
+}

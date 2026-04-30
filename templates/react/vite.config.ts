@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
           '@tanstack/react-query': {}
         }
       }),
-      devProxyPlugin({ baseUrl: env.VITE_AB_URL, redirectURI: env.VITE_AB_REDIRECT_URI })
+      devProxyPlugin({ baseUrl: env.VITE_AB_BASE_URL, redirectURI: env.VITE_AB_REDIRECT_URI })
     ]
   }
 })
